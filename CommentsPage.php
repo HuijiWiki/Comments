@@ -161,11 +161,11 @@ class CommentsPage extends ContextSource {
 	 * @return array Array containing every possible bit of information about
 	 *				a comment, including score, timestamp and more
 	 */
-	public function getComments() {
+	public function getComments( $limit ='' ) {
 		$dbr = wfGetDB( DB_SLAVE );
 
 		$tables = array();
-		$params = array();
+		$params = array('LIMIT' => $limit);
 		$joinConds = array();
 
 		// Defaults (for non-social wikis)
@@ -196,6 +196,7 @@ class CommentsPage extends ContextSource {
 			$fields,
 			array( 'Comment_Page_ID' => $this->id ),
 			__METHOD__,
+			$limit,
 			$params,
 			$joinConds
 		);
@@ -454,7 +455,7 @@ class CommentsPage extends ContextSource {
 	 * Display all the comments for the current page.
 	 * CSS and JS is loaded in Comment.php
 	 */
-	function display() {
+	function display( $limit='' ) {
 		global $wgMemc;
 
 		$output = '';
@@ -465,7 +466,7 @@ class CommentsPage extends ContextSource {
 
 		if ( !$data ) {
 			wfDebug( "Loading comments for page {$this->id} from DB\n" );
-			$commentThreads = $this->getComments();
+			$commentThreads = $this->getComments( $limit='' );
 			$wgMemc->set( $key, $commentThreads );
 		} else {
 			wfDebug( "Loading comments for page {$this->id} from cache\n" );
@@ -542,7 +543,8 @@ class CommentsPage extends ContextSource {
 	 * @return string HTML output
 	 */
 	function displayForm() {
-		$output = '<form action="" method="post" name="commentForm">' . "\n";
+		$output = '<form name="commentForm">' . "\n";
+		// $output = '<div name="commentForm">' . "\n";
 
 		if ( $this->allow ) {
 			$pos = strpos(
@@ -574,7 +576,7 @@ class CommentsPage extends ContextSource {
 
 				$output .= '<textarea name="commentText" id="comment" rows="5" cols="64"></textarea>' . "\n";
 				$output .= '<div class="c-form-button"><input type="button" value="' .
-					wfMessage( 'comments-post' )->plain() . '" class="site-button" /></div>' . "\n";
+					wfMessage( 'comments-post' )->plain() . '" class="site-button" id="tc_comment" /></div>' . "\n";
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
 			$output .= '<input type="hidden" name="pageId" value="' . $this->id . '" />' . "\n";

@@ -106,14 +106,18 @@ var Comment = {
 	 */
 	viewComments: function( pageID, order, end, cpage ) {
 		document.commentForm.cpage.value = cpage;
-		document.getElementById( 'allcomments' ).innerHTML = mw.msg( 'comments-loading' ) + '<br /><br />';
-
+		// document.getElementById( 'allcomments' ).innerHTML = mw.msg( 'comments-loading' ) + '<br /><br />';
 		$.ajax( {
 			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-			data: { 'action': 'commentlist', 'format': 'json', 'pageID': pageID, 'order': order, 'pagerPage': cpage },
+			data: { 'action': 'commentlist', 'format': 'json', 'pageID': pageID, 'order': order, 'pagerPage': cpage,'limit': '1' },
 			cache: false
 		} ).done( function( response ) {
-			document.getElementById( 'allcomments' ).innerHTML = response.commentlist.html;
+			console.log(response);
+			// $('#allcomments').empty();
+			// document.getElementById( 'allcomments' ).innerHTML = response.commentlist.html;
+            var msg = response.commentlist.html;
+            $('#allcomments').append(msg);
+			
 			Comment.submitted = 0;
 			if ( end ) {
 				window.location.hash = 'end';
@@ -125,9 +129,10 @@ var Comment = {
 	 * Submit a new comment.
 	 */
 	submit: function() {
+		
 		if ( Comment.submitted === 0 ) {
 			Comment.submitted = 1;
-
+			// console.log(document.commentForm);
 			var pageID = document.commentForm.pageId.value;
 			var parentID;
 			if ( !document.commentForm.commentParentId.value ) {
@@ -142,6 +147,7 @@ var Comment = {
 				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText },
 				cache: false
 			} ).done( function( response ) {
+				// alert('111');
 				if ( response.commentsubmit.ok ) {
 					document.commentForm.commentText.value = '';
 					var end = 1;
@@ -318,7 +324,7 @@ $( document ).ready( function() {
 	} )
 
 	// Handle clicks on the submit button (previously this was an onclick attr)
-	.on( 'click', 'div.c-form-button input[type="button"]', function() {
+	.on( 'click', '#tc_comment', function() {
 		Comment.submit();
 	} )
 
