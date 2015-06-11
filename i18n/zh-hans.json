@@ -73,6 +73,7 @@
 	"notification-comment-email-subject":"$1在$2的页面下方回复了您的吐槽。",
 	"notification-comment-email-body":"$1在$2的页面下方回复了您的吐槽。",
 	"notification-comment-email-batch-body":"$1在$2的页面下方回复了您的吐槽。",
+	"notification-comment-view-detail":"点此查看详情...",
 	"echo-subscriptions-web-comment-msg":"接受网页上的吐槽回复提醒",
 	"echo-subscriptions-email-comment-msg":"接受电子邮件的吐槽回复提醒"
 }

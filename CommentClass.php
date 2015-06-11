@@ -863,9 +863,9 @@ class Comment extends ContextSource {
             'group' => 'positive',
             'formatter-class' => 'EchoCommentReplyFormatter',
             'title-message' => 'notification-comment',
-            'title-params' => array( 'agent', 'reply', 'title' ),
+            'title-params' => array( 'agent', 'reply', 'detail' ),
             'flyout-message' => 'notification-comment-flyout',
-            'flyout-params' => array( 'agent', 'reply', 'title' ),
+            'flyout-params' => array( 'agent', 'reply', 'detail' ),
             'payload' => array( 'summary' ),
             'email-subject-message' => 'notification-comment-email-subject',
             'email-subject-params' => array( 'agent' ),
@@ -930,7 +930,7 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
         if ( $param === 'reply' ) {
         	$eventData = $event->getExtra();
         	if ( !isset( $eventData['comment-id']) ) {
-                $message->params( 'XX' );
+                $message->params( '' );
                 return;
             }
             $this->setTitleLink(
@@ -941,7 +941,23 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
                     'fragment' => $eventData['comment-id'],
                 )
             );
-        } else {
+        } elseif ($param === 'detail') {
+        	$eventData = $event->getExtra();
+        	if ( !isset( $eventData['comment-id']) ) {
+                $message->params( '' );
+                return;
+            }
+            $this->setTitleLink(
+                $event,
+                $message,
+                array(
+                    'class' => 'mw-echo-comment-msg',
+                    'linkText' => wfMessage('notification-comment-view-detail')->text(),
+                    'fragment' => $eventData['comment-id'],
+                )
+            );
+        }
+        else {
             parent::processParam( $event, $param, $message, $user );
         }
     }
