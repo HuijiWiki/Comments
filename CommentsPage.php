@@ -161,11 +161,15 @@ class CommentsPage extends ContextSource {
 	 * @return array Array containing every possible bit of information about
 	 *				a comment, including score, timestamp and more
 	 */
-	public function getComments( $limit ='' ) {
+	public function getComments( ) {
 		$dbr = wfGetDB( DB_SLAVE );
-
 		$tables = array();
-		$params = array('LIMIT' => $limit);
+		$params = array();
+		// if(is_null($limit)){
+		// 	$params = array();
+		// }else{					
+		// 	$params = array('LIMIT' => $limit);
+		// }
 		$joinConds = array();
 
 		// Defaults (for non-social wikis)
@@ -196,7 +200,6 @@ class CommentsPage extends ContextSource {
 			$fields,
 			array( 'Comment_Page_ID' => $this->id ),
 			__METHOD__,
-			$limit,
 			$params,
 			$joinConds
 		);
@@ -455,7 +458,7 @@ class CommentsPage extends ContextSource {
 	 * Display all the comments for the current page.
 	 * CSS and JS is loaded in Comment.php
 	 */
-	function display( $limit='' ) {
+	function display( ) {
 		global $wgMemc;
 
 		$output = '';
@@ -466,7 +469,7 @@ class CommentsPage extends ContextSource {
 
 		if ( !$data ) {
 			wfDebug( "Loading comments for page {$this->id} from DB\n" );
-			$commentThreads = $this->getComments( $limit='' );
+			$commentThreads = $this->getComments();
 			$wgMemc->set( $key, $commentThreads );
 		} else {
 			wfDebug( "Loading comments for page {$this->id} from cache\n" );

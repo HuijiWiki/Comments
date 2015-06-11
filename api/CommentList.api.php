@@ -3,7 +3,7 @@
 class CommentListAPI extends ApiBase {
 
     public function execute() {
-        $commentsPage = new CommentsPage( $this->getMain()->getVal( 'pageID' ), RequestContext::getMain(),$limit='1' );
+        $commentsPage = new CommentsPage( $this->getMain()->getVal( 'pageID' ), RequestContext::getMain() );
         $commentsPage->orderBy = $this->getMain()->getVal( 'order' );
         $commentsPage->currentPagerPage = $this->getMain()->getVal( 'pagerPage' );
 

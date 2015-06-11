@@ -69,6 +69,7 @@ var Comment = {
 	 */
 	deleteComment: function( commentID ) {
 		if ( window.confirm( mw.msg( 'comments-delete-warning' ) ) ) {
+			// alert(commentID);exit;
 			$.ajax( {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 				data: { 'action': 'commentdelete', 'format': 'json', 'commentID': commentID },
@@ -114,9 +115,9 @@ var Comment = {
 		} ).done( function( response ) {
 			console.log(response);
 			// $('#allcomments').empty();
-			// document.getElementById( 'allcomments' ).innerHTML = response.commentlist.html;
-            var msg = response.commentlist.html;
-            $('#allcomments').append(msg);
+			document.getElementById( 'allcomments' ).innerHTML = response.commentlist.html;
+   //          var msg = response.commentlist.html;
+   //          $('#allcomments').append(msg);
 			
 			Comment.submitted = 0;
 			if ( end ) {
@@ -129,7 +130,6 @@ var Comment = {
 	 * Submit a new comment.
 	 */
 	submit: function() {
-		
 		if ( Comment.submitted === 0 ) {
 			Comment.submitted = 1;
 			// console.log(document.commentForm);
@@ -141,7 +141,7 @@ var Comment = {
 				parentID = document.commentForm.commentParentId.value;
 			}
 			var commentText = document.commentForm.commentText.value;
-
+			// alert(parentID);exit;
 			$.ajax( {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText },

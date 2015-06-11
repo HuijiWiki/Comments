@@ -352,6 +352,9 @@ class Comment extends ContextSource {
 		$comment = new Comment( $page, $context, $data );
 
 		wfRunHooks( 'Comment::add', array( $comment, $commentId, $comment->page->id ) );
+		if ($parentID !== 0) {
+			$comment->sendEchoNotification( 'reply', $comment->id );
+		}
 
 		return $comment;
 	}
@@ -542,10 +545,12 @@ class Comment extends ContextSource {
 	 * @return string html
 	 */
 	function display( $blockList, $anonList ) {
+		
 		if ( $this->parentID == 0 ) {
 			$container_class = 'full';
 		} else {
 			$container_class = 'reply';
+			// $this->sendEchoNotification( 'reply',$this->id );
 		}
 
 		$output = '';
@@ -809,4 +814,136 @@ class Comment extends ContextSource {
 
 		return $output;
 	}
+
+	function sendEchoNotification( $type, $commentID ){
+		$mComment = Comment::newFromID( $commentID );
+		$page = $mComment->page;
+		$content = $mComment->getText();
+
+		if ($type === 'reply') {
+			// send an echo notification
+			// htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\"
+			//$pageLink = htmlspecialchars( $page->title->getFullURL() )."#comment-{$commentID}";
+			$pageTitle = $page->title;
+			if ($mComment->parentID !== 0){
+				$mParentComment = Comment::newFromID($mComment->parentID);
+			} else {
+				return;
+			}
+			$userIdTo = $mParentComment->userID;
+			$userIdFrom = $mComment->userID;
+			$agent = User::newFromId($userIdFrom);
+
+			EchoEvent::create( array(
+			     'type' => 'comment-msg',
+			     'extra' => array(
+			         'comment-recipient-id' => $userIdTo,  
+			         'comment-content' => $content,
+			         'comment-id' => "comment-{$commentID}",
+			     ),
+			     'agent' => $agent,
+			     'title' => $pageTitle,
+			) );
+		}
+	}
+		/**
+	* Used to pass Echo your definition for the notification category and the 
+	* notification itself (as well as any custom icons).
+	* 
+    *
+	*@see https://www.mediawiki.org/wiki/Echo_%28Notifications%29/Developer_guide
+	*/
+	public static function onBeforeCreateEchoEvent( &$notifications, &$notificationCategories, &$icons ) {
+        $notificationCategories['comment-msg'] = array(
+            'priority' => 3,
+            'tooltip' => 'echo-pref-tooltip-comment-msg',
+        );
+        $notifications['comment-msg'] = array(
+            'category' => 'comment-msg',
+            'group' => 'positive',
+            'formatter-class' => 'EchoCommentReplyFormatter',
+            'title-message' => 'notification-comment',
+            'title-params' => array( 'agent', 'reply', 'title' ),
+            'flyout-message' => 'notification-comment-flyout',
+            'flyout-params' => array( 'agent', 'reply', 'title' ),
+            'payload' => array( 'summary' ),
+            'email-subject-message' => 'notification-comment-email-subject',
+            'email-subject-params' => array( 'agent' ),
+            'email-body-message' => 'notification-comment-email-body',
+            'email-body-params' => array( 'agent', 'main-title-text', 'email-footer' ),
+            'email-body-batch-message' => 'notification-comment-email-batch-body',
+            'email-body-batch-params' => array( 'agent', 'main-title-text' ),
+            'icon' => 'chat',
+        );
+        return true;
+    }
+
+
+	/**
+	* Used to define who gets the notifications (for example, the user who performed the edit)
+	* 
+    *
+	*@see https://www.mediawiki.org/wiki/Echo_%28Notifications%29/Developer_guide
+	*/
+	public static function onEchoGetDefaultNotifiedUsers( $event, &$users ) {
+	 	switch ( $event->getType() ) {
+	 		case 'comment-msg':
+	 			$extra = $event->getExtra();
+	 			if ( !$extra || !isset( $extra['comment-recipient-id'] ) ) {
+	 				break;
+	 			}
+	 			$recipientId = $extra['comment-recipient-id'];
+	 			$recipient = User::newFromId($recipientId);
+	 			$users[$recipientId] = $recipient;
+	 			break;
+	 	}
+	 	return true;
+	}
+
 }
+class EchoCommentReplyFormatter extends EchoCommentFormatter {
+
+	protected function formatPayload( $payload, $event, $user ) {
+		switch ( $payload ) {
+		   	case 'summary': 
+				$eventData = $event->getExtra();
+	        	if ( !isset( $eventData['comment-content']) ) {
+	                return;
+	            }
+			    return $eventData['comment-content'];
+		        break;
+		   	default:
+		        return parent::formatPayload( $payload, $event, $user );
+		        break;
+		}
+	}
+		
+    
+
+   /**
+     * @param $event EchoEvent
+     * @param $param
+     * @param $message Message
+     * @param $user User
+     */
+    protected function processParam( $event, $param, $message, $user ) {
+        if ( $param === 'reply' ) {
+        	$eventData = $event->getExtra();
+        	if ( !isset( $eventData['comment-id']) ) {
+                $message->params( 'XX' );
+                return;
+            }
+            $this->setTitleLink(
+                $event,
+                $message,
+                array(
+                    'class' => 'mw-echo-comment-msg',
+                    'fragment' => $eventData['comment-id'],
+                )
+            );
+        } else {
+            parent::processParam( $event, $param, $message, $user );
+        }
+    }
+}
+
