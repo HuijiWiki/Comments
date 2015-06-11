@@ -105,7 +105,7 @@ var Comment = {
 	 * @param end Scroll to bottom after?
 	 * @param cpage Integer: comment page number (used for pagination)
 	 */
-	viewComments: function( pageID, order, end, cpage ) {
+	viewComments: function( pageID, order, parentID, cpage ) {
 		document.commentForm.cpage.value = cpage;
 		// document.getElementById( 'allcomments' ).innerHTML = mw.msg( 'comments-loading' ) + '<br /><br />';
 		$.ajax( {
@@ -120,9 +120,9 @@ var Comment = {
    //          $('#allcomments').append(msg);
 			
 			Comment.submitted = 0;
-			if ( end ) {
-				window.location.hash = 'end';
-			}
+			
+			window.location.hash = 'comment-' + parentID;
+			
 		} );
 	},
 
@@ -147,14 +147,10 @@ var Comment = {
 				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText },
 				cache: false
 			} ).done( function( response ) {
-				// alert('111');
+			// var commentID = $( this ).data( 'comment-id' );			
 				if ( response.commentsubmit.ok ) {
 					document.commentForm.commentText.value = '';
-					var end = 1;
-					if ( mw.config.get( 'wgCommentsSortDescending' ) ) {
-						end = 0;
-					}
-					Comment.viewComments( document.commentForm.pageId.value, 0, end, document.commentForm.cpage.value );
+					Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value );
 				} else {
 					window.alert( response.responseText );
 					Comment.submitted = 0;
