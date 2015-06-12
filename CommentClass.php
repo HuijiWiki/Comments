@@ -705,7 +705,7 @@ class Comment extends ContextSource {
 				if ( $replyRow ) {
 					$replyRow .= wfMessage( 'pipe-separator' )->plain();
 				}
-				$replyRow .= " | <a href=\"#end\" rel=\"nofollow\" class=\"comments-reply-to\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
+				$replyRow .= " | <a href=\"#.E5.90.90.E6.A7.BD\" rel=\"nofollow\" class=\"comments-reply-to\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
 					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
 					htmlspecialchars( $CommentReplyToGender ) . '">' .
 					wfMessage( 'comments-reply' )->plain() . '</a>';
@@ -755,7 +755,7 @@ class Comment extends ContextSource {
 			wfMessage(
 				'comments-time-ago',
 				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
-			)->parse() . '</div>' . "\n";
+			)->text() . '</div>' . "\n";
 		wfRestoreWarnings();
 
 		$output .= '<div class="c-score">' . "\n";
@@ -798,6 +798,7 @@ class Comment extends ContextSource {
 				// You can only vote for other people's comments, not for your own
 				if ( $this->getUser()->getName() != $this->username ) {
 					$output .= "<span id=\"CommentBtn{$this->id}\">";
+					// $output .= "<a>".$this->username.'-'.$this->getUser()->getName()."</a>";
 					if ( $this->page->allowPlus == true ) {
 						$output .= $this->getVoteLink( 1 );
 					}
@@ -956,8 +957,7 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
                     'fragment' => $eventData['comment-id'],
                 )
             );
-        }
-        else {
+        } else {
             parent::processParam( $event, $param, $message, $user );
         }
     }

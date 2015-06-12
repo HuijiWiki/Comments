@@ -94,8 +94,8 @@ var Comment = {
 			data: { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue },
 			cache: false
 		} ).done( function( response ) {
-			$( '#comment-' + commentID + ' .c-score' ).html( response.commentvote.html ) // this will still be escaped
-														   .html( $( '#comment-' + commentID + ' .c-score' ).text() ); // unescape
+			$( '#comment-' + commentID + ' .c-score' ).html( response.commentvote.html )
+			.html( $( '#comment-' + commentID + ' .c-score' ).text() );
 		} );
 	},
 
@@ -105,7 +105,7 @@ var Comment = {
 	 * @param end Scroll to bottom after?
 	 * @param cpage Integer: comment page number (used for pagination)
 	 */
-	viewComments: function( pageID, order, parentID, cpage ) {
+	viewComments: function( pageID, order, parentID, cpage, type ) {
 		document.commentForm.cpage.value = cpage;
 		// document.getElementById( 'allcomments' ).innerHTML = mw.msg( 'comments-loading' ) + '<br /><br />';
 		$.ajax( {
@@ -120,8 +120,10 @@ var Comment = {
    //          $('#allcomments').append(msg);
 			
 			Comment.submitted = 0;
+			if (type!="page") {
+				window.location.hash = 'comment-' + parentID;
+			};
 			
-			window.location.hash = 'comment-' + parentID;
 			
 		} );
 	},
@@ -150,7 +152,7 @@ var Comment = {
 			// var commentID = $( this ).data( 'comment-id' );			
 				if ( response.commentsubmit.ok ) {
 					document.commentForm.commentText.value = '';
-					Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value );
+					Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
 				} else {
 					window.alert( response.responseText );
 					Comment.submitted = 0;
@@ -208,7 +210,7 @@ var Comment = {
 				// Get last new ID
 				Comment.CurLatestCommentID = response.commentlatestid.id;
 				if ( Comment.CurLatestCommentID !== Comment.LatestCommentID ) {
-					Comment.viewComments( document.commentForm.pageId.value, 0, 1, document.commentForm.cpage.value );
+					Comment.viewComments( document.commentForm.pageId.value, 0, 1, document.commentForm.cpage.value,'' );
 					Comment.LatestCommentID = Comment.CurLatestCommentID;
 				}
 			}
@@ -266,7 +268,8 @@ $( document ).ready( function() {
 			mw.config.get( 'wgArticleId' ), // or we could use $( 'input[name="pid"]' ).val(), too
 			$( this ).val(),
 			0,
-			document.commentForm.cpage.value
+			document.commentForm.cpage.value,
+			''
 		);
 	} )
 
@@ -340,7 +343,8 @@ $( document ).ready( function() {
 			mw.config.get( 'wgArticleId' ), // or we could use $( 'input[name="pid"]' ).val(), too
 			ord,
 			0,
-			$( this ).data( 'cpage' )
+			$( this ).data( 'cpage' ),
+			'page'
 		);
 	} );
 } );

@@ -20,7 +20,7 @@ class CommentsPage extends ContextSource {
 	/**
 	 * @var Integer: maximum amount of threads of comments shown per page before pagination is enabled;
 	 */
-	public $limit = 50;
+	public $limit = 10;
 
 	/**
 	 * @TODO document
@@ -165,11 +165,11 @@ class CommentsPage extends ContextSource {
 		$dbr = wfGetDB( DB_SLAVE );
 		$tables = array();
 		$params = array();
-		// if(is_null($limit)){
-		// 	$params = array();
-		// }else{					
-		// 	$params = array('LIMIT' => $limit);
-		// }
+		if(is_null($limit)){
+			$params = array();
+		}else{					
+			$params = array('LIMIT' => $limit);
+		}
 		$joinConds = array();
 
 		// Defaults (for non-social wikis)
