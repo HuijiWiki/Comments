@@ -432,6 +432,7 @@ class Comment extends ContextSource {
 			);
 		}
 		$dbw->commit();
+		$this->page->clearCommentListCache();
 
 		// update cache for comment list
 		// should perform better than deleting cache completely since Votes happen more frequently
@@ -798,7 +799,7 @@ class Comment extends ContextSource {
 				// You can only vote for other people's comments, not for your own
 				if ( $this->getUser()->getName() != $this->username ) {
 					$output .= "<span id=\"CommentBtn{$this->id}\">";
-					// $output .= "<a>".$this->username.'-'.$this->getUser()->getName()."</a>";
+					// $output .= "<a>".$this->username.'-'.$this->currentScore.$this->getUser()->getName()."</a>";
 					if ( $this->page->allowPlus == true ) {
 						$output .= $this->getVoteLink( 1 );
 					}
