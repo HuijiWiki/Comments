@@ -53,7 +53,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 			),
 			array(
 				'comment_page_id = page_id',
-				'UNIX_TIMESTAMP(comment_date) > ' . ( time() - ( $oneDay ) )
+				'UNIX_TIMESTAMP(Comment_Date) > ' . ( time() - ( $oneDay ) )
 			),
 			__METHOD__
 		);

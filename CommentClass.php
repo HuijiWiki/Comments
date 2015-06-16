@@ -787,6 +787,7 @@ class Comment extends ContextSource {
 	 * @return string
 	 */
 	function getScoreHTML() {
+		global $wgUser;
 		$output = '';
 
 		if ( $this->page->allowMinus == true || $this->page->allowPlus == true ) {
@@ -797,7 +798,7 @@ class Comment extends ContextSource {
 			// Voting is possible only when database is unlocked
 			if ( !wfReadOnly() ) {
 				// You can only vote for other people's comments, not for your own
-				if ( $this->getUser()->getName() != $this->username ) {
+				if ( $wgUser->getName() != $this->username ) {
 					$output .= "<span id=\"CommentBtn{$this->id}\">";
 					// $output .= "<a>".$this->username.'-'.$this->currentScore.$this->getUser()->getName()."</a>";
 					if ( $this->page->allowPlus == true ) {

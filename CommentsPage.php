@@ -470,7 +470,11 @@ class CommentsPage extends ContextSource {
 		if ( !$data ) {
 			wfDebug( "Loading comments for page {$this->id} from DB\n" );
 			$commentThreads = $this->getComments();
-			$wgMemc->set( $key, $commentThreads );
+			try{
+				$wgMemc->set( $key, $commentThreads );
+			} catch (Exception $e){
+				wfDebug($e);
+			}
 		} else {
 			wfDebug( "Loading comments for page {$this->id} from cache\n" );
 			$commentThreads = $data;
