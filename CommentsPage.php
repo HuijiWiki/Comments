@@ -288,7 +288,7 @@ class CommentsPage extends ContextSource {
 
 		$output = '';
 		if ( $pagesCount > 1 ) {
-			$output .= '<ul class="c-pager">';
+			$output .= '<ul class="c-pager pagination">';
 			$pagerEllipsis = '<li class="c-pager-item c-pager-ellipsis"><span>...</span></li>';
 
 			// Whether to display the "Previous page" link
@@ -300,9 +300,10 @@ class CommentsPage extends ContextSource {
 							'rel' => 'nofollow',
 							'class' => 'c-pager-link',
 							'href' => '#cfirst',
+							'aria-label' => 'Previous',
 							'data-' . $this->pageQuery => ( $pagerCurrent - 1 ),
 						),
-						'&lt;'
+						'<span aria-hidden="true">&laquo;</span>'
 					) .
 					'</li>';
 			}
@@ -332,7 +333,7 @@ class CommentsPage extends ContextSource {
 				// Now generate the actual pager piece.
 				for ( ; $i <= $pagerLast && $i <= $pagesCount; $i++ ) {
 					if ( $i == $pagerCurrent ) {
-						$output .= '<li class="c-pager-item c-pager-current"><span>' .
+						$output .= '<li class="c-pager-item c-pager-current active"><span>' .
 							$i . '</span></li>';
 					} else {
 						$output .= '<li class="c-pager-item">' .
@@ -380,9 +381,10 @@ class CommentsPage extends ContextSource {
 							'rel' => 'nofollow',
 							'class' => 'c-pager-link',
 							'href' => '#cfirst',
+							'aria-label' => 'Next',
 							'data-' . $this->pageQuery => ( $pagerCurrent + 1 ),
 						),
-						'&gt;'
+						'<span aria-hidden="true">&raquo;</span>'
 					) .
 					'</li>';
 			}

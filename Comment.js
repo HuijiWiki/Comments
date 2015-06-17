@@ -210,7 +210,7 @@ var Comment = {
 			data: { 'action': 'commentlatestid', 'format': 'json', 'pageID': pageID },
 			cache: false
 		} ).done( function( response ) {
-			if ( response.commentlatestid.id ) {
+			if ( response.commentlatestid && response.commentlatestid.id ) {
 				// Get last new ID
 				Comment.CurLatestCommentID = response.commentlatestid.id;
 				if ( Comment.CurLatestCommentID !== Comment.LatestCommentID ) {

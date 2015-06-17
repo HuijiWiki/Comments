@@ -15,7 +15,7 @@ class CommentLatestIdAPI extends ApiBase {
         return array(
             'pageID' => array(
                 ApiBase::PARAM_REQUIRED => true,
-                ApiBase::PARAM_TYPE => 'int'
+                ApiBase::PARAM_TYPE => 'integer'
             )
         );
     }
