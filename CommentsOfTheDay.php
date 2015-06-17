@@ -33,6 +33,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 	global $wgMemc;
 
 	$oneDay = 60 * 60 * 24;
+	$oneHour = 60 * 60;
 
 	// Try memcached first
 	$key = wfMemcKey( 'comments-of-the-day', 'standalone-hook-new' );
@@ -44,7 +45,8 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 		$dbr = wfGetDB( DB_SLAVE );
 
 		$res = $dbr->select(
-			array( 'Comments', 'page' ),
+			// array( 'Comments', 'page' ),
+			array( 'Comments' ),
 			array(
 				'Comment_Username', 'Comment_IP', 'Comment_Text',
 				'Comment_Date', 'UNIX_TIMESTAMP(Comment_Date) AS timestamp',
@@ -52,7 +54,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 				'Comment_Page_ID'
 			),
 			array(
-				'comment_page_id = page_id',
+				// 'comment_page_id = page_id',
 				'UNIX_TIMESTAMP(Comment_Date) > ' . ( time() - ( $oneDay ) )
 			),
 			__METHOD__
@@ -86,7 +88,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 		usort( $comments, array( 'CommentFunctions', 'sortCommentScore' ) );
 		$comments = array_slice( $comments, 0, 5 );
 
-		$wgMemc->set( $key, $comments, $oneDay );
+		$wgMemc->set( $key, $comments, $oneHour );
 	}
 
 	$commentOutput = '';
@@ -101,6 +103,5 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 	} else {
 		$output .= wfMessage( 'comments-no-comments-of-day' )->plain();
 	}
-
 	return $output;
 }

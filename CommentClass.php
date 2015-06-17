@@ -568,6 +568,7 @@ class Comment extends ContextSource {
 	}
 
 	function displayForCommentOfTheDay() {
+		// global $wgHuijiPrefix;
 		$output = '';
 
 		$title2 = $this->page->getTitle();
@@ -577,7 +578,7 @@ class Comment extends ContextSource {
 			$commentPoster_Display = $this->username;
 			$commentPoster = '<a href="' . $title->getFullURL() . '" title="' . $title->getText() . '" rel="nofollow">' . $this->username . '</a>';
 			if ( class_exists( 'wAvatar' ) ) {
-				$avatar = new wAvatar( $this->userID, 's' );
+				$avatar = new wAvatar( $this->userID, 'ml' );
 				$commentIcon = $avatar->getAvatarImage();
 			} else {
 				$commentIcon = '';
@@ -611,8 +612,8 @@ class Comment extends ContextSource {
 			'</span> ' . $avatarHTML .
 			'<span class="cod-poster">' . $commentPoster . '</span>';
 		$output .= '<span class="cod-comment"><a href="' .
-			$title2->getFullURL() . '#comment-' . $this->id .
-			'" title="' . $title2->getText() . '">' . $comment_text .
+			$this->page->title .'#comment-' . $this->id .
+			'" title="' . $title2->getText() . '">' .':'. $comment_text .'在页面:'.$this->page->title.
 			'</a></span>';
 		$output .= '</div>';
 

@@ -165,11 +165,11 @@ class CommentsPage extends ContextSource {
 		$dbr = wfGetDB( DB_SLAVE );
 		$tables = array();
 		$params = array();
-		if(is_null($limit)){
-			$params = array();
-		}else{					
-			$params = array('LIMIT' => $limit);
-		}
+		// if(is_null($limit)){
+		// 	$params = array();
+		// }else{					
+		// 	$params = array('LIMIT' => $limit);
+		// }
 		$joinConds = array();
 
 		// Defaults (for non-social wikis)

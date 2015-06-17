@@ -106,7 +106,7 @@ var Comment = {
 	 * @param cpage Integer: comment page number (used for pagination)
 	 */
 	viewComments: function( pageID, order, parentID, cpage, type ) {
-		document.commentForm.cpage.value = cpage;
+		// document.commentForm.cpage.value = cpage;
 		// document.getElementById( 'allcomments' ).innerHTML = mw.msg( 'comments-loading' ) + '<br /><br />';
 		$.ajax( {
 			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
@@ -116,8 +116,8 @@ var Comment = {
 			console.log(response);
 			// $('#allcomments').empty();
 			document.getElementById( 'allcomments' ).innerHTML = response.commentlist.html;
-   //          var msg = response.commentlist.html;
-   //          $('#allcomments').append(msg);
+            // var msg = response.commentlist.html;
+            // $('#allcomments').append(msg);
 			
 			Comment.submitted = 0;
 			if (type!="page") {
@@ -324,11 +324,16 @@ $( document ).ready( function() {
 
 	// Handle clicks on the submit button (previously this was an onclick attr)
 	.on( 'click', '#tc_comment', function() {
-		Comment.submit();
+		if ($('#comment').val()=='') {
+			alert('请输入吐槽内容');
+		}else{
+			Comment.submit();
+		}
 	} )
 
 	// Change page
 	.on( 'click', 'li.c-pager-item a.c-pager-link', function() {
+
 		var ord = 0,
 			commentsBody = $( this ).parents( 'div.comments-body:first' );
 
