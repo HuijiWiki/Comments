@@ -561,9 +561,9 @@ class CommentsPage extends ContextSource {
 		}
 
 		// 'comment' user right is required to add new comments
-		if ( !$this->getUser()->isAllowed( 'comment' ) ) {
-			$output .= wfMessage( 'comments-not-allowed' )->parse();
-		} else {
+		// if ( !$this->getUser()->isAllowed( 'comment' ) ) {
+		// 	$output .= wfMessage( 'comments-not-allowed' )->parse();
+		// } else {
 			// Blocked users can't add new comments under any conditions...
 			// and maybe there's a list of users who should be allowed to post
 			// comments
@@ -572,13 +572,11 @@ class CommentsPage extends ContextSource {
 				$output .= '<div id="replyto" class="c-form-reply-to"></div>' . "\n";
 				// Show a message to anons, prompting them to register or log in
 				if ( !$this->getUser()->isLoggedIn() ) {
-					$login_title = SpecialPage::getTitleFor( 'Userlogin' );
 					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
 					$output .= '<div class="c-form-message">' . wfMessage(
 							'comments-anon-message',
-							htmlspecialchars( $register_title->getFullURL() ),
-							htmlspecialchars( $login_title->getFullURL() )
-						)->text() . '</div>' . "\n";
+							htmlspecialchars( $register_title->getFullURL() )
+						)->text() . '<a id=TcLogin>登录</a>。</div>' . "\n";
 				}
 
 				$output .= '<textarea name="commentText" id="comment" rows="5" cols="64"></textarea>' . "\n";
@@ -592,7 +590,7 @@ class CommentsPage extends ContextSource {
 			$output .= '<input type="hidden" name="commentParentId" />' . "\n";
 			$output .= '<input type="hidden" name="' . $this->pageQuery . '" value="' . $this->getCurrentPagerPage() . '" />' . "\n";
 			$output .= Html::hidden( 'token', $this->getUser()->getEditToken() );
-		}
+		// }
 		$output .= '</form>' . "\n";
 		return $output;
 	}

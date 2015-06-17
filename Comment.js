@@ -132,6 +132,10 @@ var Comment = {
 	 * Submit a new comment.
 	 */
 	submit: function() {
+		if (mw.config.get('wgUserName') == null){
+			$('.user-login').modal();
+			return;
+		}
 		if ( Comment.submitted === 0 ) {
 			Comment.submitted = 1;
 			// console.log(document.commentForm);
@@ -351,5 +355,10 @@ $( document ).ready( function() {
 			$( this ).data( 'cpage' ),
 			'page'
 		);
+	} )
+	//tucao Login 
+	.on( 'click', '#TcLogin', function(){
+		$('.user-login').modal();
+		return;
 	} );
 } );

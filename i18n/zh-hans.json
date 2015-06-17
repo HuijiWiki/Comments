@@ -38,7 +38,7 @@
 	"comments-permalink": "固定链接",
 	"comments-delete-link": "删除吐槽",
 	"comments-anon-name": "匿名用户",
-	"comments-anon-message": "{{SITENAME}}欢迎<b>所有吐槽</b>。如果您不想匿名，<a href=\"$1\">注册</a>或<a href=\"$2\">登录</a>。它是免费的。",
+	"comments-anon-message": "欢迎对本页面<b>吐槽</b>。您可以 <a href=\"$1\">注册</a>或",
 	"comments-links-are-forbidden": "吐槽中禁止外部链接！",
 	"comments-is-spam": "提交的吐槽文本像是垃圾信息。",
 	"comments-ignore-item": "<a href=\"$1\">$2</a>于$3 <a href=\"$4\">（解封）</a>",
