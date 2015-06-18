@@ -521,10 +521,10 @@ class CommentsPage extends ContextSource {
 	 * @return string HTML
 	 */
 	function displayOrderForm() {
-		$output = '<div class="c-order">
+		$output = '<div class="c-order btn-group btn-group-justified">
 			<div class="c-order-select">
 				<form name="ChangeOrder" action="">
-					<select name="TheOrder">
+					<select name="TheOrder" class="btn btn-default dropdown-toggle">
 						<option value="0">' .
 			wfMessage( 'comments-sort-by-date' )->plain() .
 			'</option>
@@ -535,14 +535,12 @@ class CommentsPage extends ContextSource {
 				</form>
 			</div>
 			<div id="spy" class="c-spy">
-				<a href="javascript:void(0)">' .
+				<a class="btn btn-default" href="javascript:void(0)">' .
 			wfMessage( 'comments-auto-refresher-enable' )->plain() .
 			'</a>
 			</div>
 			<div class="cleared"></div>
-		</div>
-		<br />' . "\n";
-
+		</div>';
 		return $output;
 	}
 
@@ -581,9 +579,9 @@ class CommentsPage extends ContextSource {
 						)->text() . '<a id=TcLogin>登录</a>。</div>' . "\n";
 				}
 
-				$output .= '<textarea name="commentText" id="comment" rows="5" cols="64"></textarea>' . "\n";
+				$output .= '<textarea name="commentText" id="comment" class="mw-ui-input" rows="5" cols="64"></textarea>' . "\n";
 				$output .= '<div class="c-form-button"><input type="button" value="' .
-					wfMessage( 'comments-post' )->plain() . '" class="site-button" id="tc_comment" /></div>' . "\n";
+					wfMessage( 'comments-post' )->plain() . '" class="site-button pull-right" id="tc_comment" /></div>' . "\n";
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
 			$output .= '<input type="hidden" name="pageId" value="' . $this->id . '" />' . "\n";

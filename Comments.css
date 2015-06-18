@@ -1,11 +1,13 @@
 /* CSS styles for Comments extension */
-.full {
-	width: 530px;
+.comments-body {
+	max-width: 530px;
+	width: 100%;
 }
 
 .reply {
-	margin-left: 70px !important;
-	width: 460px;
+	margin-left: 10% !important;
+	max-width: 460px;
+	width: 90% !important ;
 }
 
 .c-item {
@@ -77,11 +79,13 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 }
 
 .f-message {
-	width: 460px;
+	max-width: 460px;
+	width: 90%;
 }
 
 .r-message {
-	width: 360px;
+	max-width: 360px;
+	width: 60%;
 }
 
 .c-score {
@@ -129,7 +133,8 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 }
 
 textarea#comment {
-	width: 530px;
+	max-width: 530px;
+	width: 100%;
 }
 
 .c-form-button {
@@ -137,13 +142,17 @@ textarea#comment {
 }
 
 .c-order {
-	padding: 20px 0px;
+	padding: 5px 0px;
 }
 
 .c-spy {
 	float: left;
 	font-size: 10px;
 	margin: 0px 0px 0px 10px;
+}
+
+.c-spy p{
+	margin-bottom: 0px;
 }
 
 .c-order-select {
@@ -153,7 +162,8 @@ textarea#comment {
 /* Pager */
 ul.c-pager {
 	clear: both;
-	margin: 0;
+	margin: 0px, 0px, 5px, 0px;
+
 }
 
 li.c-pager-item {
@@ -162,4 +172,7 @@ li.c-pager-item {
 	font-size: 14px;
 	list-style-type: none;
 	padding: 0.5em;
+}
+#content .c-order-select p {
+    display:none;
 }

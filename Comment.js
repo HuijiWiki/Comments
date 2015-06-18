@@ -188,7 +188,7 @@ var Comment = {
 		$( 'body' ).on( 'click', 'div#spy a', function() {
 			Comment.toggleLiveComments( ( status ) ? 0 : 1 );
 		} );
-		$( 'div#spy a' ).css( 'font-size', '10px' ).text( msg );
+		$( 'div#spy a' ).text( msg );
 
 		if ( !Comment.pause ) {
 			Comment.LatestCommentID = document.commentForm.lastCommentId.value;
