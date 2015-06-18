@@ -578,7 +578,7 @@ class Comment extends ContextSource {
 			$commentPoster_Display = $this->username;
 			$commentPoster = '<a href="' . $title->getFullURL() . '" title="' . $title->getText() . '" rel="nofollow">' . $this->username . '</a>';
 			if ( class_exists( 'wAvatar' ) ) {
-				$avatar = new wAvatar( $this->userID, 'ml' );
+				$avatar = new wAvatar( $this->userID, 'm' );
 				$commentIcon = $avatar->getAvatarImage();
 			} else {
 				$commentIcon = '';
@@ -592,30 +592,29 @@ class Comment extends ContextSource {
 		$avatarHTML = '';
 		if ( class_exists( 'wAvatar' ) ) {
 			global $wgUploadPath;
-			$avatarHTML = '<img src="' . $wgUploadPath . '/avatars/' . $commentIcon .
-				'" alt="" align="middle" style="margin-bottom:8px;" border="0"/>';
+			$avatarHTML = $avatar->getAvatarURL();
 		}
 
 		$comment_text = substr( $this->text, 0, 50 - strlen( $commentPoster_Display ) );
 		if ( $comment_text != $this->text ) {
 			$comment_text .= wfMessage( 'ellipsis' )->plain();
 		}
+		$output .= '<li class="cod">';
 
-		$output .= '<div class="cod">';
 		$sign = '';
 		if ( $this->currentScore > 0 ) {
 			$sign = '+';
 		} elseif ( $this->currentScore < 0 ) {
 			$sign = '-'; // this *really* shouldn't be happening...
 		}
-		$output .= '<span class="cod-score">' . $sign . $this->currentScore .
-			'</span> ' . $avatarHTML .
-			'<span class="cod-poster">' . $commentPoster . '</span>';
-		$output .= '<span class="cod-comment"><a href="' .
+		$output .= '<span class="cod-score pull-right">' . $sign . $this->currentScore .
+			'赞</span> ' . $avatarHTML .
+			'<span class="cod-poster">' . $commentPoster . '</span>'.' @ <a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="'.$this->page->title.
+			'">'.$this->page->title.'</a><div class="clearfix c-sep"></div>';
+		$output .= '<span class="prettyprint cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="' .
 			$this->page->title .'#comment-' . $this->id .
-			'" title="' . $title2->getText() . '">' .':'. $comment_text .'在页面:'.$this->page->title.
-			'</a></span>';
-		$output .= '</div>';
+			'" title="' . $title2->getText() . '">' . $comment_text.'</a></span>';
+		$output .= '</li>';
 
 		return $output;
 	}

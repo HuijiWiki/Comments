@@ -176,3 +176,10 @@ li.c-pager-item {
 #content .c-order-select p {
     display:none;
 }
+.ns-0 #wiki-outer-body .wiki-body-section .cod a:not(.image) {
+	padding: 0px 5px;
+	color: #666;
+}
+.c-sep {
+	margin-bottom: 10px;
+}

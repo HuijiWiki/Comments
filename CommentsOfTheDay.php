@@ -91,13 +91,13 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 		$wgMemc->set( $key, $comments, $oneHour );
 	}
 
-	$commentOutput = '';
+	$commentOutput = '<h2>今日吐槽</h2><ul>';
 
 	foreach ( $comments as $comment ) {
 		$commentOutput .= $comment->displayForCommentOfTheDay();
 	}
 
-	$output = '';
+	$output = '</ul>';
 	if ( !empty( $commentOutput ) ) {
 		$output .= $commentOutput;
 	} else {
