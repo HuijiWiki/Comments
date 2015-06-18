@@ -98,7 +98,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 	}
 
 	$output = '</ul>';
-	if ( !empty( $commentOutput ) ) {
+	if ( !empty( $comments ) ) {
 		$output .= $commentOutput;
 	} else {
 		$output .= wfMessage( 'comments-no-comments-of-day' )->plain();
