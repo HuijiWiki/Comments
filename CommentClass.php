@@ -613,7 +613,7 @@ class Comment extends ContextSource {
 			'">'.$this->page->title.'</a><div class="clearfix c-sep"></div>';
 		$output .= '<span class="prettyprint cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="/wiki/' .
 			$this->page->title .'#comment-' . $this->id .
-			'" title="' . $title2->getText() . '">' . $comment_text.'</a></span>';
+			'" title="' . $title2->getText() . '">' . $comment_text.'</a></span><div class="clearfix"></div>';
 		$output .= '</li>';
 
 		return $output;
