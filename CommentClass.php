@@ -595,7 +595,7 @@ class Comment extends ContextSource {
 			$avatarHTML = $avatar->getAvatarURL();
 		}
 
-		$comment_text = substr( $this->text, 0, 50 - strlen( $commentPoster_Display ) );
+		$comment_text = substr( $this->text, 0, 100 );
 		if ( $comment_text != $this->text ) {
 			$comment_text .= wfMessage( 'ellipsis' )->plain();
 		}
