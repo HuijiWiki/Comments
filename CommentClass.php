@@ -599,7 +599,7 @@ class Comment extends ContextSource {
 		if ( $comment_text != $this->text ) {
 			$comment_text .= wfMessage( 'ellipsis' )->plain();
 		}
-		$output .= '<li class="cod">';
+		$output .= '<li class="cod clearfix">';
 
 		$sign = '';
 		if ( $this->currentScore > 0 ) {
@@ -610,12 +610,11 @@ class Comment extends ContextSource {
 		$output .= '<span class="cod-score pull-right">' . $sign . $this->currentScore .
 			'赞</span> ' . $avatarHTML .
 			'<span class="cod-poster">' . $commentPoster . '</span>'.' @ <a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="'.$this->page->title.
-			'">'.$this->page->title.'</a><div class="clearfix c-sep"></div>';
-		$output .= '<span class="prettyprint cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="/wiki/' .
+			'">'.$this->page->title.'</a><div class="c-sep"></div>';
+		$output .= '<div class="clearfix"><span class="prettyprint cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="/wiki/' .
 			$this->page->title .'#comment-' . $this->id .
-			'" title="' . $title2->getText() . '">' . $comment_text.'</a></span><div class="clearfix"></div>';
+			'" title="' . $title2->getText() . '">' . $comment_text.'</a></span></div>';
 		$output .= '</li>';
-
 		return $output;
 	}
 
