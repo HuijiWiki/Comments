@@ -106,25 +106,16 @@ var Comment = {
 	 * @param cpage Integer: comment page number (used for pagination)
 	 */
 	viewComments: function( pageID, order, parentID, cpage, type ) {
-		// document.commentForm.cpage.value = cpage;
-		// document.getElementById( 'allcomments' ).innerHTML = mw.msg( 'comments-loading' ) + '<br /><br />';
 		$.ajax( {
 			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-			data: { 'action': 'commentlist', 'format': 'json', 'pageID': pageID, 'order': order, 'pagerPage': cpage,'limit': '1' },
+			data: { 'action': 'commentlist', 'format': 'json', 'pageID': pageID, 'order': order, 'pagerPage': cpage },
 			cache: false
 		} ).done( function( response ) {
-			console.log(response);
-			// $('#allcomments').empty();
 			document.getElementById( 'allcomments' ).innerHTML = response.commentlist.html;
-            // var msg = response.commentlist.html;
-            // $('#allcomments').append(msg);
-			
 			Comment.submitted = 0;
 			if (type!="page") {
 				window.location.hash = 'comment-' + parentID;
 			};
-			
-			
 		} );
 	},
 
@@ -138,7 +129,6 @@ var Comment = {
 		}
 		if ( Comment.submitted === 0 ) {
 			Comment.submitted = 1;
-			// console.log(document.commentForm);
 			var pageID = document.commentForm.pageId.value;
 			var parentID;
 			if ( !document.commentForm.commentParentId.value ) {
@@ -147,13 +137,11 @@ var Comment = {
 				parentID = document.commentForm.commentParentId.value;
 			}
 			var commentText = document.commentForm.commentText.value;
-			// alert(parentID);exit;
 			$.ajax( {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText },
 				cache: false
 			} ).done( function( response ) {
-			// var commentID = $( this ).data( 'comment-id' );			
 				if ( response.commentsubmit.ok ) {
 					document.commentForm.commentText.value = '';
 					Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );

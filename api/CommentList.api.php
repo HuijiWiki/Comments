@@ -11,7 +11,7 @@ class CommentListAPI extends ApiBase {
         if ( $this->getMain()->getVal( 'showForm' ) ) {
             $output .= $commentsPage->displayOrderForm();
         }
-        $output .= $commentsPage->display( $limit='' );
+        $output .= $commentsPage->display( );
         if ( $this->getMain()->getVal( 'showForm' ) ) {
             $output .= $commentsPage->displayForm();
         }

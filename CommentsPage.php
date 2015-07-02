@@ -469,17 +469,17 @@ class CommentsPage extends ContextSource {
 		$key = wfMemcKey( 'comment', 'pagethreadlist', $this->id );
 		$data = $wgMemc->get( $key );
 
-		if ( !$data ) {
+		if ( $data && is_object($data) ){
+			wfDebug( "Loading comments for page {$this->id} from cache\n" );
+			$commentThreads = $data;			
+		} else {
 			wfDebug( "Loading comments for page {$this->id} from DB\n" );
 			$commentThreads = $this->getComments();
 			try{
 				$wgMemc->set( $key, $commentThreads );
 			} catch (Exception $e){
 				wfDebug($e);
-			}
-		} else {
-			wfDebug( "Loading comments for page {$this->id} from cache\n" );
-			$commentThreads = $data;
+			}			
 		}
 
 		$commentThreads = $this->sort( $commentThreads );
