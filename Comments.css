@@ -22,7 +22,7 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 
 .c-avatar {
 	position: absolute;
-	top: 0px;
+	top: inherit;
 	left: 0px;
 }
 
