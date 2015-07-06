@@ -11,7 +11,6 @@
 }
 
 .c-item {
-	position: relative;
 	border-bottom: 1px solid #dcdcdc;
 /* this works for Monaco, but not for Monobook.
 Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
@@ -23,9 +22,11 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 .c-avatar {
 	position: absolute;
 	top: inherit;
-	left: 0px;
+	left: 18px;
 }
-
+.reply .c-avatar{
+    left: 70px;
+}
 .c-avatar img {
 	padding: 3px;
 	border: 1px solid #dcdcdc;
