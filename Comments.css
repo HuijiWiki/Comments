@@ -2,6 +2,7 @@
 .comments-body {
 	max-width: 530px;
 	width: 100%;
+    position: relative;
 }
 
 .reply {
@@ -22,10 +23,6 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 .c-avatar {
 	position: absolute;
 	top: inherit;
-	left: 18px;
-}
-.reply .c-avatar{
-    left: 70px;
 }
 .c-avatar img {
 	padding: 3px;
