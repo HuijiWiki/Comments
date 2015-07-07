@@ -2,6 +2,7 @@
 .comments-body {
 	max-width: 530px;
 	width: 100%;
+    position: relative;
 }
 
 .reply {
@@ -11,7 +12,6 @@
 }
 
 .c-item {
-	position: relative;
 	border-bottom: 1px solid #dcdcdc;
 /* this works for Monaco, but not for Monobook.
 Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
@@ -22,10 +22,8 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 
 .c-avatar {
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: inherit;
 }
-
 .c-avatar img {
 	padding: 3px;
 	border: 1px solid #dcdcdc;
