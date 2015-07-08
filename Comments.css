@@ -124,7 +124,7 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 
 .c-form-message {
 	font-size: 11px;
-	width: 400px;
+	width: 80%;
 	line-height: 13px;
 	color: #666;
 	padding: 5px 0px 10px 0px;
