@@ -16,7 +16,7 @@
 /* this works for Monaco, but not for Monobook.
 Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 	padding: 0px 0px 10px 0px;*/
-	padding: 0px 0px 35px 0px;
+	padding: 0px;
 	margin: 0px 0px 15px 0px;
 }
 
