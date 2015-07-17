@@ -523,15 +523,15 @@ class Comment extends ContextSource {
 		$imagePath = $wgExtensionAssetsPath . '/Comments/images';
 		if ( $voteType == 1 ) {
 			if ( $this->currentVote == 1 ) {
-				$voteLink .= "<img src=\"{$imagePath}/up-voted.png\" border=\"0\" alt=\"+\" /></a>";
+				$voteLink .= "<i class=\"fa fa-thumbs-up\"></i> </a>";
 			} else {
-				$voteLink .= "<img src=\"{$imagePath}/up-unvoted.png\" border=\"0\" alt=\"+\" /></a>";
+				$voteLink .= "<i class=\"fa fa-thumbs-o-up\"></i> </a>";
 			}
 		} else {
 			if ( $this->currentVote == -1 ) {
-				$voteLink .= "<img src=\"{$imagePath}/down-voted.png\" border=\"0\" alt=\"+\" /></a>";
+				$voteLink .= "<i class=\"fa fa-thumbs-down\"></i></a>";
 			} else {
-				$voteLink .= "<img src=\"{$imagePath}/down-unvoted.png\" border=\"0\" alt=\"+\" /></a>";
+				$voteLink .= "<i class=\"fa fa-thumbs-o-down\"></i></a>";
 			}
 		}
 
