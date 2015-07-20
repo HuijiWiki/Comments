@@ -91,7 +91,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 		$wgMemc->set( $key, $comments, $oneHour );
 	}
 
-	$commentOutput = '<h2>今日吐槽</h2><ul>';
+	$commentOutput = '<ul>';
 
 	foreach ( $comments as $comment ) {
 		$commentOutput .= $comment->displayForCommentOfTheDay();
