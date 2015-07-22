@@ -612,8 +612,12 @@ class Comment extends ContextSource {
 			'<span class="cod-poster">' . $commentPoster . '</span>'.' @ <a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="'.$this->page->title.
 			'">'.$this->page->title.'</a><div class="c-sep"></div>';
 		$output .= '<div class="clearfix"><span class="prettyprint cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="/wiki/' .
-			$this->page->title .'#comment-' . $this->id .
-			'" title="' . $title2->getText() . '">' . $comment_text.'</a></span></div>';
+			$this->page->title .'#comment-' . $this->id;
+			if(is_object($title2)){
+				$output .='" title="' . $title2->getText() . '">' . $comment_text.'</a></span></div>';
+			}else{
+				$output .='">' . $comment_text.'</a></span></div>';
+			}
 		$output .= '</li>';
 		return $output;
 	}
