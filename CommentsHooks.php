@@ -30,8 +30,8 @@ class CommentsHooks {
 	 */
 	public static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) { 
 		// Add required CSS & JS via ResourceLoader
-		$out->addModuleStyles( 'ext.comments.css' );
-		$out->addModules( 'ext.comments.js' );
+		global $wgCommentsSortDescending;
+		$out->addModules( array('ext.comments.js','ext.comments.css') );
 		$out->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
 	}
 
