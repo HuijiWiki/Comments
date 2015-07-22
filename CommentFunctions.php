@@ -20,11 +20,25 @@ class CommentFunctions {
 	}
 
 	static function getTimeOffset( $time, $timeabrv, $timename ) {
+		global $wgUser;
 		$timeStr = ''; // misza: initialize variables, DUMB FUCKS!
 		if( $time[$timeabrv] > 0 ) {
 			// Give grep a chance to find the usages:
 			// comments-time-days, comments-time-hours, comments-time-minutes, comments-time-seconds, comments-time-months
-			$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
+			if($wgUser->isLoggedIn()){
+				if ($timeabrv == 's') {
+					$timeStr = '刚刚';
+				}else{
+					$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
+				}
+			}else{
+				if ($timeabrv == 's' || $timeabrv =='m') {
+					$timeStr = '刚刚';
+				}else{
+					$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
+				}
+			}
+			
 		}
 		// if( $timeStr ) {
 		// 	$timeStr .= ' ';
@@ -54,7 +68,7 @@ class CommentFunctions {
 			}
 		}
 		if( !$timeStr ) {
-			$timeStr = wfMessage( 'comments-time-seconds', 1 )->text();
+			$timeStr = '刚刚';
 		}
 		return $timeStr;
 	}
