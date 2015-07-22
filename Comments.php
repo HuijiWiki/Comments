@@ -99,6 +99,8 @@ $wgAutoloadClasses['CommentsHooks'] = __DIR__ . '/CommentsHooks.php';
 $wgHooks['ParserFirstCallInit'][] = 'CommentsHooks::onParserFirstCallInit';
 $wgHooks['LoadExtensionSchemaUpdates'][] = 'CommentsHooks::onLoadExtensionSchemaUpdates';
 $wgHooks['RenameUserSQL'][] = 'CommentsHooks::onRenameUserSQL';
+$wgHooks['BeforePageDisplay'][] = 'CommentsHooks::onBeforePageDisplay';
+
 // Number of comments hooks
 $wgHooks['ParserFirstCallInit'][] = 'NumberOfComments::setupNumberOfCommentsPageParser';
 $wgHooks['MagicWordwgVariableIDs'][] = 'NumberOfComments::registerNumberOfCommentsMagicWord';

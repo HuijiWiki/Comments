@@ -24,6 +24,17 @@ class CommentsHooks {
 		return true;
 	}
 
+	/** 
+	 * Enable comments on every page
+	 *
+	 */
+	public static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) { 
+		// Add required CSS & JS via ResourceLoader
+		$out->addModuleStyles( 'ext.comments.css' );
+		$out->addModules( 'ext.comments.js' );
+		$out->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
+	}
+
 	/**
 	 * Callback function for onParserFirstCallInit().
 	 *
