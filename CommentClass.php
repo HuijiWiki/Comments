@@ -386,6 +386,19 @@ class Comment extends ContextSource {
 	 */
 	protected function getMentionedUsersFromWikitext( $wikitext ) {
 		global $wgParser;
+	    $matches = array();
+        $t = preg_match_all('/@(.*?)\b/s', $wikitext, $matches);
+        if ( isset ($matches[1]) ){
+            $i = 0;
+            while ( isset($matches[1][$i]) ){
+                $user = User::newFromName( $matches[1][$i] );
+                if ( !$user || $user->isAnon() ) {
+                    continue;
+                }
+                $i++;      
+                $wikitext = str_replace( '@'.$matches[1][$i], '@[[User:'.$matches[1][$i].'|'.$matches[1][$i].']]', $wikitext );             
+            }
+        }
 		$title = Title::newMainPage(); // Bogus title used for parser
 		$options = new \ParserOptions;
 		$options->setTidy( true );

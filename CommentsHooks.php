@@ -48,10 +48,10 @@ class CommentsHooks {
 
 		wfProfileIn( __METHOD__ );
 
-		$parser->disableCache();
+		//$parser->disableCache();
 		// If an unclosed <comments> tag is added to a page, the extension will
 		// go to an infinite loop...this protects against that condition.
-		$parser->setHook( 'comments', array( 'CommentsHooks', 'nonDisplayComments' ) );
+		$parser->setHook( 'comments', array( 'CommentsHooks', 'nonDisplayComments' ) );		
 
 		$title = $parser->getTitle();
 		if ( $title->getArticleID() == 0 && $title->getDBkey() == 'CommentListGet' ) {
