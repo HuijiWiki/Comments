@@ -277,7 +277,7 @@ class Comment extends ContextSource {
 		
 		// convert '@' to wiki link;
 		$matches = array();
-        $t = preg_match_all('/\\@(.+?)\\b/s', $text, $matches);
+        $t = preg_match_all('/\\@(.+?)\\b/us', $text, $matches);
         if ( isset ($matches[1]) ){
             $i = 0;
             while ( isset($matches[1][$i]) ){
