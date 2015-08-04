@@ -234,13 +234,13 @@ class Comment extends ContextSource {
 		foreach ( $comment_text_parts as $part ) {
 			$comment_text_fix .= ( ( $comment_text_fix ) ? "\n" : '' ) . trim( $part );
 		}
-
-		if ( $this->getTitle()->getArticleID() > 0 ) {
-			$commentText = $wgParser->recursiveTagParse( $comment_text_fix );
-		} else {
-			$commentText = $this->getOutput()->parse( $comment_text_fix );
-		}
-
+		// fix link display error #bug
+		$commentText = $this->getOutput()->parse( $comment_text_fix );		
+		// if ( $this->getTitle()->getArticleID() > 0 ) {
+		// 	// $commentText = $wgParser->recursiveTagParse( $comment_text_fix );
+		// } else {
+		// 	// $commentText = $this->getOutput()->parse( $comment_text_fix );
+		// }
 		// really bad hack because we want to parse=firstline, but don't want wrapping <p> tags
 		if ( substr( $commentText, 0 , 3 ) == '<p>' ) {
 			$commentText = substr( $commentText, 3 );
@@ -355,8 +355,61 @@ class Comment extends ContextSource {
 		if ($parentID !== 0) {
 			$comment->sendEchoNotification( 'reply', $comment->id );
 		}
-
+		$mentionedUsers = $comment->getMentionedUsers();
+		if ( count( $mentionedUsers ) ) {
+			$comment->sendEchoNotification('mention', $comment->id, $mentionedUsers);
+		}
 		return $comment;
+	}
+	/**
+	 * Analyses a PostRevision to determine which users are mentioned.
+	 *
+	 * @param PostRevision $post The Post to analyse.
+	 * @param \Title $title
+	 * @return User[] Array of User objects.
+	 */
+	protected function getMentionedUsers() {
+		// At the moment, it is not possible to get a list of mentioned users from HTML
+		//  unless that HTML comes from Parsoid. But VisualEditor (what is currently used
+		//  to convert wikitext to HTML) does not currently use Parsoid.
+		$wikitext = $this->text;
+		$mentions = $this->getMentionedUsersFromWikitext( $wikitext );
+		// in the future if we want to add a filter, we can add it here.
+		// $notifyUsers = $this->filterMentionedUsers( $mentions, $post, $title );
+		return $mentions;
+	}
+
+	/**
+	 * Examines a wikitext string and finds users that were mentioned
+	 * @param  string $wikitext
+	 * @return array Array of User objects
+	 */
+	protected function getMentionedUsersFromWikitext( $wikitext ) {
+		global $wgParser;
+		$title = Title::newMainPage(); // Bogus title used for parser
+		$options = new \ParserOptions;
+		$options->setTidy( true );
+		$options->setEditSection( false );
+		$output = $wgParser->parse( $wikitext, $title, $options );
+		$links = $output->getLinks();
+		if ( ! isset( $links[NS_USER] ) || ! is_array( $links[NS_USER] ) ) {
+			// Nothing
+			return array();
+		}
+		$users = array();
+		foreach ( $links[NS_USER] as $dbk => $page_id ) {
+			$user = User::newFromName( $dbk );
+			if ( !$user || $user->isAnon() ) {
+				continue;
+			}
+			$users[$user->getId()] = $user;
+			// If more than 20 users are being notified this is probably a spam/attack vector.
+			// Don't send any mention notifications
+			if ( count( $users ) > 20 ) {
+				return array();
+			}
+		}
+		return $users;
 	}
 
 	/**
@@ -388,10 +441,11 @@ class Comment extends ContextSource {
 		global $wgMemc;
 		$dbw = wfGetDB( DB_MASTER );
 
-		if ( $value < -1 ) { // limit to range -1 -> 0 -> 1
+		if ( $value < 0 ) { // limit to range -1 -> 0 -> 1
 			$value = -1;
-		} elseif ( $value > 1 ) {
+		} elseif ( $value > 0 ) {
 			$value = 1;
+			$this->sendEchoNotification('plus', $this->id);
 		}
 
 		if ( $value == $this->currentVote ) { // user toggling off a preexisting vote
@@ -821,16 +875,17 @@ class Comment extends ContextSource {
 		return $output;
 	}
 
-	function sendEchoNotification( $type, $commentID ){
+	function sendEchoNotification( $type, $commentID, $mentionedUsers = null ){
+		global $wgUser;
 		$mComment = Comment::newFromID( $commentID );
 		$page = $mComment->page;
 		$content = $mComment->getText();
-
+		$pageTitle = $page->title;
 		if ($type === 'reply') {
 			// send an echo notification
 			// htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\"
 			//$pageLink = htmlspecialchars( $page->title->getFullURL() )."#comment-{$commentID}";
-			$pageTitle = $page->title;
+			
 			if ($mComment->parentID !== 0){
 				$mParentComment = Comment::newFromID($mComment->parentID);
 			} else {
@@ -850,9 +905,37 @@ class Comment extends ContextSource {
 			     'agent' => $agent,
 			     'title' => $pageTitle,
 			) );
+		} else if ($type === 'plus') {
+			$userIdTo = $mComment->userID;
+			$userIdFrom = $wgUser;
+			$agent = $wgUser;
+			EchoEvent::create( array(
+			     'type' => 'comment-msg',
+			     'extra' => array(
+			         'comment-recipient-id' => $userIdTo,  
+			         'comment-content' => $content,
+			         'comment-id' => "comment-{$commentID}",
+			         'comment-plus' => true,
+			     ),
+			     'agent' => $agent,
+			     'title' => $pageTitle,
+			) );			
+		} else if ($type === 'mention'){
+			$agent = $wgUser;
+			EchoEvent::create( array(
+				'type' => 'comment-msg',
+				'title' => $pageTitle,
+				'extra' => array(
+					'content' => $mComment->getText(),
+					'mentioned-users' => $mentionedUsers,
+					'comment-content' => $content,
+			        'comment-id' => "comment-{$commentID}",
+				),
+				'agent' => $agent,
+			) );
 		}
 	}
-		/**
+	/**
 	* Used to pass Echo your definition for the notification category and the 
 	* notification itself (as well as any custom icons).
 	* 
@@ -895,9 +978,17 @@ class Comment extends ContextSource {
 	 	switch ( $event->getType() ) {
 	 		case 'comment-msg':
 	 			$extra = $event->getExtra();
-	 			if ( !$extra || !isset( $extra['comment-recipient-id'] ) ) {
+	 			if ( !$extra ){
 	 				break;
 	 			}
+	 			if ( isset( $extra['mentioned-users'] ) ){
+	 				$users = $extra['mentioned-users'];
+	 				break;
+	 			}
+	 			if ( !isset( $extra['comment-recipient-id'] ) ) {
+	 				break;
+	 			}
+
 	 			$recipientId = $extra['comment-recipient-id'];
 	 			$recipient = User::newFromId($recipientId);
 	 			$users[$recipientId] = $recipient;
@@ -935,18 +1026,43 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
     protected function processParam( $event, $param, $message, $user ) {
         if ( $param === 'reply' ) {
         	$eventData = $event->getExtra();
+        	$titleData = $event->getTitle()->getPrefixedText();
         	if ( !isset( $eventData['comment-id']) ) {
                 $message->params( '' );
                 return;
             }
-            $this->setTitleLink(
-                $event,
-                $message,
-                array(
-                    'class' => 'mw-echo-comment-msg',
-                    'fragment' => $eventData['comment-id'],
-                )
-            );
+            if ( isset( $eventData['mentioned-users'] ) ){
+	            $this->setTitleLink(
+	                $event,
+	                $message,
+	                array(
+	                    'class' => 'mw-echo-comment-msg',
+	                  	'linkText' => $titleData.wfMessage('notification-comment-mention')->text(),
+	                    'fragment' => $eventData['comment-id'],
+	                )
+	            );  
+	 		} else if ( isset ( $eventData['comment-plus']) ) {
+	            $this->setTitleLink(
+	                $event,
+	                $message,
+	                array(
+	                    'class' => 'mw-echo-comment-msg',
+	                  	'linkText' => $titleData.wfMessage('notification-comment-plus')->text(),
+	                    'fragment' => $eventData['comment-id'],
+	                )
+	            );        	
+            } else {
+	            $this->setTitleLink(
+	                $event,
+	                $message,
+	                array(
+	                    'class' => 'mw-echo-comment-msg',
+	                  	'linkText' => $titleData.wfMessage('notification-comment-reply')->text(),
+	                    'fragment' => $eventData['comment-id'],
+	                )
+	            );                    	
+            }
+
         } elseif ($param === 'detail') {
         	$eventData = $event->getExtra();
         	if ( !isset( $eventData['comment-id']) ) {
