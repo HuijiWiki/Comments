@@ -27,13 +27,13 @@ class CommentFunctions {
 			// comments-time-days, comments-time-hours, comments-time-minutes, comments-time-seconds, comments-time-months
 			if($wgUser->isLoggedIn()){
 				if ($timeabrv == 's') {
-					$timeStr = '刚刚';
+					$timeStr = '一个普朗克时间';
 				}else{
 					$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
 				}
 			}else{
 				if ($timeabrv == 's' || $timeabrv =='m') {
-					$timeStr = '刚刚';
+					$timeStr = '一个普朗克时间';
 				}else{
 					$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
 				}
@@ -68,7 +68,7 @@ class CommentFunctions {
 			}
 		}
 		if( !$timeStr ) {
-			$timeStr = '刚刚';
+			$timeStr = '一个普朗克时间';
 		}
 		return $timeStr;
 	}
