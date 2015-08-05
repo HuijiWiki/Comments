@@ -261,6 +261,7 @@ class Comment extends ContextSource {
 		return $commentText;
 	}
 
+
 	/**
 	 * Adds the comment and all necessary info into the Comments table in the
 	 * database.
@@ -275,22 +276,7 @@ class Comment extends ContextSource {
 	static function add( $text, CommentsPage $page, User $user, $parentID ) {
 		global $wgCommentsInRecentChanges;
 		
-		// convert '@' to wiki link;
-		$matches = array();
-        $t = preg_match_all('/\\@(.+?)\\b/us', $text, $matches);
-        if ( isset ($matches[1]) ){
-            $i = 0;
-            while ( isset($matches[1][$i]) ){
-                $atWho = User::newFromName( $matches[1][$i] );
-                if ( !$atWho || $atWho->isAnon() ) {
-                	$i++; 
-                    continue;
-             	}
-                $text = str_replace( '@'.$matches[1][$i], '@[[User:'.$matches[1][$i].'|'.$matches[1][$i].']]', $text );             
-            	$i++; 
-            }
-        }
-
+		$text = CommentFunctions::preprocessText($text);
 		$dbw = wfGetDB( DB_MASTER );
 		$context = RequestContext::getMain();
 
@@ -372,61 +358,11 @@ class Comment extends ContextSource {
 		if ($parentID !== 0) {
 			$comment->sendEchoNotification( 'reply', $comment->id );
 		}
-		$mentionedUsers = $comment->getMentionedUsers();
+		$mentionedUsers = CommentFunctions::getMentionedUsers( $text );
 		if ( count( $mentionedUsers ) ) {
 			$comment->sendEchoNotification('mention', $comment->id, $mentionedUsers);
 		}
 		return $comment;
-	}
-	/**
-	 * Analyses a PostRevision to determine which users are mentioned.
-	 *
-	 * @param PostRevision $post The Post to analyse.
-	 * @param \Title $title
-	 * @return User[] Array of User objects.
-	 */
-	protected function getMentionedUsers() {
-		// At the moment, it is not possible to get a list of mentioned users from HTML
-		//  unless that HTML comes from Parsoid. But VisualEditor (what is currently used
-		//  to convert wikitext to HTML) does not currently use Parsoid.
-		$wikitext = $this->text;
-		$mentions = $this->getMentionedUsersFromWikitext( $wikitext );
-		// in the future if we want to add a filter, we can add it here.
-		// $notifyUsers = $this->filterMentionedUsers( $mentions, $post, $title );
-		return $mentions;
-	}
-
-	/**
-	 * Examines a wikitext string and finds users that were mentioned
-	 * @param  string $wikitext
-	 * @return array Array of User objects
-	 */
-	protected function getMentionedUsersFromWikitext( $wikitext ) {
-		global $wgParser;
-		$title = Title::newMainPage(); // Bogus title used for parser
-		$options = new \ParserOptions;
-		$options->setTidy( true );
-		$options->setEditSection( false );
-		$output = $wgParser->parse( $wikitext, $title, $options );
-		$links = $output->getLinks();
-		if ( ! isset( $links[NS_USER] ) || ! is_array( $links[NS_USER] ) ) {
-			// Nothing
-			return array();
-		}
-		$users = array();
-		foreach ( $links[NS_USER] as $dbk => $page_id ) {
-			$user = User::newFromName( $dbk );
-			if ( !$user || $user->isAnon() ) {
-				continue;
-			}
-			$users[$user->getId()] = $user;
-			// If more than 20 users are being notified this is probably a spam/attack vector.
-			// Don't send any mention notifications
-			if ( count( $users ) > 20 ) {
-				return array();
-			}
-		}
-		return $users;
 	}
 
 	/**
@@ -1045,8 +981,7 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
         	$eventData = $event->getExtra();
         	$titleData = $event->getTitle()->getPrefixedText();
         	if ( !isset( $eventData['comment-id']) ) {
-                $message->params( '' );
-                return;
+                $eventData['comment-id'] = null;
             }
             if ( isset( $eventData['mentioned-users'] ) ){
 	            $this->setTitleLink(

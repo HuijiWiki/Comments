@@ -329,4 +329,80 @@ class CommentFunctions {
 			return 1;
 		}
 	}
+
+	/**
+	 * Convert all '@' character to user page link. Max ping allowed is 20.
+	 * @param String $text: The message to be converted.
+	 * 
+	 * @return String : the converted message.
+	 */
+	public static function preprocessText( $message ) {
+		// convert '@' to wiki link;
+		$text = $message;
+		$matches = array();
+        $t = preg_match_all('/\\@(.+?)\\b/us', $text, $matches);
+        if ( isset ($matches[1]) ){
+            $i = 0;
+            while ( isset($matches[1][$i]) ){
+                $atWho = User::newFromName( $matches[1][$i] );
+                if ( !$atWho || $atWho->isAnon() ) {
+                	$i++; 
+                    continue;
+             	}
+                $text = str_replace( '@'.$matches[1][$i], '@[[User:'.$matches[1][$i].'|'.$matches[1][$i].']]', $text );             
+            	$i++; 
+            }
+        }
+        return $text;
+	}
+
+	/**
+	 * Analyses a PostRevision to determine which users are mentioned.
+	 *
+	 * @param String $text The text where to find mentioned user array.
+	 * @param \Title $title
+	 * @return User[] Array of User objects.
+	 */
+	public static function getMentionedUsers($text) {
+		// At the moment, it is not possible to get a list of mentioned users from HTML
+		//  unless that HTML comes from Parsoid. But VisualEditor (what is currently used
+		//  to convert wikitext to HTML) does not currently use Parsoid.
+		$mentions = self::getMentionedUsersFromWikitext( $text );
+		// in the future if we want to add a filter, we can add it here.
+		// $notifyUsers = $this->filterMentionedUsers( $mentions, $post, $title );
+		return $mentions;
+	}
+
+	/**
+	 * Examines a wikitext string and finds users that were mentioned
+	 * @param  string $wikitext
+	 * @return array Array of User objects
+	 */
+	public static function getMentionedUsersFromWikitext( $wikitext ) {
+		global $wgParser;
+		$title = Title::newMainPage(); // Bogus title used for parser
+		$options = new \ParserOptions;
+		$options->setTidy( true );
+		$options->setEditSection( false );
+		$output = $wgParser->parse( $wikitext, $title, $options );
+		$links = $output->getLinks();
+		if ( ! isset( $links[NS_USER] ) || ! is_array( $links[NS_USER] ) ) {
+			// Nothing
+			return array();
+		}
+		$users = array();
+		foreach ( $links[NS_USER] as $dbk => $page_id ) {
+			$user = User::newFromName( $dbk );
+			if ( !$user || $user->isAnon() ) {
+				continue;
+			}
+			$users[$user->getId()] = $user;
+			// If more than 20 users are being notified this is probably a spam/attack vector.
+			// Don't send any mention notifications
+			if ( count( $users ) > 20 ) {
+				return array();
+			}
+		}
+		return $users;
+	}
 }
