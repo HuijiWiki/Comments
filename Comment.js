@@ -246,7 +246,6 @@ var Comment = {
 	childReply: function ( parentID, poster, posterGender ) {
 		$( '#comment').val(
 			mw.msg( 'child-comments-reply-to', poster, posterGender )
-			+ $(' #comment' ).val()
 		);
 		$( '#comment' ).focus();
 	},
