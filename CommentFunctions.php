@@ -25,20 +25,11 @@ class CommentFunctions {
 		if( $time[$timeabrv] > 0 ) {
 			// Give grep a chance to find the usages:
 			// comments-time-days, comments-time-hours, comments-time-minutes, comments-time-seconds, comments-time-months
-			if($wgUser->isLoggedIn()){
-				if ($timeabrv == 's') {
-					$timeStr = '一个普朗克时间';
-				}else{
-					$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
-				}
+			if ($timeabrv == 's') {
+				$timeStr = '一个普朗克时间';
 			}else{
-				if ($timeabrv == 's' || $timeabrv =='m') {
-					$timeStr = '一个普朗克时间';
-				}else{
-					$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
-				}
-			}
-			
+				$timeStr = wfMessage( "comments-time-{$timename}", $time[$timeabrv] )->text();
+			}	
 		}
 		// if( $timeStr ) {
 		// 	$timeStr .= ' ';
