@@ -243,10 +243,11 @@ var Comment = {
 		$( '#comment' ).focus();
 	},
 
-	childReply: function ( parentID, poster, posterGender ) {
+	childReply: function ( parentID, poster, posterGender, parentOfParentID ) {
 		$( '#comment').val(
 			mw.msg( 'child-comments-reply-to', poster, posterGender )
 		);
+		document.commentForm.commentParentId.value = parentOfParentId;
 		$( '#comment' ).focus();
 	},
 
@@ -322,7 +323,8 @@ $( document ).ready( function() {
 		Comment.reply(
 			$( this ).data( 'comment-id' ),
 			$( this ).data( 'comments-safe-username' ),
-			$( this ).data( 'comments-user-gender' )
+			$( this ).data( 'comments-user-gender' ),
+			$( this ).data( 'comment-parent-id')
 		);
 	} )
 
