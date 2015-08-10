@@ -597,6 +597,7 @@ class CommentsPage extends ContextSource {
 
 	/**
 	 * Purge caches (memcached, parser cache and Squid cache)
+	 * Edited by Reasno: we will hold on parser cache and squid cache as it is not required to be purged.
 	 */
 	function clearCommentListCache() {
 		global $wgMemc;
@@ -604,10 +605,10 @@ class CommentsPage extends ContextSource {
 		$key = wfMemcKey( 'comment', 'pagethreadlist', $this->id );
 		$wgMemc->delete( $key );
 
-		if ( is_object( $this->title ) ) {
-			$this->title->invalidateCache();
-			$this->title->purgeSquid();
-		}
+		// if ( is_object( $this->title ) ) {
+		// 	// $this->title->invalidateCache();
+		// 	// $this->title->purgeSquid();
+		// }
 	}
 
 }

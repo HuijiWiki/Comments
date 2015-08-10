@@ -14,9 +14,7 @@ class CommentSubmitAPI extends ApiBase {
         ) {
             return true;
         }
-
         $commentText = $this->getMain()->getVal( 'commentText' );
-
         if ( $commentText != '' ) {
             // To protect against spam, it's necessary to check the supplied text
             // against spam filters (but comment admins are allowed to bypass the
@@ -30,9 +28,7 @@ class CommentSubmitAPI extends ApiBase {
             if ( !$user->isAllowed( 'commentlinks' ) && CommentFunctions::haveLinks( $commentText ) ) {
                 return wfMessage( 'comments-links-are-forbidden' )->plain();
             }
-
             $page = new CommentsPage( $this->getMain()->getVal( 'pageID' ), $this->getContext() );
-
             Comment::add( $commentText, $page, $user, $this->getMain()->getVal( 'parentID' ) );
 
             if ( class_exists( 'UserStatsTrack' ) ) {

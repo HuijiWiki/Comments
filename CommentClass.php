@@ -279,7 +279,6 @@ class Comment extends ContextSource {
 		$text = CommentFunctions::preprocessText($text);
 		$dbw = wfGetDB( DB_MASTER );
 		$context = RequestContext::getMain();
-
 		wfSuppressWarnings();
 		$commentDate = date( 'Y-m-d H:i:s' );
 		wfRestoreWarnings();
@@ -314,7 +313,6 @@ class Comment extends ContextSource {
 		) );
 		$logId = $logEntry->insert();
 		$logEntry->publish( $logId, ( $wgCommentsInRecentChanges ? 'rcandudp' : 'udp' ) );
-
 		$dbr = wfGetDB( DB_SLAVE );
 		if (
 			$dbr->tableExists( 'user_stats' ) &&
@@ -332,7 +330,6 @@ class Comment extends ContextSource {
 		} else {
 			$userPoints = 0;
 		}
-
 		if ( $parentID == 0 ) {
 			$thread = $id;
 		} else {
@@ -350,10 +347,8 @@ class Comment extends ContextSource {
 			'thread' => $thread,
 			'timestamp' => strtotime( $commentDate )
 		);
-
 		$page = new CommentsPage( $page->id, $context );
 		$comment = new Comment( $page, $context, $data );
-
 		wfRunHooks( 'Comment::add', array( $comment, $commentId, $comment->page->id ) );
 		if ($parentID !== 0) {
 			$comment->sendEchoNotification( 'reply', $comment->id );
