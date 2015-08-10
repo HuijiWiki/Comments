@@ -58,10 +58,10 @@ class CommentsHooks {
 			return self::nonDisplayComments( $input, $args, $parser );
 		}
 
-		// Add required CSS & JS via ResourceLoader
-		$wgOut->addModuleStyles( 'ext.comments.css' );
-		$wgOut->addModules( 'ext.comments.js' );
-		$wgOut->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
+		// // Add required CSS & JS via ResourceLoader
+		// $wgOut->addModuleStyles( 'ext.comments.css' );
+		// $wgOut->addModules( 'ext.comments.js' );
+		// $wgOut->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
 
 		// Parse arguments
 		// The preg_match() lines here are to support the old-style way of

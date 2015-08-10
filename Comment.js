@@ -240,6 +240,15 @@ var Comment = {
 		$( '#replyto' ).append( ') <br />' );
 
 		document.commentForm.commentParentId.value = parentId;
+		$( '#comment' ).focus();
+	},
+
+	childReply: function ( parentID, poster, posterGender ) {
+		$( '#comment').val(
+			mw.msg( 'child-comments-reply-to', poster, posterGender )
+			+ $(' #comment' ).val()
+		);
+		$( '#comment' ).focus();
 	},
 
 	cancelReply: function() {
@@ -301,6 +310,15 @@ $( document ).ready( function() {
 	} )
 
 	// Reply links
+	.on( 'click', 'a.child-comments-reply-to', function() {
+		Comment.childReply(
+			$( this ).data( 'comment-id' ),
+			$( this ).data( 'comments-safe-username' ),
+			$( this ).data( 'comments-user-gender' )
+		);
+	} )
+
+		// Reply links
 	.on( 'click', 'a.comments-reply-to', function() {
 		Comment.reply(
 			$( this ).data( 'comment-id' ),

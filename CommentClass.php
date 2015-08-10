@@ -716,7 +716,12 @@ class Comment extends ContextSource {
 				if ( $replyRow ) {
 					$replyRow .= wfMessage( 'pipe-separator' )->plain();
 				}
-				$replyRow .= " | <a href=\"#.E5.90.90.E6.A7.BD\" rel=\"nofollow\" class=\"comments-reply-to\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
+				$replyRow .= " | <a href=\"#comment\" rel=\"nofollow\" class=\"comments-reply-to\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
+					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
+					htmlspecialchars( $CommentReplyToGender ) . '">' .
+					wfMessage( 'comments-reply' )->plain() . '</a>';
+			} else {
+				$replyRow .=" | <a href=\"#comment\" rel=\"nofollow\" class=\"child-comments-reply-to\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
 					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
 					htmlspecialchars( $CommentReplyToGender ) . '">' .
 					wfMessage( 'comments-reply' )->plain() . '</a>';
