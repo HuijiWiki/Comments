@@ -244,6 +244,15 @@ var Comment = {
 	},
 
 	childReply: function ( parentId, poster, posterGender, parentOfParentId ) {
+		$( '#replyto' ).text(
+			mw.msg( 'child-comments-reply-to', poster, posterGender ) + ' ('
+		);
+		$( '<a>', {
+			class: 'comments-cancel-reply-link',
+			style: 'cursor:pointer',
+			text: mw.msg( 'comments-cancel-reply' )
+		} ).appendTo( '#replyto' );
+		$( '#replyto' ).append( ') <br />' );
 		$( '#comment').val(
 			mw.msg( 'child-comments-reply-to', poster, posterGender )
 		);
