@@ -314,7 +314,8 @@ $( document ).ready( function() {
 		Comment.childReply(
 			$( this ).data( 'comment-id' ),
 			$( this ).data( 'comments-safe-username' ),
-			$( this ).data( 'comments-user-gender' )
+			$( this ).data( 'comments-user-gender' ),
+			$( this ).data( 'comment-parent-id')
 		);
 	} )
 
@@ -323,8 +324,7 @@ $( document ).ready( function() {
 		Comment.reply(
 			$( this ).data( 'comment-id' ),
 			$( this ).data( 'comments-safe-username' ),
-			$( this ).data( 'comments-user-gender' ),
-			$( this ).data( 'comment-parent-id')
+			$( this ).data( 'comments-user-gender' )
 		);
 	} )
 
