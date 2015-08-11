@@ -605,10 +605,10 @@ class CommentsPage extends ContextSource {
 		$key = wfMemcKey( 'comment', 'pagethreadlist', $this->id );
 		$wgMemc->delete( $key );
 
-		// if ( is_object( $this->title ) ) {
-		// 	// $this->title->invalidateCache();
-		// 	// $this->title->purgeSquid();
-		// }
+		if ( is_object( $this->title ) ) {
+		 	 $this->title->invalidateCache();
+		 	// $this->title->purgeSquid();
+		}
 	}
 
 }
