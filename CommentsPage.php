@@ -600,15 +600,11 @@ class CommentsPage extends ContextSource {
 	 * Edited by Reasno: we will hold on parser cache and squid cache as it is not required to be purged.
 	 */
 	function clearCommentListCache() {
-		global $wgMemc;
-		wfDebug( "Clearing comments for page {$this->id} from cache\n" );
 		$key = wfMemcKey( 'comment', 'pagethreadlist', $this->id );
-		$wgMemc->delete( $key );
-
-		if ( is_object( $this->title ) ) {
-		 	 $this->title->invalidateCache();
-		 	// $this->title->purgeSquid();
-		}
+		$jobParams = array( 'key' => $key );
+		$job = new InvalidatePageCacheJob( $this->title, $jobParams );
+		JobQueueGroup::singleton()->push( $job );
+		
 	}
 
 }

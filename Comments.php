@@ -76,6 +76,8 @@ $wgAutoloadClasses['Comment'] = __DIR__ . '/CommentClass.php';
 $wgAutoloadClasses['CommentsPage'] = __DIR__ . '/CommentsPage.php';
 $wgAutoloadClasses['CommentFunctions'] = __DIR__ . '/CommentFunctions.php';
 $wgAutoloadClasses['CommentIgnoreList'] = __DIR__ . '/SpecialCommentIgnoreList.php';
+$wgAutoloadClasses['InvalidatePageCacheJob'] = __DIR__ . '/Jobs.php';
+
 $wgSpecialPages['CommentIgnoreList'] = 'CommentIgnoreList';
 
 $wgAutoloadClasses['CommentsLogFormatter'] = __DIR__ . '/CommentsLogFormatter.php';
@@ -117,9 +119,14 @@ $wgAutoloadClasses['CommentLatestIdAPI'] = __DIR__ . '/api/CommentLatestID.api.p
 $wgAutoloadClasses['CommentListAPI'] = __DIR__ . '/api/CommentList.api.php';
 $wgAutoloadClasses['CommentSubmitAPI'] = __DIR__ . '/api/CommentSubmit.api.php';
 $wgAutoloadClasses['CommentVoteAPI'] = __DIR__ . '/api/CommentVote.api.php';
+$wgAutoloadClasses['CommentVoteAPI'] = __DIR__ . '/api/CommentVote.api.php';
+
 $wgAPIModules['commentblock'] = 'CommentBlockAPI';
 $wgAPIModules['commentdelete'] = 'CommentDeleteAPI';
 $wgAPIModules['commentlatestid'] = 'CommentLatestIdAPI';
 $wgAPIModules['commentlist'] = 'CommentListAPI';
 $wgAPIModules['commentsubmit'] = 'CommentSubmitAPI';
 $wgAPIModules['commentvote'] = 'CommentVoteAPI';
+
+// The key is your job identifier (from the Job constructor), the value is your class name
+$wgJobClasses['invalidatePageCacheJob'] = 'InvalidatePageCacheJob';
