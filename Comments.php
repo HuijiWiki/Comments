@@ -45,7 +45,7 @@ $wgResourceModules['ext.comments.js'] = array(
 		'comments-auto-refresher-pause', 'comments-auto-refresher-enable',
 		'comments-cancel-reply', 'comments-reply-to',
 		'comments-block-warning-anon', 'comments-block-warning-user',
-		'comments-delete-warning','child-comments-reply-to'
+		'comments-delete-warning','child-comments-reply-to','comments-post'
 	),
 	'localBasePath' => __DIR__,
 	'remoteExtPath' => 'Comments'

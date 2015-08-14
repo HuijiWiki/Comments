@@ -580,8 +580,7 @@ class CommentsPage extends ContextSource {
 				}
 
 				$output .= '<textarea name="commentText" id="comment" class="mw-ui-input" rows="5" cols="64"></textarea>' . "\n";
-				$output .= '<div class="c-form-button"><input type="button" value="' .
-					wfMessage( 'comments-post' )->plain() . '" class="site-button pull-right" id="tc_comment" /></div>' . "\n";
+				$output .= '<div class="c-form-button"><button class="mw-ui-button site-button pull-right" id="tc_comment" >'.wfMessage( 'comments-post' )->plain().'</button></div>' . "\n";
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
 			$output .= '<input type="hidden" name="pageId" value="' . $this->id . '" />' . "\n";

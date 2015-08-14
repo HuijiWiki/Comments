@@ -113,6 +113,7 @@ var Comment = {
 		} ).done( function( response ) {
 			document.getElementById( 'allcomments' ).innerHTML = response.commentlist.html;
 			Comment.submitted = 0;
+			$('#tc_comment').html(mw.msg('comments-post'));
 			if (type!="page") {
 				window.location.hash = 'comment-' + parentID;
 			};
@@ -129,6 +130,7 @@ var Comment = {
 		}
 		if ( Comment.submitted === 0 ) {
 			Comment.submitted = 1;
+			$('#tc_comment').prepend('<i class="fa fa-spinner fa-spin"></i>');
 			var pageID = document.commentForm.pageId.value;
 			var parentID;
 			if ( !document.commentForm.commentParentId.value ) {
@@ -148,6 +150,7 @@ var Comment = {
 				} else {
 					window.alert( response.responseText );
 					Comment.submitted = 0;
+					$('#tc_comment').html(mw.msg('comments-post'));
 				}
 			} );
 
@@ -343,7 +346,8 @@ $( document ).ready( function() {
 	} )
 
 	// Handle clicks on the submit button (previously this was an onclick attr)
-	.on( 'click', '#tc_comment', function() {
+	.on( 'click', '#tc_comment', function(event) {
+		event.preventDefault();
 		if ($('#comment').val()=='') {
 			alert('请输入吐槽内容');
 		}else{
