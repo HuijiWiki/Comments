@@ -580,8 +580,7 @@ class CommentsPage extends ContextSource {
 				}
 
 				$output .= '<textarea name="commentText" id="comment" class="mw-ui-input" rows="5" cols="64"></textarea>' . "\n";
-				$output .= '<div class="c-form-button"><input type="button" value="' .
-					wfMessage( 'comments-post' )->plain() . '" class="site-button pull-right" id="tc_comment" /></div>' . "\n";
+				$output .= '<div class="c-form-button"><button class="mw-ui-button site-button pull-right" id="tc_comment" >'.wfMessage( 'comments-post' )->plain().'</button></div>' . "\n";
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
 			$output .= '<input type="hidden" name="pageId" value="' . $this->id . '" />' . "\n";
@@ -600,15 +599,11 @@ class CommentsPage extends ContextSource {
 	 * Edited by Reasno: we will hold on parser cache and squid cache as it is not required to be purged.
 	 */
 	function clearCommentListCache() {
-		global $wgMemc;
-		wfDebug( "Clearing comments for page {$this->id} from cache\n" );
 		$key = wfMemcKey( 'comment', 'pagethreadlist', $this->id );
-		$wgMemc->delete( $key );
-
-		if ( is_object( $this->title ) ) {
-		 	 $this->title->invalidateCache();
-		 	// $this->title->purgeSquid();
-		}
+		$jobParams = array( 'key' => $key );
+		$job = new InvalidatePageCacheJob( $this->title, $jobParams );
+		JobQueueGroup::singleton()->push( $job );
+		
 	}
 
 }

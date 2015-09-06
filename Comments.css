@@ -83,7 +83,7 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 
 .r-message {
 	max-width: 360px;
-	width: 60%;
+	width: 100%;
 }
 
 .c-score {
@@ -152,6 +152,9 @@ textarea#comment {
 .c-spy p{
 	margin-bottom: 0px;
 }
+.c-pager-item span, .c-pager-item a {
+    font-size: 14px;
+}
 
 .c-order-select {
 	float: left;
@@ -176,8 +179,8 @@ ul.c-pager {
 
 li.c-pager-item {
 	background-image: none;
-	display: inline;
-	font-size: 14px;
+	display: inline-block;
+	font-size: 0;
 	list-style-type: none;
 	padding: 0.5em;
 }
