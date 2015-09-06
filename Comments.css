@@ -1,13 +1,12 @@
 /* CSS styles for Comments extension */
 .comments-body {
-	max-width: 530px;
 	width: 100%;
     position: relative;
+    margin-top: 20px;
 }
 
 .reply {
 	margin-left: 10% !important;
-	max-width: 460px;
 	width: 90% !important ;
 }
 
@@ -53,6 +52,7 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 	color: #888;
 	line-height: 11px !important;
 	font-weight: normal !important;
+    display: inline-block;
 }
 
 .c-user-level {
@@ -77,12 +77,10 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 }
 
 .f-message {
-	max-width: 460px;
 	width: 90%;
 }
 
 .r-message {
-	max-width: 360px;
 	width: 100%;
 }
 
@@ -117,9 +115,8 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 
 .c-form-title {
 	color: #333;
-	font-weight: bold;
-	font-size: 17px;
-	margin: 0px 0px 5px 0px;
+	font-size: 30px;
+    text-align: center;
 }
 
 .c-form-message {
@@ -129,14 +126,17 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 	color: #666;
 	padding: 5px 0px 10px 0px;
 }
-
-textarea#comment {
-	max-width: 530px;
-	width: 100%;
+#comment{
+    resize: none;
+    height: 40px;
+    border: 1px solid #bbb;
 }
-
-.c-form-button {
-	padding: 10px 0px 0px;
+#comment.focus{
+    height: 120px;
+}
+.site-button{
+    margin: 10px 0;
+    padding: 5px 10px;
 }
 
 .c-order {
@@ -161,9 +161,12 @@ textarea#comment {
 }
 
 /* Pager */
+.c-pager-wrapper{
+    text-align: center;
+}
 ul.c-pager {
 	clear: both;
-	margin: 0px, 0px, 5px, 0px;
+	margin: 0px 0px 5px 0px;
 
 }
 .cod-comment{
@@ -193,4 +196,14 @@ li.c-pager-item {
 }
 .c-sep {
 	margin-bottom: 10px;
+}
+@media  screen and (max-width: 1200px) {
+
+    .c-form-title{
+        width: 100%;
+        text-align: left;
+    }
+    #comment{
+        width: 100%;
+    }
 }

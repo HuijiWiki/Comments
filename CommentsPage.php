@@ -288,7 +288,7 @@ class CommentsPage extends ContextSource {
 
 		$output = '';
 		if ( $pagesCount > 1 ) {
-			$output .= '<ul class="c-pager pagination">';
+			$output .= '<div class="c-pager-wrapper"><ul class="c-pager pagination">';
 			$pagerEllipsis = '<li class="c-pager-item c-pager-ellipsis"><span>...</span></li>';
 
 			// Whether to display the "Previous page" link
@@ -389,7 +389,7 @@ class CommentsPage extends ContextSource {
 					'</li>';
 			}
 
-			$output .= '</ul>';
+			$output .= '</ul></div>';
 		}
 
 		return $output;
@@ -499,7 +499,7 @@ class CommentsPage extends ContextSource {
 
 		if ( $currentPage ) {
 			$pager = $this->displayPager( $currentPageNum, $numPages );
-			$output .= $pager;
+			// $output .= $pager;
 			$output .= '<a id="cfirst" name="cfirst" rel="nofollow"></a>';
 
 			$anonList = $this->getAnonList();
@@ -521,7 +521,7 @@ class CommentsPage extends ContextSource {
 	 * @return string HTML
 	 */
 	function displayOrderForm() {
-		$output = '<div class="c-order btn-group btn-group-justified">
+		$output = '<div class="c-order btn-group btn-group-justified hidden">
 			<div class="c-order-select">
 				<form name="ChangeOrder" action="">
 					<select name="TheOrder" class="btn btn-default dropdown-toggle">
@@ -550,7 +550,7 @@ class CommentsPage extends ContextSource {
 	 * @return string HTML output
 	 */
 	function displayForm() {
-		$output = '<form name="commentForm">' . "\n";
+		$output = '<div class="container-fluid"><form name="commentForm" class="row">' . "\n";
 		// $output = '<div name="commentForm">' . "\n";
 
 		if ( $this->allow ) {
@@ -568,7 +568,7 @@ class CommentsPage extends ContextSource {
 			// and maybe there's a list of users who should be allowed to post
 			// comments
 			if ( $this->getUser()->isBlocked() == false && ( $this->allow == '' || $pos !== false ) ) {
-				$output .= '<div class="c-form-title">' . wfMessage( 'comments-submit' )->plain() . '</div>' . "\n";
+				$output .= '<div class="c-form-title col-md-1">吐槽</div>' . "\n";
 				$output .= '<div id="replyto" class="c-form-reply-to"></div>' . "\n";
 				// Show a message to anons, prompting them to register or log in
 				if ( !$this->getUser()->isLoggedIn() ) {
@@ -579,8 +579,8 @@ class CommentsPage extends ContextSource {
 						)->text() . '<a id=TcLogin>登录</a>。</div>' . "\n";
 				}
 
-				$output .= '<textarea name="commentText" id="comment" class="mw-ui-input" rows="5" cols="64"></textarea>' . "\n";
-				$output .= '<div class="c-form-button"><button class="mw-ui-button site-button pull-right" id="tc_comment" >'.wfMessage( 'comments-post' )->plain().'</button></div>' . "\n";
+				$output .= '<textarea name="commentText" id="comment" class="mw-ui-input col-md-11" rows="5" cols="64"></textarea>' . "\n";
+				$output .= '<div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>' . "\n";
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
 			$output .= '<input type="hidden" name="pageId" value="' . $this->id . '" />' . "\n";
@@ -590,7 +590,7 @@ class CommentsPage extends ContextSource {
 			$output .= '<input type="hidden" name="' . $this->pageQuery . '" value="' . $this->getCurrentPagerPage() . '" />' . "\n";
 			$output .= Html::hidden( 'token', $this->getUser()->getEditToken() );
 		// }
-		$output .= '</form>' . "\n";
+		$output .= '</form></div>' . "\n";
 		return $output;
 	}
 

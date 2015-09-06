@@ -147,6 +147,7 @@ var Comment = {
 				if ( response.commentsubmit.ok ) {
 					document.commentForm.commentText.value = '';
 					Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
+                    $('#comment').trigger('blur');
 				} else {
 					window.alert( response.responseText );
 					Comment.submitted = 0;
@@ -346,7 +347,7 @@ $( document ).ready( function() {
 	} )
 
 	// Handle clicks on the submit button (previously this was an onclick attr)
-	.on( 'click', '#tc_comment', function(event) {
+	.on( 'mousedown', '#tc_comment', function(event) {
 		event.preventDefault();
 		if ($('#comment').val()=='') {
 			alert('请输入吐槽内容');
@@ -380,5 +381,17 @@ $( document ).ready( function() {
 	.on( 'click', '#TcLogin', function(){
 		$('.user-login').modal();
 		return;
-	} );
+	} )
+    // tucao input
+    .on('focus','#comment', function () {
+            if($('.navbar-right').hasClass('navbar-login')){
+                $('.user-login').modal();
+            }else{
+                $(this).addClass('focus');
+            }
+        })
+        .on('blur','#comment',function(){
+            $(this).removeClass('focus');
+
+        })
 } );

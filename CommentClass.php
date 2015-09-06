@@ -525,15 +525,15 @@ class Comment extends ContextSource {
 		$imagePath = $wgExtensionAssetsPath . '/Comments/images';
 		if ( $voteType == 1 ) {
 			if ( $this->currentVote == 1 ) {
-				$voteLink .= "<i class=\"fa fa-thumbs-up\"></i> </a>";
+				$voteLink .= "<i class=\"icon-like\"></i> </a>";
 			} else {
-				$voteLink .= "<i class=\"fa fa-thumbs-o-up\"></i> </a>";
+				$voteLink .= "<i class=\"icon-like\"></i> </a>";
 			}
 		} else {
 			if ( $this->currentVote == -1 ) {
-				$voteLink .= "<i class=\"fa fa-thumbs-down\"></i></a>";
+				$voteLink .= "<i class=\"icon-dislike\"></i></a>";
 			} else {
-				$voteLink .= "<i class=\"fa fa-thumbs-o-down\"></i></a>";
+				$voteLink .= "<i class=\"icon-dislike\"></i></a>";
 			}
 		}
 
@@ -762,12 +762,7 @@ class Comment extends ContextSource {
 		$output .= "<span class=\"c-user-level\">{$commentPosterLevel}</span> {$blockLink}" . "\n";
 
 		wfSuppressWarnings(); // E_STRICT bitches about strtotime()
-		$output .= '<div class="c-time">' .
-			wfMessage(
-				'comments-time-ago',
-				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
-			)->text() . '</div>' . "\n";
-		wfRestoreWarnings();
+
 
 		$output .= '<div class="c-score">' . "\n";
 		$output .= $this->getScoreHTML();
@@ -778,6 +773,12 @@ class Comment extends ContextSource {
 		$output .= $this->getText();
 		$output .= '</div>' . "\n";
 		$output .= '<div class="c-actions">' . "\n";
+		$output .= '<div class="c-time">' .
+        			wfMessage(
+        				'comments-time-ago',
+        				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
+        			)->text() . '</div>' . "\n";
+        		wfRestoreWarnings();
 		$output .= '<a href="' . htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\" rel=\"nofollow\">" .
 			$this->msg( 'comments-permalink' )->plain() . '</a> ';
 		if ( $replyRow || $dlt ) {
