@@ -525,13 +525,13 @@ class Comment extends ContextSource {
 		$imagePath = $wgExtensionAssetsPath . '/Comments/images';
 		if ( $voteType == 1 ) {
 			if ( $this->currentVote == 1 ) {
-				$voteLink .= "<i class=\"icon-like\"></i> </a>";
+				$voteLink .= "<i class=\"icon-like active\"></i> </a>";
 			} else {
 				$voteLink .= "<i class=\"icon-like\"></i> </a>";
 			}
 		} else {
 			if ( $this->currentVote == -1 ) {
-				$voteLink .= "<i class=\"icon-dislike\"></i></a>";
+				$voteLink .= "<i class=\"icon-dislike active\"></i></a>";
 			} else {
 				$voteLink .= "<i class=\"icon-dislike\"></i></a>";
 			}

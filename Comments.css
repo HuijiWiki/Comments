@@ -5,6 +5,12 @@
     margin-top: 20px;
 }
 
+#comment-vote-link i{
+    opacity: .5;
+}
+#comment-vote-link i.active{
+    opacity: 1;
+}
 .reply {
 	margin-left: 10% !important;
 	width: 90% !important ;
@@ -117,6 +123,7 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 	color: #333;
 	font-size: 30px;
     text-align: center;
+    padding: 0;
 }
 
 .c-form-message {
