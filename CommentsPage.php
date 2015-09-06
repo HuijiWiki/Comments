@@ -390,6 +390,7 @@ class CommentsPage extends ContextSource {
 			}
 
 			$output .= '</ul></div>';
+			$output .= $pager;
 		}
 
 		return $output;
