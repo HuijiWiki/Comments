@@ -510,7 +510,7 @@ class CommentsPage extends ContextSource {
 					$output .= $comment->display( $blockList, $anonList );
 				}
 			}
-			// $output .= $pager;
+			$output .= $pager;
 		}
 
 		return $output;
