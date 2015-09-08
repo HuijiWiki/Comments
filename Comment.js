@@ -347,7 +347,7 @@ $( document ).ready( function() {
 	} )
 
 	// Handle clicks on the submit button (previously this was an onclick attr)
-	.on( 'mousedown', '#tc_comment', function(event) {
+	.on( 'mousedown touchstart', '#tc_comment', function(event) {
 		event.preventDefault();
 		if ($('#comment').val()=='') {
 			alert('请输入吐槽内容');
@@ -384,14 +384,14 @@ $( document ).ready( function() {
 	} )
     // tucao input
     .on('focus','#comment', function () {
-            if($('.navbar-right').hasClass('navbar-login')){
-                $('.user-login').modal();
-            }else{
-                $(this).addClass('focus');
-            }
-        })
-        .on('blur','#comment',function(){
-            $(this).removeClass('focus');
+        if($('.navbar-right').hasClass('navbar-login')){
+            $('.user-login').modal();
+        }else{
+            $(this).addClass('focus');
+        }
+    })
+    .on('blur','#comment',function(){
+        $(this).removeClass('focus');
 
-        })
+    })
 } );
