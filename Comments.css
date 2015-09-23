@@ -1,4 +1,7 @@
 /* CSS styles for Comments extension */
+ul.cod-ul {
+	list-style: none;
+}
 .comments-body {
 	width: 100%;
     position: relative;

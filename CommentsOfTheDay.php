@@ -91,7 +91,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 		$wgMemc->set( $key, $comments, $oneHour );
 	}
 
-	$commentOutput = '<ul>';
+	$commentOutput = '<ul class="cod-ul">';
 
 	foreach ( $comments as $comment ) {
 		$commentOutput .= $comment->displayForCommentOfTheDay();
