@@ -217,3 +217,7 @@ li.c-pager-item {
         width: 100%;
     }
 }
+li.cod{
+	clear:both;
+	margin-top: 5px;
+}
