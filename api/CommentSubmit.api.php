@@ -41,6 +41,9 @@ class CommentSubmitAPI extends ApiBase {
         $result->addValue( $this->getModuleName(), 'ok', 'ok' );
         return true;
     }
+    public function needsToken() {
+        return 'csrf';
+    }
 
     public function getAllowedParams() {
         return array(
