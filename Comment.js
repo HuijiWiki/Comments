@@ -38,7 +38,7 @@ var Comment = {
 	 */
 	blockUser: function( username, userID, commentID ) {
 		var message, token;
-		token = new mw.Api().getToken('edit').done.token;
+		token = new mw.Api().getToken('edit').done().token;
 
 		// Display a different message depending on whether we're blocking an
 		// anonymous user or a registered one.
@@ -70,7 +70,7 @@ var Comment = {
 	 * @param commentID Integer: comment ID number
 	 */
 	deleteComment: function( commentID ) {
-		var token = new mw.Api().getToken('edit').done.token;
+		var token = new mw.Api().getToken('edit').done().token;
 		if ( window.confirm( mw.msg( 'comments-delete-warning' ) ) ) {
 			// alert(commentID);exit;
 			$.ajax( {
@@ -93,7 +93,7 @@ var Comment = {
 	 * @param voteValue Integer: vote value
 	 */
 	vote: function( commentID, voteValue ) {
-		var token = new mw.Api().getToken('edit').done.token;
+		var token = new mw.Api().getToken('edit').done().token;
 		$.ajax( {
 			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 			data: { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue, 'token':token },
@@ -130,7 +130,7 @@ var Comment = {
 	 * Submit a new comment.
 	 */
 	submit: function() {
-		var token = new mw.Api().getToken('edit').done.token;
+		var token = new mw.Api().getToken('edit').done().token;
 		console.log(token);
 		if (mw.config.get('wgUserName') == null){
 			$('.user-login').modal();
