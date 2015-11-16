@@ -53,7 +53,7 @@ var Comment = {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 				data: { 'action': 'commentblock', 'format': 'json', 'commentID': commentID, 'token':token },
 				cache: false,
-				method: post
+				method: 'post'
 			} ).done( function( response ) {
 				if ( response.commentblock.ok ) {
 					$( 'a.comments-block-user[data-comments-user-id=' + userID + ']' ).parents( '.c-item' ).hide( 300 )
@@ -98,7 +98,7 @@ var Comment = {
 			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 			data: { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue, 'token':token },
 			cache: false,
-			method: post
+			method: 'post'
 		} ).done( function( response ) {
 			$( '#comment-' + commentID + ' .c-score' ).html( response.commentvote.html )
 			.html( $( '#comment-' + commentID + ' .c-score' ).text() );
@@ -150,7 +150,7 @@ var Comment = {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText, 'token':token },
 				cache: false,
-				method: post
+				method: 'post'
 			} ).done( function( response ) {
 				if ( response.commentsubmit.ok ) {
 					document.commentForm.commentText.value = '';
