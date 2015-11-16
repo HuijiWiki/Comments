@@ -41,8 +41,9 @@ class CommentSubmitAPI extends ApiBase {
         $result->addValue( $this->getModuleName(), 'ok', 'ok' );
         return true;
     }
+    
     public function needsToken() {
-        return 'edit';
+        return 'csrf';
     }
 
     public function getAllowedParams() {
@@ -58,7 +59,11 @@ class CommentSubmitAPI extends ApiBase {
             'commentText' => array(
                 ApiBase::PARAM_REQUIRED => true,
                 ApiBase::PARAM_TYPE => 'string'
-            )
+            ),
+            'token' => array(
+                // Standard definition automatically inserted
+                ApiBase::PARAM_HELP_MSG_APPEND => array( 'apihelp-edit-param-token' ),
+            ),
         );
     }
 }

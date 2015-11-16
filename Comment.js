@@ -37,8 +37,8 @@ var Comment = {
 	 * @param commentID Integer: comment ID number
 	 */
 	blockUser: function( username, userID, commentID ) {
-		var message, token;
-		token = new mw.Api().getToken('edit').done().token;
+		var api = new mw.Api();
+		var message;
 
 		// Display a different message depending on whether we're blocking an
 		// anonymous user or a registered one.
@@ -49,17 +49,24 @@ var Comment = {
 		}
 
 		if ( window.confirm( message ) ) {
-			$.ajax( {
-				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-				data: { 'action': 'commentblock', 'format': 'json', 'commentID': commentID, 'token':token },
-				cache: false,
-				method: 'post'
-			} ).done( function( response ) {
-				if ( response.commentblock.ok ) {
-					$( 'a.comments-block-user[data-comments-user-id=' + userID + ']' ).parents( '.c-item' ).hide( 300 )
-																												.prev().show( 300 );
-				}
-			} );
+			api.postWithToken('edit', { 'action': 'commentblock', 'format': 'json', 'commentID': commentID })
+				.done(function( response ) {
+					if ( response.commentblock.ok ) {
+						$( 'a.comments-block-user[data-comments-user-id=' + userID + ']' ).parents( '.c-item' ).hide( 300 )
+																													.prev().show( 300 );
+					}
+				} );
+			// $.ajax( {
+			// 	url: mw.config.get( 'wgScriptPath' ) + '/api.php',
+			// 	data: { 'action': 'commentblock', 'format': 'json', 'commentID': commentID, 'token':token },
+			// 	cache: false,
+			// 	method: 'post'
+			// } ).done( function( response ) {
+			// 	if ( response.commentblock.ok ) {
+			// 		$( 'a.comments-block-user[data-comments-user-id=' + userID + ']' ).parents( '.c-item' ).hide( 300 )
+			// 																									.prev().show( 300 );
+			// 	}
+			// } );
 		}
 	},
 
@@ -70,19 +77,14 @@ var Comment = {
 	 * @param commentID Integer: comment ID number
 	 */
 	deleteComment: function( commentID ) {
-		var token = new mw.Api().getToken('edit').done().token;
+		var api = new mw.Api();
 		if ( window.confirm( mw.msg( 'comments-delete-warning' ) ) ) {
-			// alert(commentID);exit;
-			$.ajax( {
-				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-				data: { 'action': 'commentdelete', 'format': 'json', 'commentID': commentID, 'token':token },
-				cache: false,
-				method: 'post'
-			} ).done( function( response ) {
-				if ( response.commentdelete.ok ) {
-					$( '#comment-' + commentID ).hide( 2000 );
-				}
-			} );
+			api.postWithToken('edit', { 'action': 'commentdelete', 'format': 'json', 'commentID': commentID})
+				.done( function( response ) {
+					if ( response.commentdelete.ok ) {
+						$( '#comment-' + commentID ).hide( 2000 );
+					}
+				} );
 		}
 	},
 
@@ -93,16 +95,13 @@ var Comment = {
 	 * @param voteValue Integer: vote value
 	 */
 	vote: function( commentID, voteValue ) {
-		var token = new mw.Api().getToken('edit').done().token;
-		$.ajax( {
-			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-			data: { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue, 'token':token },
-			cache: false,
-			method: 'post'
-		} ).done( function( response ) {
-			$( '#comment-' + commentID + ' .c-score' ).html( response.commentvote.html )
-			.html( $( '#comment-' + commentID + ' .c-score' ).text() );
-		} );
+		var api = new mw.Api();
+		// var token = new mw.Api().getToken('edit').done().token;
+		api.postWithToken('edit', { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue})
+			.done( function( response ) {
+				$( '#comment-' + commentID + ' .c-score' ).html( response.commentvote.html )
+				.html( $( '#comment-' + commentID + ' .c-score' ).text() );
+			} );
 	},
 
 	/**
@@ -130,8 +129,7 @@ var Comment = {
 	 * Submit a new comment.
 	 */
 	submit: function() {
-		var token = new mw.Api().getToken('edit').done().token;
-		console.log(token);
+		var api = new mw.Api();
 		if (mw.config.get('wgUserName') == null){
 			$('.user-login').modal();
 			return;
@@ -147,22 +145,34 @@ var Comment = {
 				parentID = document.commentForm.commentParentId.value;
 			}
 			var commentText = document.commentForm.commentText.value;
-			$.ajax( {
-				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText, 'token':token },
-				cache: false,
-				method: 'post'
-			} ).done( function( response ) {
-				if ( response.commentsubmit.ok ) {
-					document.commentForm.commentText.value = '';
-					Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
-                    			$('#comment').trigger('blur');
-				} else {
-					window.alert( response.responseText );
-					Comment.submitted = 0;
-					$('#tc_comment').html(mw.msg('comments-post'));
-				}
-			} );
+			api.postWithToken('edit', { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText })
+				.done(function( response ) {
+					if ( response.commentsubmit.ok ) {
+						document.commentForm.commentText.value = '';
+						Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
+	                    $('#comment').trigger('blur');
+					} else {
+						window.alert( response.responseText );
+						Comment.submitted = 0;
+						$('#tc_comment').html(mw.msg('comments-post'));
+					}
+				} );
+			// $.ajax( {
+			// 	url: mw.config.get( 'wgScriptPath' ) + '/api.php',
+			// 	data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText, 'token':token },
+			// 	cache: false,
+			// 	method: 'post'
+			// } ).done( function( response ) {
+			// 	if ( response.commentsubmit.ok ) {
+			// 		document.commentForm.commentText.value = '';
+			// 		Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
+   //                  			$('#comment').trigger('blur');
+			// 	} else {
+			// 		window.alert( response.responseText );
+			// 		Comment.submitted = 0;
+			// 		$('#tc_comment').html(mw.msg('comments-post'));
+			// 	}
+			// } );
 
 			Comment.cancelReply();
 		}

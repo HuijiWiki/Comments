@@ -23,7 +23,7 @@ class CommentDeleteAPI extends ApiBase {
     }
     
     public function needsToken() {
-        return 'edit';
+        return 'csrf';
     }
 
     public function getAllowedParams() {
