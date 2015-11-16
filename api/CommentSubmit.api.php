@@ -42,7 +42,7 @@ class CommentSubmitAPI extends ApiBase {
         return true;
     }
     public function needsToken() {
-        return 'csrf';
+        return 'edit';
     }
 
     public function getAllowedParams() {
