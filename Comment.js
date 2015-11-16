@@ -37,7 +37,8 @@ var Comment = {
 	 * @param commentID Integer: comment ID number
 	 */
 	blockUser: function( username, userID, commentID ) {
-		var message;
+		var message, token;
+		token = new mw.Api().getToken('csrf');
 
 		// Display a different message depending on whether we're blocking an
 		// anonymous user or a registered one.
@@ -50,8 +51,9 @@ var Comment = {
 		if ( window.confirm( message ) ) {
 			$.ajax( {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-				data: { 'action': 'commentblock', 'format': 'json', 'commentID': commentID },
-				cache: false
+				data: { 'action': 'commentblock', 'format': 'json', 'commentID': commentID, 'token':token },
+				cache: false,
+				method: post
 			} ).done( function( response ) {
 				if ( response.commentblock.ok ) {
 					$( 'a.comments-block-user[data-comments-user-id=' + userID + ']' ).parents( '.c-item' ).hide( 300 )
@@ -68,12 +70,14 @@ var Comment = {
 	 * @param commentID Integer: comment ID number
 	 */
 	deleteComment: function( commentID ) {
+		var token = new mw.Api().getToken('csrf');
 		if ( window.confirm( mw.msg( 'comments-delete-warning' ) ) ) {
 			// alert(commentID);exit;
 			$.ajax( {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-				data: { 'action': 'commentdelete', 'format': 'json', 'commentID': commentID },
-				cache: false
+				data: { 'action': 'commentdelete', 'format': 'json', 'commentID': commentID, 'token':token },
+				cache: false,
+				method: 'post'
 			} ).done( function( response ) {
 				if ( response.commentdelete.ok ) {
 					$( '#comment-' + commentID ).hide( 2000 );
@@ -89,10 +93,12 @@ var Comment = {
 	 * @param voteValue Integer: vote value
 	 */
 	vote: function( commentID, voteValue ) {
+		var token = new mw.Api().getToken('csrf');
 		$.ajax( {
 			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-			data: { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue },
-			cache: false
+			data: { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue, 'token':token },
+			cache: false,
+			method: post
 		} ).done( function( response ) {
 			$( '#comment-' + commentID + ' .c-score' ).html( response.commentvote.html )
 			.html( $( '#comment-' + commentID + ' .c-score' ).text() );
@@ -124,6 +130,7 @@ var Comment = {
 	 * Submit a new comment.
 	 */
 	submit: function() {
+		var token = new mw.Api().getToken('csrf');
 		if (mw.config.get('wgUserName') == null){
 			$('.user-login').modal();
 			return;
@@ -141,13 +148,14 @@ var Comment = {
 			var commentText = document.commentForm.commentText.value;
 			$.ajax( {
 				url: mw.config.get( 'wgScriptPath' ) + '/api.php',
-				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText },
-				cache: false
+				data: { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText, 'token':token },
+				cache: false,
+				method: post
 			} ).done( function( response ) {
 				if ( response.commentsubmit.ok ) {
 					document.commentForm.commentText.value = '';
 					Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
-                    $('#comment').trigger('blur');
+                    			$('#comment').trigger('blur');
 				} else {
 					window.alert( response.responseText );
 					Comment.submitted = 0;
