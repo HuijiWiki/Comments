@@ -37,8 +37,8 @@ var Comment = {
 	 * @param commentID Integer: comment ID number
 	 */
 	blockUser: function( username, userID, commentID ) {
-		var message, api;
-		api = new mw.Api().getToken('edit');
+		var message, token;
+		token = new mw.Api().getToken('edit');
 
 		// Display a different message depending on whether we're blocking an
 		// anonymous user or a registered one.
@@ -131,6 +131,7 @@ var Comment = {
 	 */
 	submit: function() {
 		var token = new mw.Api().getToken('edit');
+		console.log(token);
 		if (mw.config.get('wgUserName') == null){
 			$('.user-login').modal();
 			return;
