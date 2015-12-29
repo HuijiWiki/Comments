@@ -902,6 +902,7 @@ class Comment extends ContextSource {
             'tooltip' => 'echo-pref-tooltip-comment-msg',
         );
         $notifications['comment-msg'] = array(
+            'primary-link' => array('message' => 'notification-link-text-respond-to-user', 'destination' => 'detail'),	
             'category' => 'comment-msg',
             'group' => 'positive',
             'formatter-class' => 'EchoCommentReplyFormatter',
