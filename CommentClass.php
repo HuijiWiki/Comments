@@ -902,7 +902,7 @@ class Comment extends ContextSource {
             'tooltip' => 'echo-pref-tooltip-comment-msg',
         );
         $notifications['comment-msg'] = array(
-            'primary-link' => array('message' => 'notification-link-text-respond-to-user', 'destination' => 'detail'),	
+            'primary-link' => array('message' => 'notification-link-text-respond-to-user', 'destination' => 'comment-page'),	
             'category' => 'comment-msg',
             'group' => 'positive',
             'formatter-class' => 'EchoCommentReplyFormatter',
@@ -955,6 +955,33 @@ class Comment extends ContextSource {
 
 }
 class EchoCommentReplyFormatter extends EchoCommentFormatter {
+	/**
+	 * Helper function for getLink()
+	 *
+	 * @param \EchoEvent $event
+	 * @param \User $user The user receiving the notification
+	 * @param string $destination The destination type for the link
+	 * @return array including target and query parameters
+	 * @throws FlowException
+	 */
+	protected function getLinkParams( $event, $user, $destination ) {
+		// Set up link parameters based on the destination (or pass to parent)
+		switch ( $destination ) {
+			case 'comment-page':
+				$eventData = $event->getExtra();
+        			$titleData = $event->getTitle();
+        			if ( !isset( $eventData['comment-id']) ) {
+                			$eventData['comment-id'] = null;
+        			} else {
+        				$titleData->setFragment($eventData['comment-id']);
+        			}
+        			return ($titleData, array('fromnotif' => 1));
+				break;
+			default:
+				return parent::getLinkParams( $event, $user, $destination );
+		}
+	}
+
 
 	protected function formatPayload( $payload, $event, $user ) {
 		switch ( $payload ) {
