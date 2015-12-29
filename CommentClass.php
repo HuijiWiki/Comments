@@ -975,8 +975,8 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
         			} else {
         				$titleData->setFragment($eventData['comment-id']);
         			}
-        			return ($titleData, array('fromnotif' => 1));
-				break;
+        			return array($titleData, array('fromnotif' => 1));
+
 			default:
 				return parent::getLinkParams( $event, $user, $destination );
 		}
