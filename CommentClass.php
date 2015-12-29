@@ -917,6 +917,7 @@ class Comment extends ContextSource {
             'email-body-batch-message' => 'notification-comment-email-batch-body',
             'email-body-batch-params' => array( 'agent', 'main-title-text' ),
             'icon' => 'chat',
+            'section' => 'message',
         );
         return true;
     }
