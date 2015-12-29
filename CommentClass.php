@@ -973,7 +973,7 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
         			if ( !isset( $eventData['comment-id']) ) {
                 			$eventData['comment-id'] = null;
         			} else {
-        				$titleData->setFragment($eventData['comment-id']);
+        				$titleData->setFragment('#'.$eventData['comment-id']);
         			}
         			return array($titleData, array('fromnotif' => 1));
 
