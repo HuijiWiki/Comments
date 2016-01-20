@@ -675,7 +675,7 @@ class Comment extends ContextSource {
 		if ( $this->userID != 0 ) {
 			$title = Title::makeTitle( NS_USER, $this->username );
 
-			$commentPoster = '<a href="' . htmlspecialchars( $title->getFullURL() ) .
+			$commentPoster = '<a class="mw-userlink" href="' . htmlspecialchars( $title->getFullURL() ) .
 				'" rel="nofollow">' . $this->username . '</a>';
 
 			$CommentReplyTo = $this->username;
