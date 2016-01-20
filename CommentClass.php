@@ -581,7 +581,7 @@ class Comment extends ContextSource {
 			$commentPoster = '<a href="' . $title->getFullURL() . '" title="' . $title->getText() . '" rel="nofollow">' . $this->username . '</a>';
 			if ( class_exists( 'wAvatar' ) ) {
 				$avatar = new wAvatar( $this->userID, 'm' );
-				$commentIcon = $avatar->getAvatarImage();
+				$commentIcon = $avatar->getAvatarAnchor();
 			} else {
 				$commentIcon = '';
 			}
@@ -594,7 +594,7 @@ class Comment extends ContextSource {
 		$avatarHTML = '';
 		if ( class_exists( 'wAvatar' ) ) {
 			global $wgUploadPath;
-			$avatarHTML = $avatar->getAvatarURL();
+			$avatarHTML = $avatar->getAvatarAnchor();
 		}
 
 		$comment_text = mb_substr( $this->text, 0, 50, "utf-8" );
@@ -751,7 +751,7 @@ class Comment extends ContextSource {
 		// If SocialProfile *is* enabled, then use its wAvatar class to get the avatars for each commenter
 		if ( class_exists( 'wAvatar' ) ) {
 			$avatar = new wAvatar( $this->userID, 'ml' );
-			$avatarImg = $avatar->getAvatarURL() . "\n";
+			$avatarImg = $avatar->getAvatarAnchor() . "\n";
 		}
 
 		$output = "<div id='comment-{$this->id}' class='c-item {$containerClass}'{$style}>" . "\n";
