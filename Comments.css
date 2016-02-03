@@ -6,6 +6,7 @@ ul.cod-ul {
 	width: 100%;
     position: relative;
     margin-top: 20px;
+    overflow: hidden;
 }
 
 #comment-vote-link i{
