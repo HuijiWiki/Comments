@@ -161,15 +161,15 @@ class CommentsPage extends ContextSource {
 	 * @return array Array containing every possible bit of information about
 	 *				a comment, including score, timestamp and more
 	 */
-	public function getComments( ) {
+	public function getComments( $limit=null ) {
 		$dbr = wfGetDB( DB_SLAVE );
 		$tables = array();
 		$params = array();
-		// if(is_null($limit)){
-		// 	$params = array();
-		// }else{					
-		// 	$params = array('LIMIT' => $limit);
-		// }
+		if(is_null($limit)){
+			$params = array();
+		}else{					
+			$params = array('LIMIT' => $limit);
+		}
 		$joinConds = array();
 
 		// Defaults (for non-social wikis)
@@ -484,7 +484,6 @@ class CommentsPage extends ContextSource {
 		}
 
 		$commentThreads = $this->sort( $commentThreads );
-
 		$this->comments = $commentThreads;
 
 		$commentPages = $this->page( $commentThreads );
@@ -605,6 +604,137 @@ class CommentsPage extends ContextSource {
 		$job = new InvalidatePageCacheJob( $this->title, $jobParams );
 		JobQueueGroup::singleton()->push( $job );
 		
+	}
+
+	/**
+	 * get hot comment by vote
+	 */
+	function getHotComments( ){
+		global $wgCommentsDefaultAvatar, $wgUserLevels, $wgUser;
+
+		$templateParser = new TemplateParser(  __DIR__ . '/View' );
+		$allComment = $this->getCommentInfo();
+		$dbr = wfGetDB( DB_SLAVE );
+		$score = $result = array();
+		foreach ($allComment as $key => $value) {
+			$row = $dbr->selectRow(
+				'Comments_Vote',
+				array( 'SUM(Comment_Vote_Score) AS CommentScore' ),
+				array( 'Comment_Vote_ID' => $key ),
+				__METHOD__
+			);
+			if ( $row !== false && $row->CommentScore ) {
+				$allComment[$key]['Comment_votenum'] = $row->CommentScore;
+				$score[$key] = $row->CommentScore;
+				$result[''] = $score;
+			}
+		}
+		arsort($score);
+		if( count($allComment) > 10 ){
+			$i = 0;
+			// Default avatar image, if SocialProfile extension isn't enabled
+			$avatarImg = '<img src="' . $wgCommentsDefaultAvatar . '" alt="" border="0" />';
+			$isdisplay = 0;
+			$output .='<div>';
+			foreach ($score as $key => $value) {
+				if ( $i == 3 ) {
+					break;
+				}
+				$userId = $allComment[$key]['Comment_user_id'];
+				$username = $allComment[$key]['Comment_Username'];
+				//avatar
+				if ( class_exists( 'wAvatar' ) ) {
+					$avatar = new wAvatar( $userId, 'ml' );
+					$avatarImg = $avatar->getAvatarURL() . "\n";
+				}
+				//userlink
+				$title = Title::makeTitle( NS_USER, $username );
+				$userLink = '<a href="' . htmlspecialchars( $title->getFullURL() ) . '" rel="nofollow">' . $username . '</a>';
+				//userLevel
+				$dbr = wfGetDB( DB_SLAVE );
+				if ( $dbr->tableExists( 'user_stats' ) && class_exists( 'UserProfile' ) ) {
+					$res = $dbr->select( // need this data for seeding a Comment object
+						'user_stats',
+						'stats_total_points',
+						array( 'stats_user_id' => $userId ),
+						__METHOD__
+					);
+
+					$row = $res->fetchObject();
+					$userPoints = number_format( $row->stats_total_points );
+				}
+				if ( $wgUserLevels && class_exists( 'UserLevel' ) ) {
+					$user_level = new UserLevel( $userPoints );
+					$commentPosterLevel = "{$user_level->getLevelName()}";
+				}
+				//login
+				if ( $wgUser->isLoggedIn() ) {
+		            $login = true;
+		        }else{
+		            $login = false;
+		        }
+		        //is youself
+		        if ( $wgUser->getName() == $username ) {
+		        	$isself = true;
+		        }else{
+		        	$isself = false;
+		        }
+		        if( $allComment[$key]['Comment_votenum'] > 1 ){
+		        	$isdisplay = 1;
+		        	$output .= $templateParser->processTemplate(
+					    'hotComments',
+					    array(
+					    	'commentID' => $key,
+					    	'avatarImg' => $avatarImg,
+					        'userLink' => $userLink,
+					        'commentPosterLevel' => $commentPosterLevel,
+					        'login' => $login,
+					        'isself' => $isself,
+					        'zan' => $allComment[$key]['Comment_votenum'],
+					        'commentContent' => $allComment[$key]['Comment_Text'],
+					        'timeago' => CommentFunctions::getTimeAgo( strtotime( $allComment[$key]['Comment_Date'] ) ),
+					        // 'gender' => ,
+					        'username' => $username,
+					    )
+					);
+					$i++;
+		        }	
+			}
+			if ( $isdisplay == 1 ) {
+				$output .= '</div><fieldset><legend>以上为热门吐槽,<a class="comment-more">查看更多</a></legend></fieldset>';
+			}
+		}
+		return $output;
+
+	}
+
+	/**
+	 * get commentID by pageID
+	 */
+	function getCommentInfo( ) {
+		$dbr = wfGetDB( DB_SLAVE );
+		$result = $comment = array();
+		$s = $dbr->select(
+			'Comments',
+			array( 'CommentID','Comment_user_id','Comment_Username','Comment_Text','Comment_Date' ),
+			array( 'Comment_Page_ID' => $this->id,
+				   'Comment_Parent_ID' => '0',
+			 ),
+			__METHOD__
+			// array( 'ORDER BY' => 'Comment_Date DESC', 'LIMIT' => 1 )
+		);
+		if ( $s !== false ) {
+			foreach ($s as $key => $value) {
+				// $result['CommentID'] = $value->CommentID;
+				$result['Comment_user_id'] = $value->Comment_user_id;
+				$result['Comment_Username'] = $value->Comment_Username;
+				$result['Comment_Text'] = $value->Comment_Text;
+				$result['Comment_Date'] = $value->Comment_Date;
+				$comment[$value->CommentID] = $result;
+			}
+			
+		}
+		return $comment;
 	}
 
 }

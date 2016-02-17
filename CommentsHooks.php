@@ -103,9 +103,10 @@ class CommentsHooks {
 				$output .= wfMessage( 'comments-db-locked' )->parse();
 			}
 		}
-
-		$output .= $commentsPage->displayOrderForm();
-
+		if($commentsPage->display() != null){
+			$output .= '<div class="display-order">'.$commentsPage->displayOrderForm().'</div>';
+		}
+		$output .= '<div id="hotcomments">' . $commentsPage->getHotComments() . '</div>';
 		$output .= '<div id="allcomments">' . $commentsPage->display() . '</div>';
 
 		// If the database is in read-only mode, display a message informing the

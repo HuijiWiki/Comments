@@ -287,6 +287,18 @@ $( document ).ready( function() {
 		);
 	} )
 
+	$('body').on('click','.comment-more',function(){
+		$('#hotcomments').hide();
+
+		Comment.viewComments(
+			mw.config.get( 'wgArticleId' ), // or we could use $( 'input[name="pid"]' ).val(), too
+			1,
+			0,
+			document.commentForm.cpage.value,
+			''
+		);
+	})
+
 	// Comment auto-refresher
 	.on( 'click', 'div#spy a', function() {
 		Comment.toggleLiveComments( 1 );

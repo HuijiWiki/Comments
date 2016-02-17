@@ -221,3 +221,19 @@ li.cod{
 	clear:both;
 	margin-top: 5px;
 }
+#hotcomments .c-item:last-child{
+	border-bottom: 0;
+	margin-bottom: 0;
+}
+#hotcomments fieldset{
+	border: none;
+  	border-top: 1px solid silver;
+}
+#hotcomments legend{
+	width: 100%;
+	padding: 0;
+	text-align: center;
+	font-weight: normal;
+	font-size: 14px;
+	border: none;
+}

@@ -1,0 +1,37 @@
+<div id="comment-{{commentID}}" class="c-item full">
+	<div class="c-avatar">{{{avatarImg}}}
+	</div>
+	<div class="c-container">
+		<div class="c-user">{{{userLink}}}
+		<span class="c-user-level">{{{commentPosterLevel}}}</span>
+
+		<div class="c-score">
+		<span class="c-score-title">赞 <span id="Comment{{commentID}}">{{zan}}</span>
+		{{#login}}
+			{{#isself}}
+				</span>你</div>
+			{{/isself}}
+			{{^isself}}
+				<span id="CommentBtn{{commentID}}">
+				<a id="comment-vote-link" data-comment-id="{{commentID}}" data-vote-type="1" data-voting="" href="javascript:void(0);"><i class="icon-like"></i> </a>
+				<a id="comment-vote-link" data-comment-id="{{commentID}}" data-vote-type="-1" data-voting="" href="javascript:void(0);"><i class="icon-dislike"></i></a>
+				</span></div>
+			{{/isself}}
+		{{/login}}
+		{{^login}}
+			</span></div>
+		{{/login}}
+		</div>
+		<div class="c-comment f-message">
+		{{commentContent}}
+		</div>
+		<div class="c-actions">
+		<div class="c-time">{{timeago}}</div>
+		{{#login}}
+			<a href="#comment" rel="nofollow" class="comments-reply-to" data-comment-id="{{commentID}}" data-comments-safe-username="{{username}}" >回复</a>  | <span class="c-delete"><a href="javascript:void(0);" rel="nofollow" class="comment-delete-link" data-comment-id="{{commentID}}">删除吐槽</a></span>
+		{{/login}}
+
+		</div>
+	</div>
+	<div class="cleared"></div>
+</div>
