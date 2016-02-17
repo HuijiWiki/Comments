@@ -679,7 +679,7 @@ class CommentsPage extends ContextSource {
 		        }else{
 		        	$isself = false;
 		        }
-		        if( $allComment[$key]['Comment_votenum'] > 1 ){
+		        if( $allComment[$key]['Comment_votenum'] > 5 ){
 		        	$isdisplay = 1;
 		        	$output .= $templateParser->processTemplate(
 					    'hotComments',
