@@ -48,6 +48,10 @@ class CommentVoteAPI extends ApiBase {
             return true;
         }
     }
+    
+    public function needsToken() {
+        return 'csrf';
+    }
 
     public function getAllowedParams() {
         return array(
