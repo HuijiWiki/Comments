@@ -79,5 +79,6 @@
 	"notification-comment-plus":"为你的吐槽点赞了",
 	"notification-comment-mention":"提到了你",
 	"echo-subscriptions-web-comment-msg":"在站内通知吐槽",
-	"echo-subscriptions-email-comment-msg":"用邮件通知吐槽"
+	"echo-subscriptions-email-comment-msg":"用邮件通知吐槽",
+	"comments-add-emoji-emote":"<charinsert>{{囧}} {{雷}} {{蠢}} {{色}}</charinsert>"
 }

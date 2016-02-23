@@ -406,8 +406,8 @@ $( document ).ready( function() {
             $(this).addClass('focus');
         }
     })
-    .on('blur','#comment',function(){
-        $(this).removeClass('focus');
-
-    })
+//    .on('blur','#comment',function(){
+//        $(this).removeClass('focus');
+//
+//    })
 } );

@@ -39,7 +39,8 @@ $wgResourceModules['ext.comments.css'] = array(
 );
 
 $wgResourceModules['ext.comments.js'] = array(
-	'scripts' => 'Comment.js',
+	'scripts' => array('Comment.js', 'emoji.js'),
+	'dependencies' => array('jquery.textSelection'),
 	'messages' => array(
 		'comments-voted-label', 'comments-loading',
 		'comments-auto-refresher-pause', 'comments-auto-refresher-enable',
