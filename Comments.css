@@ -6,7 +6,8 @@ ul.cod-ul {
 	width: 100%;
     position: relative;
     margin-top: 20px;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    clear: both;
 }
 
 #comment-vote-link i{
@@ -237,4 +238,29 @@ li.cod{
 	font-weight: normal;
 	font-size: 14px;
 	border: none;
+}
+
+.comment-list{
+    position: relative;
+}
+.custom-face{
+    position: absolute;
+    max-width: 300px;
+    background: #fff;
+    padding: 8px 10px;
+    top: 0;
+    right: 130px;
+    text-align: center;
+    border: 1px #dfdfdf solid;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+    -webkit-box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
+    display:none;
+}
+.custom-face a {
+    color: #09c!important;
 }

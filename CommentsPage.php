@@ -579,11 +579,13 @@ class CommentsPage extends ContextSource {
 						)->text() . '<a id="TcLogin">登录</a>。</div>' . "\n";
 				}
 
-				$output .= '<textarea name="commentText" id="comment" class="mw-ui-input col-md-11 text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea>' . "\n";
-				$output .= '<div class="mw-ui-button site-button pull-right" id="add-emoji-emote"><span class="icon-emoticon-smile"></span></div>'. "\n";
-				$output .= '<div>'.wfMessage('comments-add-emoji-emote')->parse().'</div>'. "\n";
-				$output .= '<div class="mw-ui-button site-button pull-right" id="add-text-emote"><span class="icon-grid"></span></div>'. "\n";
+				$output .= '<p class="lead emoji-picker-container"><textarea name="commentText" id="comment" class="mw-ui-input col-md-11 text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div>' . "\n";
+
+				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="custom_comment"><i class="icon-emoticon-smile"></i></div>'. "\n";
+
 				$output .= '<div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>' . "\n";
+
+				$output .= '<span class="custom-face">'.wfMessage('comments-add-emoji-emote')->parse().'</span></div>';
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
 			$output .= '<input type="hidden" name="pageId" value="' . $this->id . '" />' . "\n";
