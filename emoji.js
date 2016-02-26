@@ -30,7 +30,9 @@ window.insertTags = function( tagOpen, tagClose, sampleText ) {
         if (window.getSelection) {
             //contenteditable
             if (isContentEditable) {
+                console.log(area.firstChild);
                 area.focus();
+                console.log(area.firstChild+'  '+pos);
                 window.getSelection().collapse(area.firstChild, pos);
             }
             //textarea

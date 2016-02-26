@@ -581,9 +581,9 @@ class CommentsPage extends ContextSource {
 
 				$output .= '<p class="lead emoji-picker-container"><textarea name="commentText" id="comment" class="mw-ui-input col-md-11 text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div>' . "\n";
 
-				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="custom_comment"><i class="icon-emoticon-smile"></i></div>'. "\n";
+				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
-				$output .= '<div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>' . "\n";
+				$output .= '<div class="mw-ui-button site-button pull-right" id="custom_comment"><i class="icon-emoticon-smile"></i></div>' . "\n";
 
 				$output .= '<span class="custom-face">'.wfMessage('comments-add-emoji-emote')->parse().'</span></div>';
 			}
