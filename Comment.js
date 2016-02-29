@@ -148,7 +148,7 @@ var Comment = {
             api.postWithToken('edit', { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText })
                 .done(function( response ) {
                     if ( response.commentsubmit.ok ) {
-                        document.commentForm.commentText.value = '';
+                        $('.mention-area').text('') ;
                         Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
                         $('#comment').trigger('blur');
                     } else {
@@ -381,7 +381,6 @@ $( document ).ready( function() {
         .on( 'click touchstart', '#tc_comment', function(event) {
             event.preventDefault();
             if ($('#comment').val()=='') {
-                console.log($('#comment').val());
                 alert('请输入吐槽内容');
             }else{
                 Comment.submit();
