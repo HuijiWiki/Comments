@@ -378,9 +378,10 @@ $( document ).ready( function() {
         } )
 
         // Handle clicks on the submit button (previously this was an onclick attr)
-        .on( 'mousedown touchstart', '#tc_comment', function(event) {
+        .on( 'click touchstart', '#tc_comment', function(event) {
             event.preventDefault();
             if ($('#comment').val()=='') {
+                console.log($('#comment').val());
                 alert('请输入吐槽内容');
             }else{
                 Comment.submit();
