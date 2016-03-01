@@ -80,5 +80,5 @@
 	"notification-comment-mention":"提到了你",
 	"echo-subscriptions-web-comment-msg":"在站内通知吐槽",
 	"echo-subscriptions-email-comment-msg":"用邮件通知吐槽",
-	"comments-add-emoji-emote":"<charinsert>(⌒▽⌒) （￣▽￣） (=・ω・=)  (｀・ω・´) (〜￣△￣)〜 (･∀･) (°∀°)ﾉ (￣3￣)╮ (￣▽￣)╭ ( ´_ゝ｀) ←_← →_→ (<_<) (>_>) (;¬_¬) (ﾟДﾟ≡ﾟдﾟ) !?Σ(ﾟдﾟ;)Σ ( ￣□￣||) (´；ω；`) （/TДT)/ (^・ω・^ ) (｡･ω･｡) (●￣(ｴ)￣●) ε=ε=(ノ≧∇≦)ノ (´･_･`) (-_-#) （￣へ￣） (￣ε(#￣)  Σヽ(`Д´)ﾉ (╯°口°)╯ (┴—┴（#-_-)┯━┯ _(:3」∠)_</charinsert>"
+	"comments-add-emoji-emote":"<charinsert>(⌒▽⌒) （￣▽￣） (=・ω・=)  (｀・ω・´) (〜￣△￣)〜 </charinsert>"
 }

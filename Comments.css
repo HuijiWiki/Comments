@@ -242,6 +242,7 @@ li.cod{
 
 .comment-list{
     position: relative;
+    z-index: 100;
 }
 .custom-face{
     position: absolute;
