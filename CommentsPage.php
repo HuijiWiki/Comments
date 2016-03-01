@@ -583,9 +583,11 @@ class CommentsPage extends ContextSource {
 
 				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
-				$output .= '<div class="mw-ui-button site-button pull-right" id="custom_comment">(・ω・)</div>' . "\n";
+				if (wfMessage('comments-add-emoji-emote')->parse() != ''){
+					$output .= '<div class="mw-ui-button site-button pull-right" id="custom_comment">模板</div>' . "\n";
+					$output .= '<span class="custom-face">'.wfMessage('comments-add-emoji-emote')->parse().'</span></div>';					
+				}
 
-				$output .= '<span class="custom-face">'.wfMessage('comments-add-emoji-emote')->parse().'</span></div>';
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
 			$output .= '<input type="hidden" name="pageId" value="' . $this->id . '" />' . "\n";
