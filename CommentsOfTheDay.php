@@ -32,7 +32,9 @@ function wfCommentsOfTheDay( &$parser ) {
 function getCommentsOfTheDay( $input, $args, $parser ) {
 	global $wgMemc, $wgHasComments;
 
-	$wgHasComments = true;
+	$out = $parser->getOutput();
+	$out->addModules( array('ext.comments.js','ext.comments.css') );
+	$out->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
 	$oneDay = 60 * 60 * 24;
 	$oneHour = 60 * 60;
 
