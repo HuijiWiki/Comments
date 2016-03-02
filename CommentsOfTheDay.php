@@ -30,8 +30,9 @@ function wfCommentsOfTheDay( &$parser ) {
  * @return string HTML
  */
 function getCommentsOfTheDay( $input, $args, $parser ) {
-	global $wgMemc;
+	global $wgMemc, $wgHasComments;
 
+	$wgHasComments = true;
 	$oneDay = 60 * 60 * 24;
 	$oneHour = 60 * 60;
 
