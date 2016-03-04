@@ -30,13 +30,16 @@ class CommentsHooks {
 	 */
 	public static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) { 
 		// Add required CSS & JS via ResourceLoader
-		// global $wgCommentsSortDescending,$wgHasComments;
-		// if ($skin->getTitle()->hasSourceText() &&  !($skin->getTitle()->isMainPage()) 
-  //          && $skin->getTitle()->exists() && $skin->getRequest()->getText('action') == '' 
-  //      ){
-		// 	$out->addModules( array('ext.comments.js','ext.comments.css') );
-		// 	$out->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
-		// }
+		global $wgCommentsSortDescending,$wgHasComments;
+        global $wgRequest;
+        $title = $skin->getTitle();
+        if( !($title->isMainPage()) && $out->isArticle() 
+        	&& !($title->isTalkPage()) && ($title->getNamespace()!=NS_USER) 
+        	&& $wgRequest->getText( 'action' )=='' && $title->exists()
+        ){
+			$out->addModules( array('ext.comments.js','ext.comments.css') );
+			$out->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
+		}
 
 	}
 
@@ -62,12 +65,6 @@ class CommentsHooks {
 		if ( $title->getArticleID() == 0 && $title->getDBkey() == 'CommentListGet' ) {
 			return self::nonDisplayComments( $input, $args, $parser );
 		}
-		
-
-		// // Add required CSS & JS via ResourceLoader
-		$parser->getOutput()->addModuleStyles( 'ext.comments.css' );
-		$parser->getOutput()->addModules( 'ext.comments.js' );
-		$parser->getOutput()->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
 
 		// Parse arguments
 		// The preg_match() lines here are to support the old-style way of
