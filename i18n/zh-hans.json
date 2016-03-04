@@ -81,7 +81,7 @@
 	"echo-subscriptions-web-comment-msg":"在站内通知吐槽",
 	"echo-subscriptions-email-comment-msg":"用邮件通知吐槽",
 	"comments-add-emoji-emote":"",
-	"comments-placeholder-1":"{{REVISIONUSER}}好帅，谢谢你的编辑...",
+	"comments-placeholder-1":"{{REVISIONUSER:{{PAGENAME}}}}好帅，谢谢你的编辑...",
 	"comments-placeholder-2":"{{SITENAME}}做的好棒，站长真是人生赢家...",
 	"comments-placeholder-3":"我一直以为我对{{PAGENAME}}知之甚多，直到我膝盖中了一箭...",
 	"comments-placeholder-4":"来盘昆特牌吧！",
