@@ -80,5 +80,14 @@
 	"notification-comment-mention":"提到了你",
 	"echo-subscriptions-web-comment-msg":"在站内通知吐槽",
 	"echo-subscriptions-email-comment-msg":"用邮件通知吐槽",
-	"comments-add-emoji-emote":""
+	"comments-add-emoji-emote":"",
+	"comments-placeholder-1":"{{REVISIONUSER}}好帅，谢谢你的编辑...",
+	"comments-placeholder-2":"{{SITENAME}}做的好棒，站长真是人生赢家...",
+	"comments-placeholder-3":"我一直以为我对{{PAGENAME}}知之甚多，直到我膝盖中了一箭...",
+	"comments-placeholder-4":"来盘昆特牌吧！",
+	"comments-placeholder-5":"驾驶收割机是一种怎样的体验？周卓：谢邀。",
+	"comments-placeholder-6":"想要加编辑组的请打1...",
+	"comments-placeholder-7":"人生在世，有{{PAGENAME}}相伴就足够了...",
+	"comments-placeholder-8":"长夜黑暗，处处芜菁...",
+	"comments-placeholder-9":"奥克还是兽人，这是一个问题..."
 }

@@ -578,8 +578,9 @@ class CommentsPage extends ContextSource {
 							htmlspecialchars( $register_title->getFullURL() )
 						)->text() . '<a id="TcLogin">登录</a>。</div>' . "\n";
 				}
-
-				$output .= '<div class="lead emoji-picker-container clear"><textarea name="commentText" id="comment" class="mw-ui-input col-md-11 text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div>' . "\n";
+				$rand = rand(1, 9);
+				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
+				$output .= '<div class="lead emoji-picker-container clear"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input col-md-11 text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div>' . "\n";
 
 				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
