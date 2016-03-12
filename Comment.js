@@ -276,9 +276,11 @@ var Comment = {
             text: mw.msg( 'comments-cancel-reply' )
         } ).appendTo( '#replyto' );
         $( '#replyto' ).append( ') <br />' );
-        $( '#comment').val(
+        /*$( '#comment').val(
             mw.msg( 'child-comments-reply-to', poster, posterGender )
-        );
+        );*/
+        var rmsg = mw.msg( 'child-comments-reply-to', poster, posterGender );
+        $('.mention-area').text(rmsg).val(rmsg);
         document.commentForm.commentParentId.value = parentOfParentId;
         $( '#comment' ).focus();
     },
