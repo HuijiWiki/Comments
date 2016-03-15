@@ -148,7 +148,7 @@ var Comment = {
             api.postWithToken('edit', { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText })
                 .done(function( response ) {
                     if ( response.commentsubmit.ok ) {
-                        $('.mention-area').text('') ;
+                        $('.mention-area').text('').val('');
                         Comment.viewComments( document.commentForm.pageId.value, 0, parentID, document.commentForm.cpage.value,'' );
                         $('#comment').trigger('blur');
                     } else {
@@ -276,9 +276,11 @@ var Comment = {
             text: mw.msg( 'comments-cancel-reply' )
         } ).appendTo( '#replyto' );
         $( '#replyto' ).append( ') <br />' );
-        $( '#comment').val(
+        /*$( '#comment').val(
             mw.msg( 'child-comments-reply-to', poster, posterGender )
-        );
+        );*/
+        var rmsg = mw.msg( 'child-comments-reply-to', poster, posterGender );
+        $('.mention-area').text(rmsg).val(rmsg);
         document.commentForm.commentParentId.value = parentOfParentId;
         $( '#comment' ).focus();
     },

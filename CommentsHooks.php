@@ -37,7 +37,12 @@ class CommentsHooks {
         	&& !($title->isTalkPage()) && ($title->getNamespace()!=NS_USER) 
         	&& $wgRequest->getText( 'action' )=='' && $title->exists()
         ){
-			$out->addModules( array('ext.comments.js','ext.comments.css') );
+			$out->addModules( 
+				array(
+					'ext.comments.js',
+					'ext.comments.css'
+				) 
+			);
 			$out->addJsConfigVars( array( 'wgCommentsSortDescending' => $wgCommentsSortDescending ) );
 		}
 
