@@ -581,7 +581,7 @@ class Comment extends ContextSource {
 			$commentPoster = '<a href="' . $title->getFullURL() . '" title="' . $title->getText() . '" rel="nofollow">' . $this->username . '</a>';
 			if ( class_exists( 'wAvatar' ) ) {
 				$avatar = new wAvatar( $this->userID, 'm' );
-				$commentIcon = $avatar->getAvatarAnchor();
+				$commentIcon = $avatar->getAvatarImage();
 			} else {
 				$commentIcon = '';
 			}
@@ -594,7 +594,7 @@ class Comment extends ContextSource {
 		$avatarHTML = '';
 		if ( class_exists( 'wAvatar' ) ) {
 			global $wgUploadPath;
-			$avatarHTML = $avatar->getAvatarAnchor();
+			$avatarHTML = $avatar->getAvatarURL();
 		}
 
 		$comment_text = mb_substr( $this->text, 0, 50, "utf-8" );
@@ -675,8 +675,7 @@ class Comment extends ContextSource {
 		if ( $this->userID != 0 ) {
 			$title = Title::makeTitle( NS_USER, $this->username );
 
-			$commentPoster = '<a class="mw-userlink" href="' . htmlspecialchars( $title->getFullURL() ) .
-				'" rel="nofollow">' . $this->username . '</a>';
+			$commentPoster = Linker::link($title,$this->username,array(),array(),array());
 
 			$CommentReplyTo = $this->username;
 
@@ -751,7 +750,7 @@ class Comment extends ContextSource {
 		// If SocialProfile *is* enabled, then use its wAvatar class to get the avatars for each commenter
 		if ( class_exists( 'wAvatar' ) ) {
 			$avatar = new wAvatar( $this->userID, 'ml' );
-			$avatarImg = $avatar->getAvatarAnchor() . "\n";
+			$avatarImg = $avatar->getAvatarURL() . "\n";
 		}
 
 		$output = "<div id='comment-{$this->id}' class='c-item {$containerClass}'{$style}>" . "\n";
@@ -902,7 +901,6 @@ class Comment extends ContextSource {
             'tooltip' => 'echo-pref-tooltip-comment-msg',
         );
         $notifications['comment-msg'] = array(
-            'primary-link' => array('message' => 'notification-link-text-respond-to-user', 'destination' => 'comment-page'),	
             'category' => 'comment-msg',
             'group' => 'positive',
             'formatter-class' => 'EchoCommentReplyFormatter',
@@ -918,7 +916,6 @@ class Comment extends ContextSource {
             'email-body-batch-message' => 'notification-comment-email-batch-body',
             'email-body-batch-params' => array( 'agent', 'main-title-text' ),
             'icon' => 'chat',
-            'section' => 'message',
         );
         return true;
     }
@@ -955,33 +952,6 @@ class Comment extends ContextSource {
 
 }
 class EchoCommentReplyFormatter extends EchoCommentFormatter {
-	/**
-	 * Helper function for getLink()
-	 *
-	 * @param \EchoEvent $event
-	 * @param \User $user The user receiving the notification
-	 * @param string $destination The destination type for the link
-	 * @return array including target and query parameters
-	 * @throws FlowException
-	 */
-	protected function getLinkParams( $event, $user, $destination ) {
-		// Set up link parameters based on the destination (or pass to parent)
-		switch ( $destination ) {
-			case 'comment-page':
-				$eventData = $event->getExtra();
-        			$titleData = $event->getTitle();
-        			if ( !isset( $eventData['comment-id']) ) {
-                			$eventData['comment-id'] = null;
-        			} else {
-        				$titleData->setFragment('#'.$eventData['comment-id']);
-        			}
-        			return array($titleData, array('fromnotif' => 1));
-
-			default:
-				return parent::getLinkParams( $event, $user, $destination );
-		}
-	}
-
 
 	protected function formatPayload( $payload, $event, $user ) {
 		switch ( $payload ) {
@@ -1009,7 +979,12 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
     protected function processParam( $event, $param, $message, $user ) {
         if ( $param === 'reply' ) {
         	$eventData = $event->getExtra();
-        	$titleData = $event->getTitle()->getPrefixedText();
+        	if ($event->getTitle()){
+        		$titleData = $event->getTitle()->getPrefixedText();
+        	} else {
+        		$titleData = '';
+        	}
+        	
         	if ( !isset( $eventData['comment-id']) ) {
                 $eventData['comment-id'] = null;
             }
