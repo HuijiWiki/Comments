@@ -265,3 +265,16 @@ li.cod{
 .custom-face a {
     color: #09c!important;
 }
+
+.c-item-del{
+	font-size: 14px;
+	background-color: rgba(202, 202, 202, 0.33);
+	/* color: #0E1112; */
+	height: 50px;
+	text-align: center;
+	padding-top: 15px;
+	margin-bottom: 15px;
+}
+.lead.emoji-picker-container{
+	padding: 0px;
+}

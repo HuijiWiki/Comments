@@ -101,7 +101,7 @@ class CommentsHooks {
 		$commentsPage->allow = $allow;
 		$commentsPage->setVoting( $voting );
 
-		$output = '<div class="comments-body">';
+		$output = '<article class="comments-body">';
 
 		if ( $wgCommentsSortDescending ) { // form before comments
 			$output .= '<a id="end" name="end" rel="nofollow"></a>';
@@ -114,8 +114,8 @@ class CommentsHooks {
 		if($commentsPage->display() != null){
 			$output .= '<div class="display-order">'.$commentsPage->displayOrderForm().'</div>';
 		}
-		$output .= '<div id="hotcomments">' . $commentsPage->getHotComments() . '</div>';
-		$output .= '<div id="allcomments">' . $commentsPage->display() . '</div>';
+		$output .= '<section id="hotcomments">' . $commentsPage->getHotComments() . '</section>';
+		$output .= '<section id="allcomments">' . $commentsPage->display() . '</section>';
 
 		// If the database is in read-only mode, display a message informing the
 		// user about that, otherwise allow them to comment
@@ -128,7 +128,7 @@ class CommentsHooks {
 			$output .= '<a id="end" name="end" rel="nofollow"></a>';
 		}
 
-		$output .= '</div>'; // div.comments-body
+		$output .= '</article>'; // div.comments-body
 
 		wfProfileOut( __METHOD__ );
 

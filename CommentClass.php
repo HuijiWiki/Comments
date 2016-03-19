@@ -291,7 +291,7 @@ class Comment extends ContextSource {
 				'Comment_Text' => $text,
 				'Comment_Date' => $commentDate,
 				'Comment_Parent_ID' => $parentID,
-				'Comment_IP' => $_SERVER['REMOTE_ADDR']
+				'Comment_IP' => HuijiFunctions::getIp()
 			),
 			__METHOD__
 		);
@@ -413,7 +413,7 @@ class Comment extends ContextSource {
 					'Comment_Vote_user_id' => $this->getUser()->getId(),
 					'Comment_Vote_Score' => $value,
 					'Comment_Vote_Date' => $commentDate,
-					'Comment_Vote_IP' => $_SERVER['REMOTE_ADDR']
+					'Comment_Vote_IP' => HuijiFunctions::getIp()
 				),
 				__METHOD__
 			);
@@ -423,7 +423,7 @@ class Comment extends ContextSource {
 				array(
 					'Comment_Vote_Score' => $value,
 					'Comment_Vote_Date' => $commentDate,
-					'Comment_Vote_IP' => $_SERVER['REMOTE_ADDR']
+					'Comment_Vote_IP' => HuijiFunctions::getIp()
 				),
 				array(
 					'Comment_Vote_id' => $this->id,
@@ -460,8 +460,9 @@ class Comment extends ContextSource {
 	 */
 	function delete() {
 		$dbw = wfGetDB( DB_MASTER );
-		$dbw->delete(
+		$dbw->update(
 			'Comments',
+			array('Comment_IP' => 0),
 			array( 'CommentID' => $this->id ),
 			__METHOD__
 		);
@@ -753,42 +754,47 @@ class Comment extends ContextSource {
 			$avatar = new wAvatar( $this->userID, 'ml' );
 			$avatarImg = $avatar->getAvatarAnchor() . "\n";
 		}
+		if ( $this->ip == 0 && $this->parentID==0 ) {
+			$output = "<div id='comment-{$this->id}' class='c-item-del'>此条吐槽已被删除</div>";
+			return $output;
+		}elseif ($this->ip != 0) {
+			$output = "<div id='comment-{$this->id}' class='c-item {$containerClass}'{$style}>" . "\n";
+			$output .= "<div class=\"c-avatar\">{$avatarImg}</div>" . "\n";
+			$output .= '<div class="c-container">' . "\n";
+			$output .= '<div class="c-user">' . "\n";
+			$output .= "{$commentPoster}";
+			$output .= "<span class=\"c-user-level\">{$commentPosterLevel}</span> {$blockLink}" . "\n";
 
-		$output = "<div id='comment-{$this->id}' class='c-item {$containerClass}'{$style}>" . "\n";
-		$output .= "<div class=\"c-avatar\">{$avatarImg}</div>" . "\n";
-		$output .= '<div class="c-container">' . "\n";
-		$output .= '<div class="c-user">' . "\n";
-		$output .= "{$commentPoster}";
-		$output .= "<span class=\"c-user-level\">{$commentPosterLevel}</span> {$blockLink}" . "\n";
-
-		wfSuppressWarnings(); // E_STRICT bitches about strtotime()
+			wfSuppressWarnings(); // E_STRICT bitches about strtotime()
 
 
-		$output .= '<div class="c-score">' . "\n";
-		$output .= $this->getScoreHTML();
-		$output .= '</div>' . "\n";
+			$output .= '<div class="c-score">' . "\n";
+			$output .= $this->getScoreHTML();
+			$output .= '</div>' . "\n";
 
-		$output .= '</div>' . "\n";
-		$output .= "<div class=\"c-comment {$comment_class}\">" . "\n";
-		$output .= $this->getText();
-		$output .= '</div>' . "\n";
-		$output .= '<div class="c-actions">' . "\n";
-		$output .= '<div class="c-time">' .
-        			wfMessage(
-        				'comments-time-ago',
-        				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
-        			)->text() . '</div>' . "\n";
-        		wfRestoreWarnings();
-		$output .= '<a href="' . htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\" rel=\"nofollow\">" .
-			$this->msg( 'comments-permalink' )->plain() . '</a> ';
-		if ( $replyRow || $dlt ) {
-			$output .= "{$replyRow} {$dlt}" . "\n";
+			$output .= '</div>' . "\n";
+			$output .= "<div class=\"c-comment {$comment_class}\">" . "\n";
+			$output .= $this->getText();
+			$output .= '</div>' . "\n";
+			$output .= '<div class="c-actions">' . "\n";
+			$output .= '<div class="c-time">' .
+	        			wfMessage(
+	        				'comments-time-ago',
+	        				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
+	        			)->text() . '</div>' . "\n";
+	        		wfRestoreWarnings();
+			$output .= '<a href="' . htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\" rel=\"nofollow\">" .
+				$this->msg( 'comments-permalink' )->plain() . '</a> ';
+			if ( $replyRow || $dlt ) {
+				$output .= "{$replyRow} {$dlt}" . "\n";
+			}
+			$output .= '</div>' . "\n";
+			$output .= '</div>' . "\n";
+			$output .= '<div class="cleared"></div>' . "\n";
+			$output .= '</div>' . "\n";
+		}else{
+			$output = '';
 		}
-		$output .= '</div>' . "\n";
-		$output .= '</div>' . "\n";
-		$output .= '<div class="cleared"></div>' . "\n";
-		$output .= '</div>' . "\n";
-
 		return $output;
 	}
 

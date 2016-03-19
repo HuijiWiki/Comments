@@ -550,7 +550,7 @@ class CommentsPage extends ContextSource {
 	 * @return string HTML output
 	 */
 	function displayForm() {
-		$output = '<div class="container-fluid"><form name="commentForm" class="row">' . "\n";
+		$output = '<section class="container-fluid"><form name="commentForm"><div class="row">' . "\n";
 		// $output = '<div name="commentForm">' . "\n";
 
 		if ( $this->allow ) {
@@ -568,10 +568,16 @@ class CommentsPage extends ContextSource {
 			// and maybe there's a list of users who should be allowed to post
 			// comments
 			if ( $this->getUser()->isBlocked() == false && ( $this->allow == '' || $pos !== false ) ) {
-				$output .= '<div class="c-form-title col-md-1">吐槽</div>' . "\n";
-				$output .= '<div id="replyto" class="c-form-reply-to"></div>' . "\n";
+				if ($this->getUser()->isLoggedIn() ){
+					$avatar = new wAvatar($this->getUser()->getId(), 'ml');
+					$avatarAnchor = $avatar->getAvatarAnchor();
+					$output .= '<div class="c-form-title col-md-1"><div class="c-avatar">'.$avatarAnchor.'</div></div>' . "\n";
+					$output .= '<div id="replyto" class="c-form-reply-to"></div>' . "\n";					
+				}
 				// Show a message to anons, prompting them to register or log in
-				if ( !$this->getUser()->isLoggedIn() ) {
+				else {
+					$output .= '<div class="c-form-title col-md-1">吐槽</div>' . "\n";
+					$output .= '<div id="replyto" class="c-form-reply-to"></div>' . "\n";	
 					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
 					$output .= '<div class="c-form-message">' . wfMessage(
 							'comments-anon-message',
@@ -580,7 +586,7 @@ class CommentsPage extends ContextSource {
 				}
 				$rand = rand(1, 9);
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
-				$output .= '<div class="lead emoji-picker-container clear"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input col-md-11 text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div>' . "\n";
+				$output .= '<div class="lead emoji-picker-container col-md-11"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
 
 				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
@@ -598,7 +604,7 @@ class CommentsPage extends ContextSource {
 			$output .= '<input type="hidden" name="' . $this->pageQuery . '" value="' . $this->getCurrentPagerPage() . '" />' . "\n";
 			$output .= Html::hidden( 'token', $this->getUser()->getEditToken() );
 		// }
-		$output .= '</form></div>' . "\n";
+		$output .= '</form></section>' . "\n";
 		return $output;
 	}
 
