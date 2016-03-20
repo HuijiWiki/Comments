@@ -550,7 +550,7 @@ class CommentsPage extends ContextSource {
 	 * @return string HTML output
 	 */
 	function displayForm() {
-		$output = '<section class="container-fluid"><form name="commentForm"><div class="row">' . "\n";
+		$output = '<section class="container-fluid"><form name="commentForm"><div id="replyto" class="c-form-reply-to"></div><div class="row">' . "\n";
 		// $output = '<div name="commentForm">' . "\n";
 
 		if ( $this->allow ) {
@@ -572,12 +572,11 @@ class CommentsPage extends ContextSource {
 					$avatar = new wAvatar($this->getUser()->getId(), 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
 					$output .= '<div class="c-form-title col-md-1 hidden-sm hidden-xs"><div class="c-avatar">'.$avatarAnchor.'</div></div>' . "\n";
-					$output .= '<div id="replyto" class="c-form-reply-to"></div>' . "\n";					
+										
 				}
 				// Show a message to anons, prompting them to register or log in
 				else {
 					$output .= '<div class="c-form-title col-md-1 hidden-sm hidden-xs">吐槽</div>' . "\n";
-					$output .= '<div id="replyto" class="c-form-reply-to"></div>' . "\n";	
 					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
 					$output .= '<div class="c-form-message">' . wfMessage(
 							'comments-anon-message',
