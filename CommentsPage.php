@@ -576,6 +576,7 @@ class CommentsPage extends ContextSource {
 				}
 				// Show a message to anons, prompting them to register or log in
 				else {
+					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
 					$output .= '<div class="c-form-message">' . wfMessage(
 							'comments-anon-message',
 							htmlspecialchars( $register_title->getFullURL() )
@@ -583,8 +584,6 @@ class CommentsPage extends ContextSource {
 					$avatar = new wAvatar( 0, 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
 					$output .= '<div class="c-form-title"><div class="c-avatar">'.$avatarAnchor.'</div></div>' . "\n";
-					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
-
 				}
 				$rand = rand(1, 9);
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
