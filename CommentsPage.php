@@ -571,12 +571,12 @@ class CommentsPage extends ContextSource {
 				if ($this->getUser()->isLoggedIn() ){
 					$avatar = new wAvatar($this->getUser()->getId(), 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
-					$output .= '<div class="c-form-title col-md-1 hidden-sm hidden-xs"><div class="c-avatar">'.$avatarAnchor.'</div></div>' . "\n";
+					$output .= '<div class="c-form-title col-md-2 hidden-sm hidden-xs"><div class="c-avatar">'.$avatarAnchor.'</div></div>' . "\n";
 										
 				}
 				// Show a message to anons, prompting them to register or log in
 				else {
-					$output .= '<div class="c-form-title col-md-1 hidden-sm hidden-xs">吐槽</div>' . "\n";
+					$output .= '<div class="c-form-title col-md-2 hidden-sm hidden-xs">吐槽</div>' . "\n";
 					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
 					$output .= '<div class="c-form-message">' . wfMessage(
 							'comments-anon-message',
@@ -585,7 +585,7 @@ class CommentsPage extends ContextSource {
 				}
 				$rand = rand(1, 9);
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
-				$output .= '<div class="lead emoji-picker-container col-md-11 col-sm-12 col-xs-12"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
+				$output .= '<div class="lead emoji-picker-container col-md-10 col-sm-12 col-xs-12"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
 
 				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
