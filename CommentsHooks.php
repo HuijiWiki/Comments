@@ -105,7 +105,7 @@ class CommentsHooks {
 		$commentsPage->allow = $allow;
 		$commentsPage->setVoting( $voting );
 
-		$output = '<article class="comments-body">';
+		$output = '<section class="comments-body">';
 
 		if ( $wgCommentsSortDescending ) { // form before comments
 			$output .= '<a id="end" name="end" rel="nofollow"></a>';
@@ -132,7 +132,7 @@ class CommentsHooks {
 			$output .= '<a id="end" name="end" rel="nofollow"></a>';
 		}
 
-		$output .= '</article>'; // div.comments-body
+		$output .= '</section>'; // div.comments-body
 
 		wfProfileOut( __METHOD__ );
 
