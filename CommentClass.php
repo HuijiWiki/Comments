@@ -1015,7 +1015,10 @@ class EchoCommentReplyFormatter extends EchoCommentFormatter {
     protected function processParam( $event, $param, $message, $user ) {
         if ( $param === 'reply' ) {
         	$eventData = $event->getExtra();
-        	$titleData = $event->getTitle()->getPrefixedText();
+		$titleData = '';
+        	if($event->getTitle() != ''){
+			$titleData = $event->getTitle()->getPrefixedText();
+		}
         	if ( !isset( $eventData['comment-id']) ) {
                 $eventData['comment-id'] = null;
             }
