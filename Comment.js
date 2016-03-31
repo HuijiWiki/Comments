@@ -144,7 +144,7 @@ var Comment = {
             } else {
                 parentID = document.commentForm.commentParentId.value;
             }
-            var commentText = document.commentForm.commentText.value;
+            var commentText = $('.emoji-wysiwyg-editor').text();
             api.postWithToken('edit', { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText })
                 .done(function( response ) {
                     if ( response.commentsubmit.ok ) {
@@ -382,7 +382,7 @@ $( document ).ready( function() {
         // Handle clicks on the submit button (previously this was an onclick attr)
         .on( 'click touchstart', '#tc_comment', function(event) {
             event.preventDefault();
-            if ($('#comment').val()=='') {
+            if ($('.emoji-wysiwyg-editor').text()=='') {
                 alert('请输入吐槽内容');
             }else{
                 Comment.submit();
@@ -431,10 +431,10 @@ $( document ).ready( function() {
 //        .on('blur','#comment',function(){
 //            $(this).removeClass('focus');
 //        })
-        .on('mousedown',function(){
+        .on('mousedown touchstart',function(){
             $('.custom-face').hide();
         })
-        .on('mousedown','.custom-face,.emoji-wysiwyg-editor',function(e){
+        .on('mousedown touchstart','.custom-face,.emoji-wysiwyg-editor',function(e){
             e.stopPropagation();
         })
 } );

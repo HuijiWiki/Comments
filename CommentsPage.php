@@ -581,7 +581,7 @@ class CommentsPage extends ContextSource {
 							'comments-anon-message',
 							htmlspecialchars( $register_title->getFullURL() )
 						)->text() . '<a id="TcLogin">登录</a>。&nbsp;&nbsp;
-                            <a href="https://api.weibo.com/oauth2/authorize?client_id=2445834038&amp;redirect_uri=http%3A%2F%2Fhuijiwiki.com%2Fwiki%2Fspecial%3Acallbackweibo&amp;response_type=code" class="icon-weibo-share"></a>&nbsp;&nbsp;
+                            <a href="javascript:void(0)" class="icon-weibo-share"></a>&nbsp;&nbsp;
                             <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&amp;client_id=101264508&amp;state=huijistate&amp;redirect_uri=http%3a%2f%2fwww.huiji.wiki%2fwiki%2fspecial%3acallbackqq" class="icon-qq-share"></a>
                         </div>' . "\n";
 					$avatar = new wAvatar( 0, 'ml');
