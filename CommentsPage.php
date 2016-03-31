@@ -577,7 +577,7 @@ class CommentsPage extends ContextSource {
 				// Show a message to anons, prompting them to register or log in
 				else {
 					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
-					$output .= '<div class="c-form-message">' . wfMessage(
+					$output .= '<div class="c-form-message alert alert-warning" role="alert">' . wfMessage(
 							'comments-anon-message',
 							htmlspecialchars( $register_title->getFullURL() )
 						)->text() . '<a id="TcLogin">登录</a>。&nbsp;&nbsp;
