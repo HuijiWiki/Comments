@@ -783,7 +783,7 @@ class Comment extends ContextSource {
 	        				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
 	        			)->text() . '</div>' . "\n";
 	        		wfRestoreWarnings();
-			$output .= '<a href="' . htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\" rel=\"nofollow\">" .
+			//$output .= '<a href="' . htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\" rel=\"nofollow\">" .
 				$this->msg( 'comments-permalink' )->plain() . '</a> ';
 			if ( $replyRow || $dlt ) {
 				$output .= "{$replyRow} {$dlt}" . "\n";
