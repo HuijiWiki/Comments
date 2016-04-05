@@ -653,6 +653,26 @@ class Comment extends ContextSource {
 		return $output;
 	}
 
+	/**
+	 * check comment is have replay
+	 *
+	 * @param int $commentId [commnet id ]
+	 * @return  boolean [if isset replay return true, else return false]
+	 */
+	function checkIsHaveReplay( $commentId ){
+		$dbr = wfGetDB( DB_SLAVE );
+		$row = $dbr->selectRow(
+			'comments',
+			array( 'CommentID' ),
+			array( 'Comment_Parent_ID' => $commentId ),
+			__METHOD__
+		);
+		if ( $row !== false && $row->CommentID ) {
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	/**
 	 * Show the comment
@@ -754,7 +774,7 @@ class Comment extends ContextSource {
 			$avatar = new wAvatar( $this->userID, 'ml' );
 			$avatarImg = $avatar->getAvatarAnchor() . "\n";
 		}
-		if ( $this->ip == 0 && $this->parentID==0 ) {
+		if ( $this->ip == 0 && $this->parentID==0 && $this->checkIsHaveReplay($this->id) ) {
 			$output = "<div id='comment-{$this->id}' class='c-item-del'>此条吐槽已被删除</div>";
 			return $output;
 		}elseif ($this->ip != 0) {

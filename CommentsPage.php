@@ -634,6 +634,7 @@ class CommentsPage extends ContextSource {
 		$allComment = $this->getCommentInfo();
 		$dbr = wfGetDB( DB_SLAVE );
 		$score = $result = array();
+		$output = '';
 		foreach ($allComment as $key => $value) {
 			$row = $dbr->selectRow(
 				'Comments_Vote',
