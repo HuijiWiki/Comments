@@ -489,7 +489,9 @@ class CommentsPage extends ContextSource {
 		$commentPages = $this->page( $commentThreads );
 		$currentPageNum = $this->getCurrentPagerPage();
 		$numPages = count( $commentPages );
-		$currentPage = $commentPages[$currentPageNum - 1];
+		if ( $numPages > 0 ) {
+			$currentPage = $commentPages[$currentPageNum - 1];
+		}
 
 		// Load complete blocked list for logged in user so they don't see their comments
 		$blockList = array();
