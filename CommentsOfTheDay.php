@@ -30,7 +30,7 @@ function wfCommentsOfTheDay( &$parser ) {
  * @return string HTML
  */
 function getCommentsOfTheDay( $input, $args, $parser ) {
-	global $wgMemc, $wgHasComments;
+	global $wgMemc, $wgHasComments, $wgCommentsSortDescending;
 
 	$out = $parser->getOutput();
 	$out->addModules( array('ext.comments.js','ext.comments.css') );
