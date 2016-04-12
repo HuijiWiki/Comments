@@ -372,6 +372,7 @@ $( document ).ready( function() {
                 $( this ).data( 'comments-safe-username' ),
                 $( this ).data( 'comments-user-gender' )
             );
+
         } )
 
         // "Reply to <username>" links
