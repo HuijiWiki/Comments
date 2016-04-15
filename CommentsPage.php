@@ -489,6 +489,7 @@ class CommentsPage extends ContextSource {
 		$commentPages = $this->page( $commentThreads );
 		$currentPageNum = $this->getCurrentPagerPage();
 		$numPages = count( $commentPages );
+		$currentPage = array();
 		if ( $numPages > 0 ) {
 			$currentPage = $commentPages[$currentPageNum - 1];
 		}
@@ -499,7 +500,7 @@ class CommentsPage extends ContextSource {
 			$blockList = CommentFunctions::getBlockList( $this->getUser()->getId() );
 		}
 
-		if ( $currentPage ) {
+		if ( count($currentPage) > 0 ) {
 			$pager = $this->displayPager( $currentPageNum, $numPages );
 			// $output .= $pager;
 			$output .= '<a id="cfirst" name="cfirst" rel="nofollow"></a>';
