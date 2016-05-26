@@ -496,9 +496,9 @@ class CommentsPage extends ContextSource {
 
 		// Load complete blocked list for logged in user so they don't see their comments
 		$blockList = array();
-		if ( $this->getUser()->getID() != 0 ) {
-			$blockList = CommentFunctions::getBlockList( $this->getUser()->getId() );
-		}
+		// if ( $this->getUser()->getID() != 0 ) {
+		// 	$blockList = CommentFunctions::getBlockList( $this->getUser()->getId() );
+		// }
 
 		if ( count($currentPage) > 0 ) {
 			$pager = $this->displayPager( $currentPageNum, $numPages );
