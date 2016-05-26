@@ -115,9 +115,9 @@ class CommentsHooks {
 				$output .= wfMessage( 'comments-db-locked' )->parse();
 			}
 		}
-		if($commentsPage->display() != null){
-			$output .= '<div class="display-order">'.$commentsPage->displayOrderForm().'</div>';
-		}
+		// if($commentsPage->display() != null){
+		// 	$output .= '<div class="display-order">'.$commentsPage->displayOrderForm().'</div>';
+		// }
 		$output .= '<section id="hotcomments">' . $commentsPage->getHotComments() . '</section>';
 		$output .= '<section id="allcomments">' . $commentsPage->display() . '</section>';
 
