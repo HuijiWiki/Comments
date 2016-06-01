@@ -622,9 +622,10 @@ class CommentsPage extends ContextSource {
 	function clearCommentListCache() {
 		$key = wfMemcKey( 'comment', 'pagethreadlist', $this->id );
 		$jobParams = array( 'key' => $key );
-		$job = new InvalidatePageCacheJob( $this->title, $jobParams );
-		JobQueueGroup::singleton()->push( $job );
-		
+		if (is_object($this->title)){
+			$job = new InvalidatePageCacheJob( $this->title, $jobParams );
+			JobQueueGroup::singleton()->push( $job );
+		}
 	}
 
 	/**
