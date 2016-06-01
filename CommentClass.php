@@ -610,17 +610,15 @@ class Comment extends ContextSource {
 		} elseif ( $this->currentScore < 0 ) {
 			$sign = '-'; // this *really* shouldn't be happening...
 		}
+		$this->page->title->setFragment('#comment-' . $this->id);
+		//@Since 1.27
+		//$tf = $this->page->title->createFragmentTarget( '#comment-' . $this->id );
 		$output .= '<span class="cod-score pull-right">' . $sign . $this->currentScore .
 			'赞</span> ' . $avatarHTML .
-			'<span class="cod-poster">' . $commentPoster . '</span>'.' @ <a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="'.$this->page->title.
+			'<span class="cod-poster">' . $commentPoster . '</span>'.' @ <a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="'.$this->page->title->getLocalURL().
 			'">'.$this->page->title.'</a><div class="c-sep"></div>';
-		$output .= '<div><span class="cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="/wiki/' .
-			$this->page->title .'#comment-' . $this->id;
-			if(is_object($title2)){
-				$output .='" title="' . $title2->getText() . '">' . $comment_text.'</a></span></div>';
-			}else{
-				$output .='">' . $comment_text.'</a></span></div>';
-			}
+		$output .= '<div><span class="cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="' .$this->page->title->getFullURL();
+		$output .='">' . $comment_text.'</a></span></div>';
 		$output .= '</li>';
 		return $output;
 	}
