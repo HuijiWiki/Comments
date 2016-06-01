@@ -303,16 +303,18 @@ class Comment extends ContextSource {
 
 		// Add a log entry.
 		$pageTitle = Title::newFromID( $page->id );
+		if ($pageTitle != null){
+			$logEntry = new ManualLogEntry( 'comments', 'add' );
+			$logEntry->setPerformer( $user );
+			$logEntry->setTarget( $pageTitle );
+			$logEntry->setComment( $text );
+			$logEntry->setParameters( array(
+				'4::commentid' => $commentId
+			) );
+			$logId = $logEntry->insert();
+			$logEntry->publish( $logId, ( $wgCommentsInRecentChanges ? 'rcandudp' : 'udp' ) );			
+		}
 
-		$logEntry = new ManualLogEntry( 'comments', 'add' );
-		$logEntry->setPerformer( $user );
-		$logEntry->setTarget( $pageTitle );
-		$logEntry->setComment( $text );
-		$logEntry->setParameters( array(
-			'4::commentid' => $commentId
-		) );
-		$logId = $logEntry->insert();
-		$logEntry->publish( $logId, ( $wgCommentsInRecentChanges ? 'rcandudp' : 'udp' ) );
 		$dbr = wfGetDB( DB_SLAVE );
 		if (
 			$dbr->tableExists( 'user_stats' ) &&
