@@ -612,6 +612,9 @@ class Comment extends ContextSource {
 		} elseif ( $this->currentScore < 0 ) {
 			$sign = '-'; // this *really* shouldn't be happening...
 		}
+		if ($this->page->title == null){
+			return '';
+		}
 		$this->page->title->setFragment('#comment-' . $this->id);
 		//@Since 1.27
 		//$tf = $this->page->title->createFragmentTarget( '#comment-' . $this->id );
