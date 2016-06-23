@@ -1,6 +1,16 @@
 /* CSS styles for Comments extension */
 ul.cod-ul {
 	list-style: none;
+    font-size: .9em;
+    padding: .75em;
+}
+.cod-ul:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.cod-ul .headimg{
+    width: 50px;
 }
 .comments-body {
 	width: 100%;
@@ -22,12 +32,13 @@ ul.cod-ul {
 }
 
 .c-item {
-	border-bottom: 1px solid #dcdcdc;
+	border-bottom: 1px solid;
 /* this works for Monaco, but not for Monobook.
 Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 	padding: 0px 0px 10px 0px;*/
 	padding: 0px;
 	margin: 0px 0px 15px 0px;
+    padding-bottom: 0.5em;
 }
 
 .c-avatar {
@@ -97,7 +108,7 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 
 .c-score {
 	position: absolute;
-	top: -2px;
+	top: 5px;
 	right: 0px;
 	font-size: 11px;
 	padding-top: 6px;
@@ -112,9 +123,12 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 .c-actions {
 	float: right;
 	font-size: 10px;
-	margin: 10px 0px 0px 0px;
+	margin: 0;
+    padding-bottom: .5em;
 }
-
+#tc_comment{
+    margin-left: 5px;
+}
 .c-delete a {
 	color: red !important;
 }
@@ -125,8 +139,8 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 }
 
 .c-form-title {
-	font-size: 30px;
-    text-align: center;
+	/*font-size: 30px;
+    text-align: center;*/
     padding: 0;
 }
 
@@ -236,6 +250,7 @@ li.cod{
 .comment-list{
     position: relative;
     z-index: 100;
+    margin: 0 -15px;
 }
 .custom-face{
     position: absolute;

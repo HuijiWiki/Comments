@@ -595,10 +595,10 @@ class CommentsPage extends ContextSource {
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
 				$output .= '<div class="lead emoji-picker-container c-container"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
 
-				$output .= '<div class="comment-list clear"><div class="mw-ui-button site-button pull-right" id="tc_comment" >发表</div>'. "\n";
+				$output .= '<div class="comment-list clear"><div class="mw-ui-button mw-ui-primary site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
 				if (wfMessage('comments-add-emoji-emote')->parse() != ''){
-					$output .= '<div class="mw-ui-button site-button pull-right" id="custom_comment">模板</div>' . "\n";
+					$output .= '<div class="mw-ui-button mw-ui-primary site-button pull-right" id="custom_comment">模板</div>' . "\n";
 					$output .= '<span class="custom-face">'.wfMessage('comments-add-emoji-emote')->parse().'</span></div>';					
 				}
 

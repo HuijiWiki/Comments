@@ -699,8 +699,7 @@ class Comment extends ContextSource {
 		if ( $this->userID != 0 ) {
 			$title = Title::makeTitle( NS_USER, $this->username );
 
-			$commentPoster = '<a class="mw-userlink" href="' . htmlspecialchars( $title->getFullURL() ) .
-				'" rel="nofollow">' . $this->username . '</a>';
+			$commentPoster = Linker::linkKnown($title, $this->username);
 
 			$CommentReplyTo = $this->username;
 
@@ -723,9 +722,8 @@ class Comment extends ContextSource {
 
 		if ( $this->getUser()->isAllowed( 'commentadmin' ) ) {
 			$dlt = ' | <span class="c-delete">' .
-				'<a href="javascript:void(0);" rel="nofollow" class="comment-delete-link" data-comment-id="' .
-				$this->id . '">' .
-				$this->msg( 'comments-delete-link' )->plain() . '</a></span>';
+				'<a href="javascript:void(0);" rel="nofollow" class="comment-delete-link icon-trash" data-comment-id="' .
+				$this->id . '"></a></span>';
 		}
 
 		// Reply Link (does not appear on child comments)
@@ -735,15 +733,13 @@ class Comment extends ContextSource {
 				if ( $replyRow ) {
 					$replyRow .= wfMessage( 'pipe-separator' )->plain();
 				}
-				$replyRow .= " | <a href=\"#replyto\" rel=\"nofollow\" class=\"comments-reply-to\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
+				$replyRow .= " | <a href=\"#replyto\" rel=\"nofollow\" class=\"comments-reply-to icon-bubble\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
 					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
-					htmlspecialchars( $CommentReplyToGender ) . '">' .
-					wfMessage( 'comments-reply' )->plain() . '</a>';
+					htmlspecialchars( $CommentReplyToGender ) . '"></a>';
 			} else {
-				$replyRow .=" | <a href=\"#replyto\" rel=\"nofollow\" class=\"child-comments-reply-to\" data-comment-id=\"{$this->id}\" data-comment-parent-id=\"{$this->parentID}\" data-comments-safe-username=\"" .
+				$replyRow .=" | <a href=\"#replyto\" rel=\"nofollow\" class=\"child-comments-reply-to icon-bubble\" data-comment-id=\"{$this->id}\" data-comment-parent-id=\"{$this->parentID}\" data-comments-safe-username=\"" .
 					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
-					htmlspecialchars( $CommentReplyToGender ) . '">' .
-					wfMessage( 'comments-reply' )->plain() . '</a>';
+					htmlspecialchars( $CommentReplyToGender ) . '"></a>';
 			}
 		}
 
