@@ -26,36 +26,27 @@ ul.cod-ul {
 #comment-vote-link i.active{
     opacity: 1;
 }
-.reply {
-	margin-left: 10% !important;
-	width: 90% !important ;
-}
-
 .c-item {
-	border-bottom: 1px solid;
-/* this works for Monaco, but not for Monobook.
-Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
-	padding: 0px 0px 10px 0px;*/
-	padding: 0px;
-	margin: 0px 0px 15px 0px;
-    padding-bottom: 0.5em;
+	padding: .5em;
+    margin-bottom: 5px;
 }
 
 .c-avatar {
 	position: absolute;
 	top: inherit;
+    padding: 5px;
 }
-.c-avatar img {
-	padding: 3px;
-	border: 1px solid #dcdcdc;
-	background-color: #fff;
-}
+/*.c-avatar img {*/
+	/*padding: 3px;*/
+	/*border: 1px solid #dcdcdc;*/
+	/*background-color: #fff;*/
+/*}*/
 
 .c-container {
 	position: relative;
 	top: 0px;
-	top: 0px;
 	margin: 0px 0px 0px 70px;
+    padding: 5px;
 }
 
 .c-user {
@@ -184,7 +175,7 @@ Besides, ny.css sets it back to 10px anyway, so this way everyone can be happy.
 }
 ul.c-pager {
 	clear: both;
-	margin: 0px 0px 5px 0px;
+	margin: 20px 0px 5px 0px;
 
 }
 .cod-comment{
@@ -230,6 +221,9 @@ li.cod{
 	clear:both;
 	margin-top: 5px;
 }
+#hotcomments{
+    margin-top: 20px;
+}
 #hotcomments .c-item:last-child{
 	border-bottom: 0;
 	margin-bottom: 0;
@@ -237,6 +231,7 @@ li.cod{
 #hotcomments fieldset{
 	border: none;
   	border-top: 1px solid silver;
+    margin-top: 30px;
 }
 #hotcomments legend{
 	width: 100%;
@@ -273,6 +268,9 @@ li.cod{
 .custom-face a {
     color: #09c!important;
 }
+.reply {
+	margin:1em -0.5em 0em -3em;
+}
 
 .c-item-del{
 	font-size: 14px;
@@ -285,4 +283,15 @@ li.cod{
 }
 .lead.emoji-picker-container{
 	padding: 0px;
+}
+#replyto{
+    margin-bottom: 10px;
+    margin-left: -15px;
+    padding-left: .5em;
+}
+.comment-text-wrapper{
+    padding-left: .5em;
+}
+#allcomments{
+    margin-top: 20px;
 }

@@ -24,8 +24,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $wgExtensionCredits['parserhook'][] = array(
 	'path' => __FILE__,
 	'name' => 'Comments',
-	'version' => '4.1.0',
-	'author' => array( 'David Pean', 'Misza', 'Jack Phoenix', 'Adam Carter/UltrasonicNXT' ),
+	'version' => 'Huiji',
+	'author' => array( 'David Pean', 'Misza', 'Jack Phoenix', 'Adam Carter/UltrasonicNXT', 'Xi Gu' ),
 	'descriptionmsg' => 'comments-desc',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:Comments'
 );
@@ -48,7 +48,8 @@ $wgResourceModules['ext.comments.js'] = array(
 		'comments-delete-warning','child-comments-reply-to','comments-post'
 	),
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => 'Comments'
+	'remoteExtPath' => 'Comments',
+	'position' => 'bottom'
 );
 
 # Configuration variables

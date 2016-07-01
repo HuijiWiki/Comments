@@ -543,34 +543,34 @@ class Comment extends ContextSource {
 		return $voteLink;
 	}
 
-	/**
-	 * Show the HTML for this comment and ignore section
-	 *
-	 * @param array $blockList list of users the current user has blocked
-	 * @param array $anonList map of ip addresses to names like anon#1, anon#2
-	 * @return string html
-	 */
-	function display( $blockList, $anonList ) {
+	// /**
+	//  * Show the HTML for this comment and ignore section
+	//  *
+	//  * @param array $blockList list of users the current user has blocked
+	//  * @param array $anonList map of ip addresses to names like anon#1, anon#2
+	//  * @return string html
+	//  */
+	// function display( $blockList, $anonList ) {
 		
-		if ( $this->parentID == 0 ) {
-			$container_class = 'full';
-		} else {
-			$container_class = 'reply';
-			// $this->sendEchoNotification( 'reply',$this->id );
-		}
+	// 	if ( $this->parentID == 0 ) {
+	// 		$container_class = 'full';
+	// 	} else {
+	// 		$container_class = 'reply';
+	// 		// $this->sendEchoNotification( 'reply',$this->id );
+	// 	}
 
-		$output = '';
+	// 	$output = '';
 
-		if ( in_array( $this->username, $blockList ) ) {
-			$output .= $this->showIgnore( false, $container_class );
-			$output .= $this->showComment( true, $container_class, $blockList, $anonList );
-		} else {
-			$output .= $this->showIgnore( true, $container_class );
-			$output .= $this->showComment( false, $container_class, $blockList, $anonList );
-		}
+	// 	// if ( in_array( $this->username, $blockList ) ) {
+	// 	// 	$output .= $this->showIgnore( false, $container_class );
+	// 	// 	$output .= $this->showComment( true, $container_class, $blockList, $anonList );
+	// 	// } else {
+	// 		// $output .= $this->showIgnore( true, $container_class );
+	// 	$output .= $this->showComment( false, $container_class, $blockList, $anonList );
+	// 	// }
 
-		return $output;
-	}
+	// 	return $output;
+	// }
 
 	function displayForCommentOfTheDay() {
 		// global $wgHuijiPrefix;
@@ -628,33 +628,33 @@ class Comment extends ContextSource {
 		return $output;
 	}
 
-	/**
-	 * Show the box for if this comment has been ignored
-	 *
-	 * @param bool $hide
-	 * @param $containerClass
-	 * @return string
-	 */
-	function showIgnore( $hide = false, $containerClass ) {
-		$blockListTitle = SpecialPage::getTitleFor( 'CommentIgnoreList' );
+	// /**
+	//  * Show the box for if this comment has been ignored
+	//  *
+	//  * @param bool $hide
+	//  * @param $containerClass
+	//  * @return string
+	//  */
+	// function showIgnore( $hide = false, $containerClass ) {
+	// 	$blockListTitle = SpecialPage::getTitleFor( 'CommentIgnoreList' );
 
-		$style = '';
-		if ( $hide ) {
-			$style = " style='display:none;'";
-		}
+	// 	$style = '';
+	// 	if ( $hide ) {
+	// 		$style = " style='display:none;'";
+	// 	}
 
-		$output = "<div id='ignore-{$this->id}' class='c-ignored {$containerClass}'{$style}>\n";
-		$output .= wfMessage( 'comments-ignore-message' )->parse();
-		$output .= '<div class="c-ignored-links">' . "\n";
-		$output .= "<a href=\"javascript:void(0);\" data-comment-id=\"{$this->id}\">" .
-			$this->msg( 'comments-show-comment-link' )->plain() . '</a> | ';
-		$output .= '<a href="' . htmlspecialchars( $blockListTitle->getFullURL() ) . '">' .
-			$this->msg( 'comments-manage-blocklist-link' )->plain() . '</a>';
-		$output .= '</div>' . "\n";
-		$output .= '</div>' . "\n";
+	// 	$output = "<div id='ignore-{$this->id}' class='c-ignored {$containerClass}'{$style}>\n";
+	// 	$output .= wfMessage( 'comments-ignore-message' )->parse();
+	// 	$output .= '<div class="c-ignored-links">' . "\n";
+	// 	$output .= "<a href=\"javascript:void(0);\" data-comment-id=\"{$this->id}\">" .
+	// 		$this->msg( 'comments-show-comment-link' )->plain() . '</a> | ';
+	// 	$output .= '<a href="' . htmlspecialchars( $blockListTitle->getFullURL() ) . '">' .
+	// 		$this->msg( 'comments-manage-blocklist-link' )->plain() . '</a>';
+	// 	$output .= '</div>' . "\n";
+	// 	$output .= '</div>' . "\n";
 
-		return $output;
-	}
+	// 	return $output;
+	// }
 
 	/**
 	 * check comment is have replay
@@ -662,12 +662,12 @@ class Comment extends ContextSource {
 	 * @param int $commentId [commnet id ]
 	 * @return  boolean [if isset replay return true, else return false]
 	 */
-	function checkIsHaveReplay( $commentId ){
+	function hasReply(){
 		$dbr = wfGetDB( DB_SLAVE );
 		$row = $dbr->selectRow(
 			'comments',
 			array( 'CommentID' ),
-			array( 'Comment_Parent_ID' => $commentId ),
+			array( 'Comment_Parent_ID' => $this->id ),
 			__METHOD__
 		);
 		if ( $row !== false && $row->CommentID ) {
@@ -684,15 +684,16 @@ class Comment extends ContextSource {
 	 * @param $containerClass
 	 * @param $blockList
 	 * @param $anonList
+	 * @param $children
 	 * @return string
 	 */
-	function showComment( $hide = false, $containerClass, $blockList, $anonList ) {
+	function showComment( $hide = false, $containerClass, $blockList = null, $anonList = null, $children = array() ) {
 		global $wgUserLevels, $wgExtensionAssetsPath;
-
+		$templateParser = new TemplateParser(  __DIR__ . '/View' );
 		$style = '';
-		if ( $hide ) {
-			$style = " style='display:none;'";
-		}
+		// if ( $hide ) {
+		// 	$style = " style='display:none;'";
+		// }
 
 		$commentPosterLevel = '';
 
@@ -720,50 +721,35 @@ class Comment extends ContextSource {
 		// Comment delete button for privileged users
 		$dlt = '';
 
-		if ( $this->getUser()->isAllowed( 'commentadmin' ) ) {
-			$dlt = ' | <span class="c-delete">' .
-				'<a href="javascript:void(0);" rel="nofollow" class="comment-delete-link icon-trash" data-comment-id="' .
-				$this->id . '"></a></span>';
-		}
-
-		// Reply Link (does not appear on child comments)
-		$replyRow = '';
-		if ( $this->getUser()->isAllowed( 'comment' ) ) {
-			if ( $this->parentID == 0 ) {
-				if ( $replyRow ) {
-					$replyRow .= wfMessage( 'pipe-separator' )->plain();
-				}
-				$replyRow .= " | <a href=\"#replyto\" rel=\"nofollow\" class=\"comments-reply-to icon-bubble\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
-					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
-					htmlspecialchars( $CommentReplyToGender ) . '"></a>';
-			} else {
-				$replyRow .=" | <a href=\"#replyto\" rel=\"nofollow\" class=\"child-comments-reply-to icon-bubble\" data-comment-id=\"{$this->id}\" data-comment-parent-id=\"{$this->parentID}\" data-comments-safe-username=\"" .
-					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
-					htmlspecialchars( $CommentReplyToGender ) . '"></a>';
-			}
-		}
+		
 
 		if ( $this->parentID == 0 ) {
 			$comment_class = 'f-message';
+			$childrenCommentsHtml = '';
+			foreach ($children as $child) {
+				$childrenCommentsHtml .= $child->showComment(false, 'reply', null, null);
+				# code...
+			}
 		} else {
 			$comment_class = 'r-message';
+			$childrenCommentsHtml = '';
 		}
 
 		// Display Block icon for logged in users for comments of users
 		// that are already not in your block list
 		$blockLink = '';
 
-		if (
-			$this->getUser()->getID() != 0 && $this->getUser()->getID() != $this->userID &&
-			!( in_array( $this->userID, $blockList ) )
-		) {
-			$blockLink = '<a href="javascript:void(0);" rel="nofollow" class="comments-block-user" data-comments-safe-username="' .
-				htmlspecialchars( $this->username, ENT_QUOTES ) .
-				'" data-comments-comment-id="' . $this->id . '" data-comments-user-id="' .
-				$this->userID . "\">
-					<img src=\"{$wgExtensionAssetsPath}/Comments/images/block.svg\" border=\"0\" alt=\"\"/>
-				</a>";
-		}
+		// if (
+		// 	$this->getUser()->getID() != 0 && $this->getUser()->getID() != $this->userID &&
+		// 	!( in_array( $this->userID, $blockList ) )
+		// ) {
+		// 	$blockLink = '<a href="javascript:void(0);" rel="nofollow" class="comments-block-user" data-comments-safe-username="' .
+		// 		htmlspecialchars( $this->username, ENT_QUOTES ) .
+		// 		'" data-comments-comment-id="' . $this->id . '" data-comments-user-id="' .
+		// 		$this->userID . "\">
+		// 			<img src=\"{$wgExtensionAssetsPath}/Comments/images/block.svg\" border=\"0\" alt=\"\"/>
+		// 		</a>";
+		// }
 
 		// Default avatar image, if SocialProfile extension isn't enabled
 		global $wgCommentsDefaultAvatar;
@@ -773,48 +759,103 @@ class Comment extends ContextSource {
 			$avatar = new wAvatar( $this->userID, 'ml' );
 			$avatarImg = $avatar->getAvatarAnchor() . "\n";
 		}
-		if ( $this->ip == 0 && $this->parentID==0 && $this->checkIsHaveReplay($this->id) ) {
-			$output = "<div id='comment-{$this->id}' class='c-item-del'>此条吐槽已被删除</div>";
-			return $output;
-		}elseif ($this->ip != 0) {
-			$output = "<div id='comment-{$this->id}' class='c-item {$containerClass}'{$style}>" . "\n";
-			$output .= "<div class=\"c-avatar\">{$avatarImg}</div>" . "\n";
-			$output .= '<div class="c-container">' . "\n";
-			$output .= '<div class="c-user">' . "\n";
-			$output .= "{$commentPoster}";
-			$output .= "<span class=\"c-user-level\">{$commentPosterLevel}</span> {$blockLink}" . "\n";
-
-			wfSuppressWarnings(); // E_STRICT bitches about strtotime()
-
-
-			$output .= '<div class="c-score">' . "\n";
-			$output .= $this->getScoreHTML();
-			$output .= '</div>' . "\n";
-
-			$output .= '</div>' . "\n";
-			$output .= "<div class=\"c-comment {$comment_class}\">" . "\n";
-			$output .= $this->getText();
-			$output .= '</div>' . "\n";
-			$output .= '<div class="c-actions">' . "\n";
-			$output .= '<div class="c-time">' .
-	        			wfMessage(
-	        				'comments-time-ago',
-	        				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
-	        			)->text() . '</div>' . "\n";
-	        		wfRestoreWarnings();
-			//$output .= '<a href="' . htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\" rel=\"nofollow\">" .
-				$this->msg( 'comments-permalink' )->plain() . '</a> ';
-			if ( $replyRow || $dlt ) {
-				$output .= "{$replyRow} {$dlt}" . "\n";
-			}
-			$output .= '</div>' . "\n";
-			$output .= '</div>' . "\n";
-			$output .= '<div class="cleared"></div>' . "\n";
-			$output .= '</div>' . "\n";
-		}else{
-			$output = '';
+		if ($this->ip == 0 && ($this->parentID != 0 || !$this->hasReply())){
+			return '';
 		}
+	    $output = $templateParser->processTemplate(
+		    'comments',
+		    array(
+		    	'commentID' => $this->id,
+		    	'avatarImg' => $avatarImg,
+		        'userLink' => $commentPoster,
+		        'commentPosterLevel' => $commentPosterLevel,
+		        'zan' => $this->getScoreHtml(),
+		        'commentContent' => $this->getText(),
+		        'timeago' => HuijiFunctions::getTimeAgo( strtotime( $this->date ) ),
+		        // 'gender' => ,
+		        'containerClass' => $containerClass,
+		        'messageType' => $comment_class,
+		        'actions' => $this->getActions($CommentReplyTo, $CommentReplyToGender),
+		        'deleted' => $this->ip == 0 && $this->parentID == 0 && $this->hasReply(),
+		        'deletedHtml' => "<div class='c-container c-item-del'>此条吐槽已被删除</div>",
+		        'children' => $childrenCommentsHtml,
+		    )
+		);
 		return $output;
+		// if ( $this->ip == 0 && $this->parentID==0 && $this->hasReply() ) {
+		// 	$output = "<div class='c-container c-item-del'>此条吐槽已被删除</div>";
+		// 	return $output;
+		// }elseif ($this->ip != 0) {
+		// 	if ($this->parentID != 0){
+		// 		$output = "<div id='comment-{$this->id}' class='c-item {$containerClass}'{$style}>" . "\n";
+		// 	}
+		// 	$output .= "<div class=\"c-avatar\">{$avatarImg}</div>" . "\n";
+		// 	$output .= '<div class="c-container">' . "\n";
+		// 	$output .= '<div class="c-user">' . "\n";
+		// 	$output .= "{$commentPoster}";
+		// 	$output .= "<span class=\"c-user-level\">{$commentPosterLevel}</span> {$blockLink}" . "\n";
+
+		// 	wfSuppressWarnings(); // E_STRICT bitches about strtotime()
+		// 	$output .= '<div class="c-score">' . "\n";
+		// 	$output .= $this->getScoreHTML();
+		// 	$output .= '</div>' . "\n";
+
+		// 	$output .= '</div>' . "\n";
+		// 	$output .= "<div class=\"c-comment {$comment_class}\">" . "\n";
+		// 	$output .= $this->getText();
+		// 	$output .= '</div>' . "\n";
+		// 	$output .= '<div class="c-actions">' . "\n";
+		// 	$output .= '<div class="c-time">' .
+	 //        			wfMessage(
+	 //        				'comments-time-ago',
+	 //        				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
+	 //        			)->text() . '</div>' . "\n";
+	 //        		wfRestoreWarnings();
+		// 	//$output .= '<a href="' . htmlspecialchars( $this->page->title->getFullURL() ) . "#comment-{$this->id}\" rel=\"nofollow\">" .
+		// 		$this->msg( 'comments-permalink' )->plain() . '</a> ';
+		// 	if ( $replyRow || $dlt ) {
+		// 		$output .= "{$replyRow} {$dlt}" . "\n";
+		// 	}
+		// 	$output .= '</div>' . "\n";
+
+		// 	$output .= '</div>' . "\n";  // end of container
+		// 	if ($this->parentID != 0){
+		// 		$output .= '</div>' . "\n";
+		// 	}
+			
+		// 	// $output .= '</div>' . "\n";
+		// }else{
+		// 	$output = '';
+		// }
+		return $output;
+	}
+	/**
+	 * Get Html Actions for the logged in user
+	 * 
+	 */
+	function getActions($CommentReplyTo, $CommentReplyToGender){
+		$dlt = '';
+		if ( $this->getUser()->isAllowed( 'commentadmin' ) ) {
+			$dlt = ' | <span class="c-delete">' .
+				'<a href="javascript:void(0);" rel="nofollow" class="comment-delete-link icon-trash" data-comment-id="' .
+				$this->id . '"></a></span>';
+		}
+
+		// Reply Link 
+		$replyRow = '';
+		if ( $this->getUser()->isAllowed( 'comment' ) ) {
+			if ( $this->parentID == 0 ) {
+				$replyRow .= " | <a href=\"#replyto\" rel=\"nofollow\" class=\"comments-reply-to icon-bubble\" data-comment-id=\"{$this->id}\" data-comments-safe-username=\"" .
+					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
+					htmlspecialchars( $CommentReplyToGender ) . '"></a>';
+			} else {
+				$replyRow .=" | <a href=\"#replyto\" rel=\"nofollow\" class=\"child-comments-reply-to icon-bubble\" data-comment-id=\"{$this->id}\" data-comment-parent-id=\"{$this->parentID}\" data-comments-safe-username=\"" .
+					htmlspecialchars( $CommentReplyTo, ENT_QUOTES ) . "\" data-comments-user-gender=\"" .
+					htmlspecialchars( $CommentReplyToGender ) . '"></a>';
+			}
+		}
+		return $replyRow.$dlt;	
+		
 	}
 
 	/**
@@ -823,7 +864,6 @@ class Comment extends ContextSource {
 	 * @return string
 	 */
 	function getScoreHTML() {
-		global $wgUser;
 		$output = '';
 
 		if ( $this->page->allowMinus == true || $this->page->allowPlus == true ) {
@@ -834,7 +874,7 @@ class Comment extends ContextSource {
 			// Voting is possible only when database is unlocked
 			if ( !wfReadOnly() ) {
 				// You can only vote for other people's comments, not for your own
-				if ( $wgUser->getName() != $this->username ) {
+				if ( $this->getUser()->getName() != $this->username ) {
 					$output .= "<span id=\"CommentBtn{$this->id}\">";
 					// $output .= "<a>".$this->username.'-'.$this->currentScore.$this->getUser()->getName()."</a>";
 					if ( $this->page->allowPlus == true ) {
@@ -846,7 +886,7 @@ class Comment extends ContextSource {
 					}
 					$output .= '</span>';
 				} else {
-					$output .= wfMessage( 'word-separator' )->plain() . wfMessage( 'comments-you' )->plain();
+					$output .= wfMessage( 'word-separator' )->plain() . "<i class='icon-user'></i>";
 				}
 			}
 		}
