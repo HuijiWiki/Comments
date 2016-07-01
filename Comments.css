@@ -269,7 +269,12 @@ li.cod{
     color: #09c!important;
 }
 .reply {
-	margin:1em -0.5em 0em -3em;
+	margin:1em -0.8em 0em 0em;
+}
+@media screen and (max-width: 768px){
+	.reply {
+		marigin: 1em -0.8em 0em -3em;
+	}
 }
 
 .c-item-del{
