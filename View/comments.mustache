@@ -1,0 +1,26 @@
+<div id="comment-{{commentID}}" class="c-item {{containerClass}}">
+	{{#deleted}}
+		{{{deletedHtml}}}
+	{{/deleted}}
+	{{^deleted}}
+	<div class="c-avatar">{{{avatarImg}}}
+	</div>
+	<div class="c-container">
+		<div class="c-user">{{{userLink}}}
+			<span class="c-user-level">{{{commentPosterLevel}}}</span>
+		</div>
+		<div class="c-score">
+		{{{zan}}}
+		</div>
+		<div class="c-comment {{messageType}}">
+		{{{commentContent}}}
+		</div>
+		<div class="c-actions">
+		<div class="c-time">{{timeago}}</div>
+		{{{actions}}}
+		</div>
+		{{{children}}}
+	</div>
+	{{/deleted}}
+	<div class="cleared"></div>
+</div>
