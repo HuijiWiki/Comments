@@ -273,7 +273,7 @@ li.cod{
 }
 @media screen and (max-width: 768px){
 	.reply {
-		marigin: 1em -0.8em 0em -3em;
+		margin: 1em -0.8em 0em -3em;
 	}
 }
 
