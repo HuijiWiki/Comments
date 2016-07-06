@@ -74,20 +74,17 @@ ul.cod-ul {
 	margin: 0px 5px 0px 5px;
 }
 
-.c-comment {
-	overflow: auto;
-}
 
-.c-ignored {
-	color: #666;
-	font-size: 11px;
-	padding: 5px 0px 10px 0px;
-	margin: 0px 0px 15px 0px;
-	border-bottom: 1px solid #dcdcdc;
-}
+/*.c-ignored {*/
+/*	color: #666;*/
+/*	font-size: 11px;*/
+/*	padding: 5px 0px 10px 0px;*/
+/*	margin: 0px 0px 15px 0px;*/
+/*	border-bottom: 1px solid #dcdcdc;*/
+/*}*/
 
-.c-ignored-links a {
-}
+/*.c-ignored-links a {*/
+/*}*/
 
 .f-message {
 	width: 90%;
