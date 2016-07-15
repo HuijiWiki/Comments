@@ -288,17 +288,17 @@ class CommentsPage extends ContextSource {
 
 		$output = '';
 		if ( $pagesCount > 1 ) {
-			$output .= '<div class="c-pager-wrapper"><ul class="c-pager pagination">';
-			$pagerEllipsis = '<li class="c-pager-item c-pager-ellipsis"><span>...</span></li>';
+			$output .= '<div class="hj-media-pager-wrapper"><ul class="hj-media-pager pagination">';
+			$pagerEllipsis = '<li class="hj-media-pager-item hj-media-pager-ellipsis"><span>...</span></li>';
 
 			// Whether to display the "Previous page" link
 			if ( $pagerCurrent > 1 ) {
-				$output .= '<li class="c-pager-item c-pager-previous">' .
+				$output .= '<li class="hj-media-pager-item hj-media-pager-previous">' .
 					Html::rawElement(
 						'a',
 						array(
 							'rel' => 'nofollow',
-							'class' => 'c-pager-link',
+							'class' => 'hj-media-pager-link',
 							'href' => '#cfirst',
 							'aria-label' => 'Previous',
 							'data-' . $this->pageQuery => ( $pagerCurrent - 1 ),
@@ -310,12 +310,12 @@ class CommentsPage extends ContextSource {
 
 			// Whether to display the "First page" link
 			if ( $i > 1 ) {
-				$output .= '<li class="c-pager-item c-pager-first">' .
+				$output .= '<li class="hj-media-pager-item hj-media-pager-first">' .
 					Html::rawElement(
 						'a',
 						array(
 							'rel' => 'nofollow',
-							'class' => 'c-pager-link',
+							'class' => 'hj-media-pager-link',
 							'href' => '#cfirst',
 							'data-' . $this->pageQuery => 1,
 						),
@@ -333,15 +333,15 @@ class CommentsPage extends ContextSource {
 				// Now generate the actual pager piece.
 				for ( ; $i <= $pagerLast && $i <= $pagesCount; $i++ ) {
 					if ( $i == $pagerCurrent ) {
-						$output .= '<li class="c-pager-item c-pager-current active"><span>' .
+						$output .= '<li class="hj-media-pager-item hj-media-pager-current active"><span>' .
 							$i . '</span></li>';
 					} else {
-						$output .= '<li class="c-pager-item">' .
+						$output .= '<li class="hj-media-pager-item">' .
 							Html::rawElement(
 								'a',
 								array(
 									'rel' => 'nofollow',
-									'class' => 'c-pager-link',
+									'class' => 'hj-media-pager-link',
 									'href' => '#cfirst',
 									'data-' . $this->pageQuery => $i,
 								),
@@ -358,12 +358,12 @@ class CommentsPage extends ContextSource {
 
 			// Whether to display the "Last page" link
 			if ( $pagesCount > ( $i - 1 ) ) {
-				$output .= '<li class="c-pager-item c-pager-last">' .
+				$output .= '<li class="hj-media-pager-item hj-media-pager-last">' .
 					Html::rawElement(
 						'a',
 						array(
 							'rel' => 'nofollow',
-							'class' => 'c-pager-link',
+							'class' => 'hj-media-pager-link',
 							'href' => '#cfirst',
 							'data-' . $this->pageQuery => $pagesCount,
 						),
@@ -374,12 +374,12 @@ class CommentsPage extends ContextSource {
 
 			// Whether to display the "Next page" link
 			if ( $pagerCurrent < $pagesCount ) {
-				$output .= '<li class="c-pager-item c-pager-next">' .
+				$output .= '<li class="hj-media-pager-item hj-media-pager-next">' .
 					Html::rawElement(
 						'a',
 						array(
 							'rel' => 'nofollow',
-							'class' => 'c-pager-link',
+							'class' => 'hj-media-pager-link',
 							'href' => '#cfirst',
 							'aria-label' => 'Next',
 							'data-' . $this->pageQuery => ( $pagerCurrent + 1 ),
@@ -572,7 +572,7 @@ class CommentsPage extends ContextSource {
 				if ($this->getUser()->isLoggedIn() ){
 					$avatar = new wAvatar($this->getUser()->getId(), 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
-					$output .= '<div class="c-form-title"><div class="c-avatar">'.$avatarAnchor.'</div></div>' . "\n";
+					$output .= '<div class="c-form-title"><div class="hj-media-avatar">'.$avatarAnchor.'</div></div>' . "\n";
 										
 				}
 				// Show a message to anons, prompting them to register or log in
@@ -587,11 +587,11 @@ class CommentsPage extends ContextSource {
                         </div>' . "\n";
 					$avatar = new wAvatar( 0, 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
-					$output .= '<div class="c-form-title"><div class="c-avatar">'.$avatarAnchor.'</div></div>' . "\n";
+					$output .= '<div class="c-form-title"><div class="hj-media-avatar">'.$avatarAnchor.'</div></div>' . "\n";
 				}
 				$rand = rand(1, 9);
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
-				$output .= '<div class="lead emoji-picker-container c-container"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
+				$output .= '<div class="lead emoji-picker-container hj-media-body"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
 
 				$output .= '<div class="comment-list clear"><div class="mw-ui-button mw-ui-primary site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 

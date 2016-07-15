@@ -26,39 +26,16 @@ ul.cod-ul {
 #comment-vote-link i.active{
     opacity: 1;
 }
-.c-item {
-	padding: .5em;
-    margin-bottom: 5px;
-}
 
-.c-avatar {
-	position: absolute;
-	top: inherit;
-    padding: 5px;
-}
 /*.c-avatar img {*/
 	/*padding: 3px;*/
 	/*border: 1px solid #dcdcdc;*/
 	/*background-color: #fff;*/
 /*}*/
 
-.c-container {
-	position: relative;
-	top: 0px;
-	margin: 0px 0px 0px 70px;
-    padding: 5px;
-}
 
-.c-user {
-	font-weight: bold;
-	position: relative;
-	margin: 0px 0px 6px 0px;
-}
 
-.c-user a {
-	font-size: 14px;
-	text-decoration: none;
-}
+
 
 .c-time {
 	font-size: 10px;
@@ -68,11 +45,7 @@ ul.cod-ul {
     display: inline-block;
 }
 
-.c-user-level {
-	color: #666;
-	font-size: 11px;
-	margin: 0px 5px 0px 5px;
-}
+
 
 
 /*.c-ignored {*/
@@ -108,12 +81,7 @@ ul.cod-ul {
 	margin: 0px 10px 0px 0px;
 }
 
-.c-actions {
-	float: right;
-	font-size: 10px;
-	margin: 0;
-    padding-bottom: .5em;
-}
+
 #tc_comment{
     margin-left: 5px;
 }
@@ -158,23 +126,13 @@ ul.cod-ul {
 .c-spy p{
 	margin-bottom: 0px;
 }
-.c-pager-item span, .c-pager-item a {
-    font-size: 14px;
-}
 
 .c-order-select {
 	float: left;
 }
 
 /* Pager */
-.c-pager-wrapper{
-    text-align: center;
-}
-ul.c-pager {
-	clear: both;
-	margin: 20px 0px 5px 0px;
 
-}
 .cod-comment{
 	flex: initial;
 	background: #F8F8F8 none repeat scroll 0% 0%;
@@ -187,13 +145,6 @@ ul.c-pager {
 	float: left;
 }
 
-li.c-pager-item {
-	background-image: none;
-	display: inline-block;
-	font-size: 0;
-	list-style-type: none;
-	padding: 0.5em;
-}
 #content .c-order-select p {
     display:none;
 }
@@ -274,15 +225,7 @@ li.cod{
 	}
 }
 
-.c-item-del{
-	font-size: 14px;
-	background-color: rgba(202, 202, 202, 0.33);
-	/* color: #0E1112; */
-	height: 50px;
-	text-align: center;
-	padding-top: 15px;
-	margin-bottom: 15px;
-}
+
 .lead.emoji-picker-container{
 	padding: 0px;
 }

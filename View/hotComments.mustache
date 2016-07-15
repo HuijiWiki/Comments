@@ -3,11 +3,11 @@
 		{{{deletedHtml}}}
 	{{/deleted}}
 	{{^deleted}}
-	<div class="c-avatar">{{{avatarImg}}}
+	<div class="hj-media-avatar">{{{avatarImg}}}
 	</div>
-	<div class="c-container">
-		<div class="c-user">{{{userLink}}}
-		<span class="c-user-level">{{{commentPosterLevel}}}</span>
+	<div class="hj-media-container">
+		<div class="hj-media-user">{{{userLink}}}
+		<span class="hj-media-user-level">{{{commentPosterLevel}}}</span>
 		<div class="c-score">
 		{{zan}}
 		{{#login}}
@@ -25,14 +25,14 @@
 			</span></div>
 		{{/login}}
 		</div>
-		<div class="c-comment f-message">
+		<div class="hj-media-comment f-message">
 		{{commentContent}}
 		</div>
-		<div class="c-actions">
+		<div class="hj-media-actions">
 		<div class="c-time">{{timeago}}</div>
 		{{actions}}
 		</div>
 	</div>
 	{{/deleted}}
-	<div class="cleared"></div>
+	<!--<div class="cleared"></div>-->
 </div>

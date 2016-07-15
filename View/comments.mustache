@@ -1,26 +1,26 @@
-<div id="comment-{{commentID}}" class="c-item {{containerClass}}">
+<div id="comment-{{commentID}}" class="hj-media {{containerClass}}">
 	{{#deleted}}
 		{{{deletedHtml}}}
 	{{/deleted}}
 	{{^deleted}}
-	<div class="c-avatar">{{{avatarImg}}}
+	<div class="hj-media-avatar">{{{avatarImg}}}
 	</div>
-	<div class="c-container">
-		<div class="c-user">{{{userLink}}}
-			<span class="c-user-level">{{{commentPosterLevel}}}</span>
+	<div class="hj-media-body">
+		<div class="hj-media-user">{{{userLink}}}
+			<span class="hj-media-user-level">{{{commentPosterLevel}}}</span>
 		</div>
 		<div class="c-score">
 		{{{zan}}}
 		</div>
-		<div class="c-comment {{messageType}}">
+		<div class="hj-media-comment {{messageType}}">
 		{{{commentContent}}}
 		</div>
-		<div class="c-actions">
+		<div class="hj-media-actions">
 		<div class="c-time">{{timeago}}</div>
 		{{{actions}}}
 		</div>
 		{{{children}}}
 	</div>
 	{{/deleted}}
-	<div class="cleared"></div>
+	<!--<div class="cleared"></div>-->
 </div>
