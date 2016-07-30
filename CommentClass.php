@@ -442,7 +442,7 @@ class Comment extends ContextSource {
 		// should perform better than deleting cache completely since Votes happen more frequently
 		$key = wfMemcKey( 'comment', 'pagethreadlist', $this->page->id );
 		$comments = $wgMemc->get( $key );
-		if ( $comments ) {
+		if ( is_object($comments) ) {
 			foreach ( $comments as &$comment ) {
 				if ( $comment->id == $this->id ) {
 					$comment->currentScore = $this->currentScore;
@@ -895,7 +895,7 @@ class Comment extends ContextSource {
 	}
 
 	function sendEchoNotification( $type, $commentID, $mentionedUsers = null ){
-		global $wgUser;
+		global $wgUser, $wgHuijiPrefix;
 		$mComment = Comment::newFromID( $commentID );
 		$page = $mComment->page;
 		$content = $mComment->getText();
@@ -920,6 +920,7 @@ class Comment extends ContextSource {
 			         'comment-recipient-id' => $userIdTo,  
 			         'comment-content' => $content,
 			         'comment-id' => "comment-{$commentID}",
+			         'interwiki' => $wgHuijiPrefix,
 			     ),
 			     'agent' => $agent,
 			     'title' => $pageTitle,
@@ -935,6 +936,7 @@ class Comment extends ContextSource {
 			         'comment-content' => $content,
 			         'comment-id' => "comment-{$commentID}",
 			         'comment-plus' => true,
+			         'interwiki' => $wgHuijiPrefix,
 			     ),
 			     'agent' => $agent,
 			     'title' => $pageTitle,
@@ -949,6 +951,7 @@ class Comment extends ContextSource {
 					'mentioned-users' => $mentionedUsers,
 					'comment-content' => $content,
 			        'comment-id' => "comment-{$commentID}",
+			        'interwiki' => $wgHuijiPrefix,
 				),
 				'agent' => $agent,
 			) );
@@ -967,23 +970,14 @@ class Comment extends ContextSource {
             'tooltip' => 'echo-pref-tooltip-comment-msg',
         );
         $notifications['comment-msg'] = array(
-            'primary-link' => array('message' => 'notification-link-text-respond-to-user', 'destination' => 'comment-page'),	
-            'category' => 'comment-msg',
-            'group' => 'positive',
-            'formatter-class' => 'EchoCommentReplyFormatter',
-            'title-message' => 'notification-comment',
-            'title-params' => array( 'agent', 'reply', 'detail' ),
-            'flyout-message' => 'notification-comment-flyout',
-            'flyout-params' => array( 'agent', 'reply', 'detail' ),
-            'payload' => array( 'summary' ),
-            'email-subject-message' => 'notification-comment-email-subject',
-            'email-subject-params' => array( 'agent' ),
-            'email-body-message' => 'notification-comment-email-body',
-            'email-body-params' => array( 'agent', 'main-title-text', 'email-footer' ),
-            'email-body-batch-message' => 'notification-comment-email-batch-body',
-            'email-body-batch-params' => array( 'agent', 'main-title-text' ),
-            'icon' => 'chat',
-            'section' => 'message',
+        	'category' => 'comment-msg',
+        	'group' => 'positive',
+        	'section' => 'message',
+        	'presentation-model' => 'EchoCommentPresentationModel',
+        	'bundle' => [
+        		'web' => true,
+        		'expandable' => true,
+        	]
         );
         return true;
     }
@@ -1019,118 +1013,53 @@ class Comment extends ContextSource {
 	}
 
 }
-class EchoCommentReplyFormatter extends EchoCommentFormatter {
-	/**
-	 * Helper function for getLink()
-	 *
-	 * @param \EchoEvent $event
-	 * @param \User $user The user receiving the notification
-	 * @param string $destination The destination type for the link
-	 * @return array including target and query parameters
-	 * @throws FlowException
-	 */
-	protected function getLinkParams( $event, $user, $destination ) {
-		// Set up link parameters based on the destination (or pass to parent)
-		switch ( $destination ) {
-			case 'comment-page':
-				$eventData = $event->getExtra();
-        			$titleData = $event->getTitle();
-        			if ( !isset( $eventData['comment-id']) ) {
-                			$eventData['comment-id'] = null;
-        			} else {
-        				$titleData->setFragment('#'.$eventData['comment-id']);
-        			}
-        			return array($titleData, array('fromnotif' => 1));
-
-			default:
-				return parent::getLinkParams( $event, $user, $destination );
-		}
-	}
-
-
-	protected function formatPayload( $payload, $event, $user ) {
-		switch ( $payload ) {
-		   	case 'summary': 
-				$eventData = $event->getExtra();
-	        	if ( !isset( $eventData['comment-content']) ) {
-	                return;
-	            }
-			    return $eventData['comment-content'];
-		        break;
-		   	default:
-		        return parent::formatPayload( $payload, $event, $user );
-		        break;
-		}
-	}
 		
-    
-
-   /**
-     * @param $event EchoEvent
-     * @param $param
-     * @param $message Message
-     * @param $user User
-     */
-    protected function processParam( $event, $param, $message, $user ) {
-        if ( $param === 'reply' ) {
-        	$eventData = $event->getExtra();
-		$titleData = '';
-        	if($event->getTitle() != ''){
-			$titleData = $event->getTitle()->getPrefixedText();
+class EchoCommentPresentationModel extends EchoEventPresentationModel {
+	public function canRender() {
+		return (bool)$this->event->getTitle();
+	}
+	public function getIconType() {
+		return 'chat';
+	}
+	public function getHeaderMessage() {
+		if ( $this->isBundled() ) {
+			$msg = $this->msg( 'notification-bundle-header-comment-msg' );
+			$msg->params( $this->getBundleCount() );
+			return $msg;
 		}
-        	if ( !isset( $eventData['comment-id']) ) {
-                $eventData['comment-id'] = null;
-            }
-            if ( isset( $eventData['mentioned-users'] ) ){
-	            $this->setTitleLink(
-	                $event,
-	                $message,
-	                array(
-	                    'class' => 'mw-echo-comment-msg',
-	                  	'linkText' => $titleData.wfMessage('notification-comment-mention')->text(),
-	                    'fragment' => $eventData['comment-id'],
-	                )
-	            );  
-	 		} else if ( isset ( $eventData['comment-plus']) ) {
-	            $this->setTitleLink(
-	                $event,
-	                $message,
-	                array(
-	                    'class' => 'mw-echo-comment-msg',
-	                  	'linkText' => $titleData.wfMessage('notification-comment-plus')->text(),
-	                    'fragment' => $eventData['comment-id'],
-	                )
-	            );        	
-            } else {
-	            $this->setTitleLink(
-	                $event,
-	                $message,
-	                array(
-	                    'class' => 'mw-echo-comment-msg',
-	                  	'linkText' => $titleData.wfMessage('notification-comment-reply')->text(),
-	                    'fragment' => $eventData['comment-id'],
-	                )
-	            );                    	
-            }
-
-        } elseif ($param === 'detail') {
-        	$eventData = $event->getExtra();
-        	if ( !isset( $eventData['comment-id']) ) {
-                $message->params( '' );
-                return;
-            }
-            $this->setTitleLink(
-                $event,
-                $message,
-                array(
-                    'class' => 'mw-echo-comment-msg',
-                    'linkText' => wfMessage('notification-comment-view-detail')->text(),
-                    'fragment' => $eventData['comment-id'],
-                )
-            );
-        } else {
-            parent::processParam( $event, $param, $message, $user );
-        }
-    }
+		if ($this->event->getExtraParam('mentioned-users')){
+			$msg = $this->getMessageWithAgent('notification-header-comment-mentioned');
+			return $msg;
+		}
+		if ($this->event->getExtraParam('comment-plus')){
+			$msg = $this->getMessageWithAgent('notification-header-comment-plus');
+		}
+		$msg = parent::getHeaderMessage();
+		return $msg;
+	}
+	public function getBodyMessage() {
+		$excerpt = $this->event->getExtraParam( 'comment-content' );
+		if ( $excerpt ) {
+			$msg = new RawMessage( '$1' );
+			$msg->plaintextParams( $excerpt );
+			return $msg;
+		}
+	}
+	public function getPrimaryLink() {
+		$title = $this->event->getTitle();
+		// Make a link to #flow-post-{postid}
+		$title = Title::makeTitle(
+			$title->getNamespace(),
+			$title->getDBKey(),
+			$this->event->getExtraParam('comment-id'),
+			''
+		);
+		return [
+			'url' => $title->getFullURL(),
+			'label' => $this->msg( 'notification-view-comment' )->text(),
+		];
+	}
+	public function getSecondaryLinks() {
+		return [ $this->getAgentLink() ];
+	}
 }
-
