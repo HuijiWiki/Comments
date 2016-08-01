@@ -140,8 +140,8 @@ ul.cod-ul {
 	color: #999;
 	word-wrap: break-word;
 	white-space: pre-wrap;
-    word-break: break-all;
-	margin: 0px 5px 0px 0px;
+    	word-break: break-all;
+	margin: 0px 5px 10px 0px;
 	float: left;
 }
 
