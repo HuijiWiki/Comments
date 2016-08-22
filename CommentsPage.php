@@ -581,10 +581,7 @@ class CommentsPage extends ContextSource {
 					$output .= '<div class="c-form-message alert alert-warning" role="alert">' . wfMessage(
 							'comments-anon-message',
 							htmlspecialchars( $register_title->getFullURL() )
-						)->text() . '<a id="TcLogin">登录</a>。&nbsp;&nbsp;
-                            <a href="javascript:void(0)" class="icon-weibo-share"></a>&nbsp;&nbsp;
-                            <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&amp;client_id=101264508&amp;state=huijistate&amp;redirect_uri=http%3a%2f%2fwww.huiji.wiki%2fwiki%2fspecial%3acallbackqq" class="icon-qq-share"></a>
-                        </div>' . "\n";
+						)->text() . '<a class="need-login">登录</a>。</div>' . "\n";
 					$avatar = new wAvatar( 0, 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
 					$output .= '<div class="c-form-title"><div class="hj-media-avatar">'.$avatarAnchor.'</div></div>' . "\n";

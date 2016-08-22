@@ -418,7 +418,7 @@ $( document ).ready( function() {
         } )
         //tucao Login
         .on( 'click', '#TcLogin', function(){
-            $('.user-login').modal();
+            window.location = $('.login').attr('href');
             return;
         } )
         // tucao input
