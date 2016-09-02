@@ -569,7 +569,9 @@ class CommentsPage extends ContextSource {
 			// and maybe there's a list of users who should be allowed to post
 			// comments
 			if ( $this->getUser()->isBlocked() == false && ( $this->allow == '' || $pos !== false ) ) {
-				if ($this->getUser()->isLoggedIn() ){
+				if ($this->getUser()->isLoggedIn() )
+				{
+					$login = '';
 					$avatar = new wAvatar($this->getUser()->getId(), 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
 					$output .= '<div class="c-form-title"><div class="hj-media-avatar">'.$avatarAnchor.'</div></div>' . "\n";
@@ -577,6 +579,7 @@ class CommentsPage extends ContextSource {
 				}
 				// Show a message to anons, prompting them to register or log in
 				else {
+					$login = 'need-login';
 					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
 					$output .= '<div class="c-form-message alert alert-warning" role="alert">' . wfMessage(
 							'comments-anon-message',
@@ -588,9 +591,9 @@ class CommentsPage extends ContextSource {
 				}
 				$rand = rand(1, 9);
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
-				$output .= '<div class="lead emoji-picker-container hj-media-body"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
+				$output .= '<div class="'.$login.' lead emoji-picker-container hj-media-body"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="'.$login.' mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
 
-				$output .= '<div class="comment-list clear"><div class="mw-ui-button mw-ui-primary site-button pull-right" id="tc_comment" >发表</div>'. "\n";
+				$output .= '<div class="comment-list clear"><div class="'.$login.' mw-ui-button mw-ui-primary site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
 				if (wfMessage('comments-add-emoji-emote')->parse() != ''){
 					$output .= '<div class="mw-ui-button mw-ui-primary site-button pull-right" id="custom_comment">模板</div>' . "\n";
