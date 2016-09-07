@@ -47,6 +47,9 @@ $wgResourceModules['ext.comments.js'] = array(
 		'comments-block-warning-anon', 'comments-block-warning-user',
 		'comments-delete-warning','child-comments-reply-to','comments-post'
 	),
+	'dependencies' => array(
+		'mediawiki.toolbar'
+	),
 	'localBasePath' => __DIR__,
 	'remoteExtPath' => 'Comments',
 	'position' => 'bottom'

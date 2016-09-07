@@ -573,29 +573,31 @@ class CommentsPage extends ContextSource {
 					$avatar = new wAvatar($this->getUser()->getId(), 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
 					$output .= '<div class="c-form-title"><div class="hj-media-avatar">'.$avatarAnchor.'</div></div>' . "\n";
+					$login = '';
 										
 				}
 				// Show a message to anons, prompting them to register or log in
 				else {
-					$register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
-					$output .= '<div class="c-form-message alert alert-warning" role="alert">' . wfMessage(
-							'comments-anon-message',
-							htmlspecialchars( $register_title->getFullURL() )
-						)->text() . '<a class="need-login">登录</a>。</div>' . "\n";
+					$login = "need-login";
+					// $register_title = SpecialPage::getTitleFor( 'Userlogin', 'signup' );
+					// $output .= '<div class="c-form-message alert alert-warning" role="alert">' . wfMessage(
+					// 		'comments-anon-message',
+					// 		htmlspecialchars( $register_title->getFullURL() )
+					// 	)->text() . '<a class="need-login">登录</a>。</div>' . "\n";
 					$avatar = new wAvatar( 0, 'ml');
 					$avatarAnchor = $avatar->getAvatarAnchor();
 					$output .= '<div class="c-form-title"><div class="hj-media-avatar">'.$avatarAnchor.'</div></div>' . "\n";
 				}
 				$rand = rand(1, 9);
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
-				$output .= '<div class="lead emoji-picker-container hj-media-body"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
+				$output .= '<div class="lead emoji-picker-container hj-media-body"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="mw-ui-input text-area mention-area '.$login.'" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
 
-				$output .= '<div class="comment-list clear"><div class="mw-ui-button mw-ui-primary site-button pull-right" id="tc_comment" >发表</div>'. "\n";
+				$output .= '<div class="comment-list clear"><div class="mw-ui-button mw-ui-primary site-button pull-right '.$login.'" id="tc_comment" >发表</div>'. "\n";
 
-				if (wfMessage('comments-add-emoji-emote')->parse() != ''){
-					$output .= '<div class="mw-ui-button mw-ui-primary site-button pull-right" id="custom_comment">模板</div>' . "\n";
-					$output .= '<span class="custom-face">'.wfMessage('comments-add-emoji-emote')->parse().'</span></div>';					
-				}
+				// if (wfMessage('comments-add-emoji-emote')->parse() != ''){
+				// 	$output .= '<div class="mw-ui-button mw-ui-primary site-button pull-right" id="custom_comment">模板</div>' . "\n";
+				// 	$output .= '<span class="custom-face">'.wfMessage('comments-add-emoji-emote')->parse().'</span></div>';					
+				// }
 
 			}
 			$output .= '<input type="hidden" name="action" value="purge" />' . "\n";
