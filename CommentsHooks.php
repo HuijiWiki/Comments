@@ -100,6 +100,9 @@ class CommentsHooks {
 		) {
 			$voting = $args['voting'];
 		}
+		if ($wgOut->getTitle() === null){
+			return '';
+		}
 
 		$commentsPage = new CommentsPage( $wgOut->getTitle()->getArticleID(), $wgOut->getContext() );
 		$commentsPage->allow = $allow;

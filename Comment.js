@@ -131,7 +131,7 @@ var Comment = {
     submit: function() {
         var api = new mw.Api();
         if (mw.config.get('wgUserName') == null){
-            // $('.user-login').modal();
+	        window.location.href = "/wiki/Special:Login";            
             return;
         }
         if ( Comment.submitted === 0 ) {
