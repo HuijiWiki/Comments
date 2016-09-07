@@ -525,7 +525,6 @@ class Comment extends ContextSource {
 				"\" rel=\"nofollow\">";
 		}
 
-		$imagePath = $wgExtensionAssetsPath . '/Comments/images';
 		if ( $voteType == 1 ) {
 			if ( $this->currentVote == 1 ) {
 				$voteLink .= "<i class=\"icon-like active\"></i> </a>";
@@ -618,8 +617,8 @@ class Comment extends ContextSource {
 		$this->page->title->setFragment('#comment-' . $this->id);
 		//@Since 1.27
 		//$tf = $this->page->title->createFragmentTarget( '#comment-' . $this->id );
-		$output .= '<span class="cod-score pull-right">' . $sign . $this->currentScore .
-			'赞</span> ' . $avatarHTML .
+		$output .= '<span class="cod-score pull-right icon-star data-toggle="tooltip" data-placement="top" title="赞">' . $sign . $this->currentScore .
+			'</span> ' . $avatarHTML .
 			'<span class="cod-poster">' . $commentPoster . '</span>'.' @ <a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="'.$this->page->title->getLocalURL().
 			'">'.$this->page->title.'</a><div class="c-sep"></div>';
 		$output .= '<div><span class="cod-comment"><a class="mw-ui-anchor mw-ui-progressive mw-ui-quiet" href="' .$this->page->title->getFullURL();
@@ -868,7 +867,7 @@ class Comment extends ContextSource {
 
 		if ( $this->page->allowMinus == true || $this->page->allowPlus == true ) {
 			$output .= '<span class="c-score-title">' .
-				wfMessage( 'comments-score-text' )->plain() .
+				wfMessage( 'comments-score-text' )->text() .
 				" <span id=\"Comment{$this->id}\">{$this->currentScore}</span></span>";
 
 			// Voting is possible only when database is unlocked

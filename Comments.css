@@ -21,10 +21,12 @@ ul.cod-ul {
 }
 
 #comment-vote-link i{
-    opacity: .5;
+    
 }
 #comment-vote-link i.active{
-    opacity: 1;
+    animation: glow-text 1s infinite;
+    -moz-animation: glow-text 1s infinite;
+    -webkit-animation: glow-text 1s infinite;
 }
 
 /*.c-avatar img {*/
@@ -39,7 +41,6 @@ ul.cod-ul {
 
 .c-time {
 	font-size: 10px;
-	color: #888;
 	line-height: 11px !important;
 	font-weight: normal !important;
     display: inline-block;
@@ -84,6 +85,7 @@ ul.cod-ul {
 
 #tc_comment{
     margin-left: 5px;
+    margin-top: 5px;
 }
 .c-delete a {
 	color: red !important;

@@ -35,7 +35,7 @@
 	"comments-not-allowed": "您未被允许发表吐槽。",
 	"comments-post": "发表",
 	"comments-submit": "添加你的吐槽",
-	"comments-score-text": "赞",
+	"comments-score-text": "<span class='icon-star'></span>",
 	"comments-permalink": "固定链接",
 	"comments-delete-link": "删除吐槽",
 	"comments-anon-name": "匿名用户",
