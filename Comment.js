@@ -99,8 +99,9 @@ var Comment = {
         // var token = new mw.Api().getToken('edit').done().token;
         api.postWithToken('edit', { 'action': 'commentvote', 'format': 'json', 'commentID': commentID, 'voteValue': voteValue})
             .done( function( response ) {
-                $( '#comment-' + commentID + ' > .hj-media-body > .c-score' ).html( response.commentvote.html )
-                    .html( $( '#comment-' + commentID + '  > .hj-media-body > .c-score' ).text() );
+                var voidholder = $('<div>');
+                voidholder.html(response.commentvote.html);
+                $( '#comment-' + commentID + ' > .hj-media-body > .c-score' ).html( voidholder.text() );
             } );
     },
 

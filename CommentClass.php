@@ -1032,6 +1032,7 @@ class EchoCommentPresentationModel extends EchoEventPresentationModel {
 		}
 		if ($this->event->getExtraParam('comment-plus')){
 			$msg = $this->getMessageWithAgent('notification-header-comment-plus');
+			return $msg;
 		}
 		$msg = parent::getHeaderMessage();
 		return $msg;
