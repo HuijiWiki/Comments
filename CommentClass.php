@@ -455,6 +455,12 @@ class Comment extends ContextSource {
 
 		$this->currentVote = $value;
 		$this->currentScore = $score;
+		if ($vote > 0){
+			Hooks::run( 'Comment::like', [$this, $this->getUser(), $this->currentScore]);
+		} else {
+			Hooks::run( 'Comment::dislike', [$this, $this->getUser(), $this->currentScore]);
+		}
+		
 	}
 
 	/**
