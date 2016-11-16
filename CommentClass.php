@@ -226,7 +226,7 @@ class Comment extends ContextSource {
 	 * @throws MWException
 	 */
 	function getText() {
-		global $wgParser;
+		global $wgParser, $wgAllowImageTag;
 
 		$commentText = trim( str_replace( '&quot;', "'", $this->text ) );
 		$comment_text_parts = explode( "\n", $commentText );
@@ -235,7 +235,16 @@ class Comment extends ContextSource {
 			$comment_text_fix .= ( ( $comment_text_fix ) ? "\n" : '' ) . trim( $part );
 		}
 		// fix link display error #bug
-		$commentText = $this->getOutput()->parse( $comment_text_fix );		
+		//$wgAllowImageTag = true;
+		$commentNoImg = preg_replace("#(<img .*?src=\"http:\/\/cdn\.huijiwiki\.com\/.*?>)#i", "<nowiki>$1</nowiki>", $comment_text_fix);
+		$commentText = $this->getOutput()->parse( $commentNoImg );
+		$commentText = preg_replace_callback("#(&lt;img .*?src=\"http:\/\/cdn\.huijiwiki\.com\/.*?&gt;)#i", 
+			function(array $img){
+				return htmlspecialchars_decode($img[0]);
+			},
+			$commentText
+		);		
+		//$wgAllowImageTag = false;
 		// if ( $this->getTitle()->getArticleID() > 0 ) {
 		// 	// $commentText = $wgParser->recursiveTagParse( $comment_text_fix );
 		// } else {

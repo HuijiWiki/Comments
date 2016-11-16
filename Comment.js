@@ -145,7 +145,7 @@ var Comment = {
             } else {
                 parentID = document.commentForm.commentParentId.value;
             }
-            var commentText = $('.emoji-wysiwyg-editor').text();
+            var commentText = $('.emoji-wysiwyg-editor').html();
             api.postWithToken('edit', { 'action': 'commentsubmit', 'format': 'json', 'pageID': pageID, 'parentID': parentID, 'commentText': commentText })
                 .done(function( response ) {
                     if ( response.commentsubmit.ok ) {
@@ -384,7 +384,7 @@ $( document ).ready( function() {
         // Handle clicks on the submit button (previously this was an onclick attr)
         .on( 'click touchstart', '#tc_comment', function(event) {
             event.preventDefault();
-            if ($('.emoji-wysiwyg-editor').text()=='') {
+            if ($('.emoji-wysiwyg-editor').html()=='') {
                 alert('请输入吐槽内容');
             }else{
                 Comment.submit();

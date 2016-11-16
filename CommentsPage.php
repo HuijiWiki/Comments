@@ -592,7 +592,7 @@ class CommentsPage extends ContextSource {
 				}
 				$rand = rand(1, 9);
 				$placeholder = wfMessage('comments-placeholder-'.$rand)->parse();
-				$output .= '<div class="'.$login.' lead emoji-picker-container hj-media-body"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="'.$login.' mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true" data-emoji-input="unicode"></textarea></div></div>' . "\n";
+				$output .= '<div class="'.$login.' lead emoji-picker-container hj-media-body"><textarea name="commentText" id="comment" placeholder="'.$placeholder.'" class="'.$login.' mw-ui-input text-area mention-area" rows="5" cols="64" data-emojiable="true"></textarea></div></div>' . "\n";
 
 				$output .= '<div class="comment-list clear"><div class="'.$login.' mw-ui-button mw-ui-primary site-button pull-right" id="tc_comment" >发表</div>'. "\n";
 
