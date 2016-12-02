@@ -614,7 +614,7 @@ class Comment extends ContextSource {
 			$avatarHTML = $avatar->getAvatarAnchor();
 		}
 
-		$comment_text = mb_substr( $this->text, 0, 50, "utf-8" );
+		$comment_text = mb_substr( htmlspecialchars($this->text), 0, 50, "utf-8" );
 		if ( $comment_text != $this->text ) {
 			$comment_text .= wfMessage( 'ellipsis' )->plain();
 		}

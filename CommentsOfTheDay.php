@@ -100,7 +100,7 @@ function getCommentsOfTheDay( $input, $args, $parser ) {
 		$commentOutput .= $comment->displayForCommentOfTheDay();
 	}
 
-	$output = '</ul>';
+	$output = '</ul><div class="clearfix"></div>';
 	if ( !empty( $comments ) ) {
 		$output .= $commentOutput;
 	} else {
